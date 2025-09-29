@@ -1,0 +1,52 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Site Project</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="tabs">
+  <button class="tablink" onclick="openTab('Home')">Home</button>
+  <button class="tablink" onclick="openTab('About')">About</button>
+  <button class="tablink" onclick="openTab('Contact')">Contact</button>
+</div>
+<div id="Home" class="tabcontent">
+  <h2>Home Tab</h2>
+  <p>Welcome to our site!</p>
+</div>
+<div id="About" class="tabcontent">
+  <h2>About Tab</h2>
+  <p>About us information here.</p>
+</div>
+<div id="Contact" class="tabcontent">
+  <h2>Contact Tab</h2>
+  <p>Contact info here.</p>
+</div>
+
+<!-- Chat Popup -->
+<div id="chat-popup" class="chat-popup">
+  <div class="chat-header" onclick="toggleChat()">Chat Support</div>
+  <div id="chat-body" class="chat-body"></div>
+  <input type="text" id="chat-input" placeholder="Type a message...">
+</div>
+
+<script src="chat.js"></script>
+<script>
+function openTab(tabName) {
+  const tabs = document.getElementsByClassName('tabcontent');
+  for (let t of tabs) t.style.display = 'none';
+  document.getElementById(tabName).style.display = 'block';
+}
+// Open Home tab by default
+openTab('Home');
+
+function toggleChat() {
+  const chat = document.getElementById('chat-popup');
+  chat.classList.toggle('open');
+}
+</script>
+</body>
+</html>
