@@ -1,52 +1,61 @@
 <!DOCTYPE html>
-<html lang="he" dir="rtl">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>האתר שלי</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      background: #f4f4f4;
-      margin: 0;
-      padding: 0;
-    }
-    .container {
-      max-width: 500px;
-      margin: 100px auto;
-      background: #fff;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-    h1 {
-      color: #333;
-    }
-    p {
-      font-size: 18px;
-      color: #555;
-    }
-    .btn {
-      display: inline-block;
-      margin-top: 20px;
-      padding: 12px 20px;
-      font-size: 18px;
-      background: #25D366;
-      color: white;
-      text-decoration: none;
-      border-radius: 5px;
-    }
-    .btn:hover {
-      background: #1ebe57;
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Lottery Site</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container">
-    <h1>ברוכים הבאים!</h1>
-    <p>זה האתר שלי. אפשר ליצור קשר בלחיצה:</p>
-    <a class="btn" href="https://wa.me/972501234567" target="_blank">📱 דברו איתי בוואטסאפ</a>
-    <p>או התקשרו: <strong>050-1234567</strong></p>
+  <header>
+    <nav>
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#winners">Winners</a></li>
+        <li><a href="#how">How It Works</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section id="home">
+    <h1>Welcome to My Lottery</h1>
+    <p>Your intro text here…</p>
+  </section>
+
+  <section id="winners">
+    <h2>Recent Winners</h2>
+    <p>List of winners or gallery here…</p>
+  </section>
+
+  <section id="how">
+    <h2>How It Works</h2>
+    <p>Explain your process here…</p>
+  </section>
+
+  <section id="faq">
+    <h2>FAQ</h2>
+    <p>Common questions here…</p>
+  </section>
+
+  <section id="contact">
+    <h2>Contact Us</h2>
+    <form>
+      <input type="text" placeholder="Name">
+      <input type="email" placeholder="Email">
+      <textarea placeholder="Your message"></textarea>
+      <button type="submit">Send</button>
+    </form>
+  </section>
+
+  <!-- Chat widget -->
+  <div id="chat-widget">
+    <div id="chat-header">Chat with us</div>
+    <div id="chat-body"></div>
+    <input id="chat-input" type="text" placeholder="Type a message…">
   </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
