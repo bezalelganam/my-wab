@@ -18,14 +18,14 @@ app.post('/send-message', async (req, res) => {
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
-        user: 'your.email@gmail.com',
+        user: 'your-email-app-password'
         pass: 'your-email-app-password'
       }
     });
 
     const mailOptions = {
       from: email,
-      to: 'your.email@gmail.com',
+      to: 'bezalelganam59gmail.com',
       subject: `New chat message from ${name || 'Anonymous'}`,
       text: message
     };
