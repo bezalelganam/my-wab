@@ -3,59 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Lottery Site</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Chat Email App</title>
+  <style>
+    #chat-body { height: 300px; border: 1px solid #ccc; overflow-y: scroll; padding: 5px; }
+    #chat-input { width: 100%; padding: 5px; }
+  </style>
 </head>
 <body>
-  <header>
-    <nav>
-      <ul>
-        <li><a href="#home">Home</a></li>
-        <li><a href="#winners">Winners</a></li>
-        <li><a href="#how">How It Works</a></li>
-        <li><a href="#faq">FAQ</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
-    </nav>
-  </header>
-
-  <section id="home">
-    <h1>Welcome to My Lottery</h1>
-    <p>Your intro text here…</p>
-  </section>
-
-  <section id="winners">
-    <h2>Recent Winners</h2>
-    <p>List of winners or gallery here…</p>
-  </section>
-
-  <section id="how">
-    <h2>How It Works</h2>
-    <p>Explain your process here…</p>
-  </section>
-
-  <section id="faq">
-    <h2>FAQ</h2>
-    <p>Common questions here…</p>
-  </section>
-
-  <section id="contact">
-    <h2>Contact Us</h2>
-    <form>
-      <input type="text" placeholder="Name">
-      <input type="email" placeholder="Email">
-      <textarea placeholder="Your message"></textarea>
-      <button type="submit">Send</button>
-    </form>
-  </section>
-
-  <!-- Chat widget -->
-  <div id="chat-widget">
-    <div id="chat-header">Chat with us</div>
-    <div id="chat-body"></div>
-    <input id="chat-input" type="text" placeholder="Type a message…">
-  </div>
-
+  <div id="chat-body"></div>
+  <input type="text" id="chat-input" placeholder="Type a message..." />
   <script src="script.js"></script>
 </body>
 </html>

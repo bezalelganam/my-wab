@@ -7,7 +7,16 @@ chatInput.addEventListener('keypress', e => {
     if (msg !== '') {
       addMessage('You', msg);
       chatInput.value = '';
-      // simulate response
+
+      fetch('/send-message', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: 'User', email: 'user@example.com', message: msg })
+      })
+      .then(res => res.text())
+      .then(res => console.log(res))
+      .catch(err => console.error(err));
+
       setTimeout(() => addMessage('Support', 'Thanks for your message!'), 1000);
     }
   }
