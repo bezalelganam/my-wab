@@ -76,8 +76,10 @@ body {
             <a href="#discover" id="discover-tab" class="nav-link text-white font-medium">Discover</a>
             <a href="#shop" id="shop-tab" class="nav-link text-white font-medium">Shop</a>
             <a href="#contact" id="contact-tab" class="nav-link text-white font-medium">Contact</a>
-</div>
-        <div class="hidden md:flex space-x-8">
+        </div>
+        <div class="flex items-center space-x-4">
+            <a href="login.html" class="text-white hover:text-red-500">Login</a>
+<div class="hidden md:flex space-x-8">
             <a href="#models" class="nav-link text-white font-medium">Models</a>
             <a href="#energy" class="nav-link text-white font-medium">Energy</a>
             <a href="#charging" class="nav-link text-white font-medium">Charging</a>
@@ -377,9 +379,40 @@ body {
     </section>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Add to cart functionality
-            document.querySelectorAll('.add-to-cart').forEach(button => {
-                button.addEventListener('click', function() {
+        // Check login status
+        const isAdmin = localStorage.getItem('isAdmin') === 'true';
+        const userEmail = localStorage.getItem('userEmail');
+        
+        if (userEmail) {
+            // Replace login link with user profile
+            const loginLink = document.querySelector('a[href="login.html"]');
+            if (loginLink) {
+                loginLink.innerHTML = `
+                    <div class="flex items-center space-x-2">
+                        <span>${userEmail}</span>
+                        <i data-feather="user"></i>
+                    </div>
+                `;
+                loginLink.href = '#';
+                
+                // Add logout functionality
+                loginLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    localStorage.removeItem('isAdmin');
+                    localStorage.removeItem('userEmail');
+                    window.location.reload();
+                });
+            }
+            
+            // Show admin chat button if admin
+            if (isAdmin) {
+                document.getElementById('admin-chat-btn').classList.remove('hidden');
+            }
+        }
+        
+        // Add to cart functionality
+        document.querySelectorAll('.add-to-cart').forEach(button => {
+button.addEventListener('click', function() {
                     const name = this.dataset.name;
                     const price = this.dataset.price;
                     const image = this.dataset.image;
@@ -579,19 +612,32 @@ body {
                 
                 e.target.value = '';
                 chatMessages.scrollTop = chatMessages.scrollHeight;
-                
-                // Simulate admin response (in real app, this would come from a server)
-                setTimeout(() => {
-                    chatMessages.innerHTML += `
-                        <div class="mb-2">
-                            <span class="bg-gray-700 text-white rounded-lg py-1 px-3 inline-block">
-                                Thanks for your message! An admin will respond shortly.
-                            </span>
-                        </div>
-                    `;
-                    chatMessages.scrollTop = chatMessages.scrollHeight;
-                }, 1000);
-            }
+                    // Admin or auto-response
+                    if (isAdmin) {
+                        // Show typing indicator
+                        chatMessages.innerHTML += `
+                            <div class="mb-2">
+                                <span class="bg-gray-700 text-white rounded-lg py-1 px-3 inline-block">
+                                    <i class="animate-pulse">Admin typing...</i>
+                                </span>
+                            </div>
+                        `;
+                        chatMessages.scrollTop = chatMessages.scrollHeight;
+                    } else {
+                        // Auto-responder for non-admin users
+                        setTimeout(() => {
+                            const response = getAdminResponse(message);
+                            chatMessages.innerHTML += `
+                                <div class="mb-2">
+                                    <span class="bg-gray-700 text-white rounded-lg py-1 px-3 inline-block">
+                                        ${response}
+                                    </span>
+                                </div>
+                            `;
+                            chatMessages.scrollTop = chatMessages.scrollHeight;
+                        }, 1000);
+                    }
+}
         });
 
         // Track chat sessions
@@ -722,6 +768,26 @@ el: "#vanta-bg",
         });
         // Initialize Feather Icons
         feather.replace();
+        // Admin chat responses
+        function getAdminResponse(userMessage) {
+            const responses = {
+                'hello': 'Hello! How can I help you today?',
+                'help': 'What do you need assistance with?',
+                'order': 'You can check your order status in your account dashboard.',
+                'delivery': 'Standard delivery takes 3-5 business days.',
+                'payment': 'We accept credit cards, PayPal, and cryptocurrency.',
+                'default': 'Thanks for your message! Let me check that for you...'
+            };
+
+            const lowerMsg = userMessage.toLowerCase();
+            for (const [key, response] of Object.entries(responses)) {
+                if (lowerMsg.includes(key)) {
+                    return response;
+                }
+            }
+            return responses['default'];
+        }
+
         // Initialize first load
         if (!window.location.hash) {
             window.location.hash = 'models';

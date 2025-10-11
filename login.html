@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | ELECTRIFY⚡</title>
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body class="bg-black text-white">
+    <!-- Navigation -->
+    <nav class="py-6 px-4 md:px-12 flex justify-between items-center">
+        <div class="flex items-center">
+            <a href="index.html" class="text-2xl font-bold tracking-tight">
+                <span class="text-red-500">ELECTRIFY</span>
+                <span class="text-white">⚡</span>
+            </a>
+        </div>
+        <div class="flex items-center space-x-4">
+            <a href="index.html" class="text-white hover:text-red-500">Home</a>
+        </div>
+    </nav>
+
+    <!-- Login Section -->
+    <section class="flex items-center justify-center min-h-screen py-12 px-4">
+        <div class="max-w-md w-full bg-gray-900 rounded-lg p-8 shadow-lg">
+            <h1 class="text-3xl font-bold mb-8 text-center">Welcome Back</h1>
+            
+            <!-- Google Sign In -->
+            <div id="g_id_onload"
+                data-client_id="YOUR_GOOGLE_CLIENT_ID"
+                data-context="signin"
+                data-ux_mode="popup"
+                data-login_uri="/auth/google/callback"
+                data-auto_prompt="false">
+            </div>
+            <div class="g_id_signin mb-6 w-full"
+                data-type="standard"
+                data-shape="rectangular"
+                data-theme="filled_black"
+                data-text="signin_with"
+                data-size="large"
+                data-logo_alignment="left">
+            </div>
+            
+            <div class="flex items-center mb-6">
+                <div class="flex-grow border-t border-gray-700"></div>
+                <span class="mx-4 text-gray-400">or</span>
+                <div class="flex-grow border-t border-gray-700"></div>
+            </div>
+            
+            <!-- Email Login Form -->
+            <form id="login-form" class="space-y-6">
+                <div>
+                    <label for="email" class="block text-gray-400 mb-2">Email</label>
+                    <input type="email" id="email" class="w-full bg-gray-800 text-white p-3 rounded focus:outline-none focus:ring-1 focus:ring-red-500" required>
+                </div>
+                <div>
+                    <label for="password" class="block text-gray-400 mb-2">Password</label>
+                    <input type="password" id="password" class="w-full bg-gray-800 text-white p-3 rounded focus:outline-none focus:ring-1 focus:ring-red-500" required>
+                </div>
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <input type="checkbox" id="remember" class="mr-2">
+                        <label for="remember" class="text-gray-400">Remember me</label>
+                    </div>
+                    <a href="#" class="text-red-500 hover:text-red-400 text-sm">Forgot password?</a>
+                </div>
+                <button type="submit" class="w-full bg-red-500 hover:bg-red-600 text-white py-3 rounded font-medium transition">
+                    Sign In
+                </button>
+            </form>
+            
+            <div class="mt-6 text-center">
+                <p class="text-gray-400">Don't have an account? <a href="#" class="text-red-500 hover:text-red-400">Sign up</a></p>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            feather.replace();
+            
+            // Admin credentials (in a real app, this would be handled by a backend)
+            const ADMIN_EMAIL = "admin@electrify.com";
+            const ADMIN_PASSWORD = "admin123";
+            
+            // Login form handling
+            document.getElementById('login-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                
+                // Check if admin login
+                if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
+                    localStorage.setItem('isAdmin', 'true');
+                    localStorage.setItem('userEmail', email);
+                    window.location.href = 'index.html';
+                    return;
+                }
+                
+                // Check if regular user login (in a real app, this would check against a database)
+                if (email && password) {
+                    localStorage.setItem('isAdmin', 'false');
+                    localStorage.setItem('userEmail', email);
+                    window.location.href = 'index.html';
+                } else {
+                    alert('Please enter valid credentials');
+                }
+            });
+            
+            // Handle Google login callback
+            function handleCredentialResponse(response) {
+                // Decode JWT response
+                const responsePayload = JSON.parse(atob(response.credential.split('.')[1]));
+                
+                localStorage.setItem('isAdmin', responsePayload.email === ADMIN_EMAIL ? 'true' : 'false');
+                localStorage.setItem('userEmail', responsePayload.email);
+                localStorage.setItem('userName', responsePayload.name);
+                localStorage.setItem('userPicture', responsePayload.picture);
+                
+                window.location.href = 'index.html';
+            }
+            
+            // Add Google callback to window
+            window.handleCredentialResponse = handleCredentialResponse;
+        });
+    </script>
+</body>
+</html>
