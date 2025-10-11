@@ -61,6 +61,11 @@
             <a href="charging.html" class="nav-link text-white font-medium">Charging</a>
             <a href="discover.html" class="nav-link text-white font-medium">Discover</a>
             <a href="shop.html" class="nav-link text-white font-medium active-tab">Shop</a>
+            <a href="cart.html" class="nav-link text-white font-medium flex items-center">
+                <i data-feather="shopping-cart" class="mr-1"></i>
+                Cart
+                <span id="cart-count" class="ml-1 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs hidden"></span>
+            </a>
         </div>
         <div class="flex items-center space-x-4">
             <button class="md:hidden text-white">
@@ -86,7 +91,10 @@
                         <p class="text-gray-400 mb-4">Fast home charging solution</p>
                         <div class="flex justify-between items-center">
                             <span class="text-lg font-medium">$500</span>
-                            <button class="text-red-500 hover:text-red-400 font-medium" onclick="openOrderModal('Wall Connector', 500)">Add to Cart</button>
+                            <button class="text-red-500 hover:text-red-400 font-medium add-to-cart" 
+                                    data-name="Wall Connector" 
+                                    data-price="500" 
+                                    data-image="http://static.photos/technology/640x360/10">Add to Cart</button>
                         </div>
                     </div>
                 </div>
@@ -99,7 +107,10 @@
                         <p class="text-gray-400 mb-4">Portable charging solution</p>
                         <div class="flex justify-between items-center">
                             <span class="text-lg font-medium">$230</span>
-                            <button class="text-red-500 hover:text-red-400 font-medium" onclick="openOrderModal('Mobile Connector', 230)">Add to Cart</button>
+                            <button class="text-red-500 hover:text-red-400 font-medium add-to-cart" 
+                                    data-name="Mobile Connector" 
+                                    data-price="230" 
+                                    data-image="http://static.photos/technology/640x360/11">Add to Cart</button>
                         </div>
                     </div>
                 </div>
@@ -112,7 +123,10 @@
                         <p class="text-gray-400 mb-4">For additional storage</p>
                         <div class="flex justify-between items-center">
                             <span class="text-lg font-medium">$350</span>
-                            <button class="text-red-500 hover:text-red-400 font-medium" onclick="openOrderModal('Roof Rack', 350)">Add to Cart</button>
+                            <button class="text-red-500 hover:text-red-400 font-medium add-to-cart" 
+                                    data-name="Roof Rack" 
+                                    data-price="350" 
+                                    data-image="http://static.photos/technology/640x360/12">Add to Cart</button>
                         </div>
                     </div>
                 </div>
@@ -125,7 +139,10 @@
                         <p class="text-gray-400 mb-4">Premium interior protection</p>
                         <div class="flex justify-between items-center">
                             <span class="text-lg font-medium">$175</span>
-                            <button class="text-red-500 hover:text-red-400 font-medium" onclick="openOrderModal('All-Weather Mats', 175)">Add to Cart</button>
+                            <button class="text-red-500 hover:text-red-400 font-medium add-to-cart" 
+                                    data-name="All-Weather Mats" 
+                                    data-price="175" 
+                                    data-image="http://static.photos/technology/640x360/13">Add to Cart</button>
                         </div>
                     </div>
                 </div>
@@ -133,28 +150,72 @@
         </div>
     </section>
 
-    <!-- Order Modal -->
-    <div id="order-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-        <div class="bg-gray-900 rounded-lg p-6 w-full max-w-md">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-bold" id="order-model-name">Order</h3>
-                <button onclick="closeOrderModal()" class="text-gray-400 hover:text-white">
-                    <i data-feather="x"></i>
-                </button>
-            </div>
-            <div class="mb-6">
-                <span class="text-gray-400">Price:</span>
-                <span class="text-xl font-bold block" id="order-model-price">$0</span>
-            </div>
-            <div class="mb-6">
-                <label class="block text-gray-400 mb-2">Quantity</label>
-                <input type="number" value="1" min="1" class="w-full bg-gray-800 text-white p-2 rounded focus:outline-none focus:ring-1 focus:ring-red-500">
-            </div>
-            <button class="w-full bg-red-500 hover:bg-red-600 text-white py-3 rounded font-medium transition">
-                Add to Cart
-            </button>
-        </div>
-    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            feather.replace();
+            
+            // Initialize cart if not exists
+            if (!localStorage.getItem('cart')) {
+                localStorage.setItem('cart', JSON.stringify([]));
+            }
+
+            // Update cart count function
+            function updateCartCount() {
+                const cart = JSON.parse(localStorage.getItem('cart')) || [];
+                const cartCount = document.getElementById('cart-count');
+                const totalItems = cart.reduce((total, item) => total + (item.quantity || 1), 0);
+                
+                if (cartCount) {
+                    if (totalItems > 0) {
+                        cartCount.textContent = totalItems;
+                        cartCount.classList.remove('hidden');
+                    } else {
+                        cartCount.classList.add('hidden');
+                    }
+                }
+            }
+
+            // Initialize cart count
+            updateCartCount();
+
+            // Add to cart functionality for shop page
+            document.querySelectorAll('.add-to-cart').forEach(button => {
+                button.addEventListener('click', function() {
+                    const name = this.dataset.name;
+                    const price = parseFloat(this.dataset.price);
+                    const image = this.dataset.image;
+                    
+                    // Get existing cart or create new one
+                    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+                    
+                    // Check if item already exists in cart
+                    const existingItemIndex = cart.findIndex(item => item.name === name);
+                    
+                    if (existingItemIndex !== -1) {
+                        // Update quantity if item exists
+                        cart[existingItemIndex].quantity = (cart[existingItemIndex].quantity || 1) + 1;
+                    } else {
+                        // Add new item
+                        cart.push({
+                            name: name,
+                            price: price,
+                            image: image,
+                            quantity: 1
+                        });
+                    }
+                    
+                    // Save to localStorage
+                    localStorage.setItem('cart', JSON.stringify(cart));
+                    
+                    // Update cart count
+                    updateCartCount();
+                    
+                    // Show success notification
+                    alert(`${name} added to cart!`);
+                });
+            });
+        });
+    </script>
 
     <!-- Footer -->
     <footer class="bg-black py-16 px-4 md:px-12 border-t border-gray-800">
@@ -203,33 +264,5 @@
             <p>© 2023 Electrify. All rights reserved.</p>
         </div>
     </footer>
-
-    <!-- Admin Chat Button -->
-    <button id="admin-chat-btn" class="fixed bottom-6 right-6 bg-red-500 text-white p-3 rounded-full shadow-lg hover:bg-red-600 transition">
-        <i data-feather="message-circle"></i>
-    </button>
-
-    <script>
-        // Initialize Feather Icons
-        feather.replace();
-
-        // Order modal functionality
-        function openOrderModal(itemName, price) {
-            document.getElementById('order-model-name').textContent = `Order ${itemName}`;
-            document.getElementById('order-model-price').textContent = `$${price.toLocaleString()}`;
-            document.getElementById('order-modal').classList.remove('hidden');
-            feather.replace();
-        }
-
-        function closeOrderModal() {
-            document.getElementById('order-modal').classList.add('hidden');
-        }
-
-        // Chat functionality
-        document.getElementById('admin-chat-btn').addEventListener('click', () => {
-            const isAdmin = confirm("Are you an admin? (Demo only - click OK)");
-            alert(isAdmin ? "Admin chat would open here" : "Customer support chat would open here");
-        });
-    </script>
 </body>
 </html>
