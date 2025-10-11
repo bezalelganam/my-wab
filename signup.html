@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login | ELECTRIFY⚡</title>
+    <title>Sign Up | ELECTRIFY⚡</title>
     <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/feather-icons"></script>
@@ -19,19 +19,19 @@
             </a>
         </div>
         <div class="flex items-center space-x-4">
-            <a href="index.html" class="text-white hover:text-red-500">Home</a>
+            <a href="login.html" class="text-white hover:text-red-500">Login</a>
         </div>
     </nav>
 
-    <!-- Login Section -->
+    <!-- Signup Section -->
     <section class="flex items-center justify-center min-h-screen py-12 px-4">
         <div class="max-w-md w-full bg-gray-900 rounded-lg p-8 shadow-lg">
-            <h1 class="text-3xl font-bold mb-8 text-center">Welcome Back</h1>
+            <h1 class="text-3xl font-bold mb-8 text-center">Create Account</h1>
             
-            <!-- Google Sign In -->
+            <!-- Google Sign Up -->
             <div id="g_id_onload"
                 data-client_id="YOUR_GOOGLE_CLIENT_ID"
-                data-context="signin"
+                data-context="signup"
                 data-ux_mode="popup"
                 data-login_uri="/auth/google/callback"
                 data-auto_prompt="false">
@@ -40,7 +40,7 @@
                 data-type="standard"
                 data-shape="rectangular"
                 data-theme="filled_black"
-                data-text="signin_with"
+                data-text="signup_with"
                 data-size="large"
                 data-logo_alignment="left">
             </div>
@@ -51,8 +51,12 @@
                 <div class="flex-grow border-t border-gray-700"></div>
             </div>
             
-            <!-- Email Login Form -->
-            <form id="login-form" class="space-y-6">
+            <!-- Email Signup Form -->
+            <form id="signup-form" class="space-y-6">
+                <div>
+                    <label for="name" class="block text-gray-400 mb-2">Full Name</label>
+                    <input type="text" id="name" class="w-full bg-gray-800 text-white p-3 rounded focus:outline-none focus:ring-1 focus:ring-red-500" required>
+                </div>
                 <div>
                     <label for="email" class="block text-gray-400 mb-2">Email</label>
                     <input type="email" id="email" class="w-full bg-gray-800 text-white p-3 rounded focus:outline-none focus:ring-1 focus:ring-red-500" required>
@@ -61,91 +65,101 @@
                     <label for="password" class="block text-gray-400 mb-2">Password</label>
                     <input type="password" id="password" class="w-full bg-gray-800 text-white p-3 rounded focus:outline-none focus:ring-1 focus:ring-red-500" required>
                 </div>
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center">
-                        <input type="checkbox" id="remember" class="mr-2">
-                        <label for="remember" class="text-gray-400">Remember me</label>
-                    </div>
-                    <a href="#" class="text-red-500 hover:text-red-400 text-sm">Forgot password?</a>
+                <div>
+                    <label for="confirm-password" class="block text-gray-400 mb-2">Confirm Password</label>
+                    <input type="password" id="confirm-password" class="w-full bg-gray-800 text-white p-3 rounded focus:outline-none focus:ring-1 focus:ring-red-500" required>
                 </div>
                 <button type="submit" class="w-full bg-red-500 hover:bg-red-600 text-white py-3 rounded font-medium transition">
-                    Sign In
+                    Create Account
                 </button>
             </form>
+            
             <div class="mt-6 text-center">
-                <p class="text-gray-400">Don't have an account? <a href="signup.html" class="text-red-500 hover:text-red-400">Sign up</a></p>
+                <p class="text-gray-400">Already have an account? <a href="login.html" class="text-red-500 hover:text-red-400">Login</a></p>
             </div>
-</div>
+        </div>
     </section>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             feather.replace();
-        // Admin credentials
-        const ADMIN_PASSWORD = "admin123";
-        
-        // Initialize chats storage if not exists
-        if (!localStorage.getItem('chats')) {
-            localStorage.setItem('chats', JSON.stringify({}));
-        }
-// Login form handling
-            document.getElementById('login-form').addEventListener('submit', function(e) {
+            
+            // Initialize users storage if not exists
+            if (!localStorage.getItem('users')) {
+                localStorage.setItem('users', JSON.stringify([]));
+            }
+
+            // Signup form handling
+            document.getElementById('signup-form').addEventListener('submit', function(e) {
                 e.preventDefault();
                 
+                const name = document.getElementById('name').value;
                 const email = document.getElementById('email').value;
                 const password = document.getElementById('password').value;
-                // Check if admin login
-                if (email === "bezalelganam59@gmail.com" && password === ADMIN_PASSWORD) {
-                    localStorage.setItem('isAdmin', 'true');
-                    localStorage.setItem('userEmail', email);
-                    window.location.href = 'admin.html';
+                const confirmPassword = document.getElementById('confirm-password').value;
+                
+                // Validate passwords match
+                if (password !== confirmPassword) {
+                    alert('Passwords do not match!');
                     return;
                 }
-// Check if regular user login (in a real app, this would check against a database)
+                
                 // Get existing users
-                const users = JSON.parse(localStorage.getItem('users')) || [];
+                const users = JSON.parse(localStorage.getItem('users'));
                 
-                // Find user
-                const user = users.find(user => user.email === email && user.password === password);
-                
-                if (user) {
-                    localStorage.setItem('isAdmin', email === "bezalelganam59@gmail.com" ? 'true' : 'false');
-                    localStorage.setItem('userEmail', email);
-                    localStorage.setItem('userName', user.name || email.split('@')[0]);
-                    
-                    if (email === "bezalelganam59@gmail.com") {
-                        window.location.href = 'admin.html';
-                    } else {
-                        window.location.href = 'index.html';
-                    }
-                } else {
-                    alert('Invalid email or password. Please try again or sign up.');
+                // Check if user already exists
+                if (users.some(user => user.email === email)) {
+                    alert('This email is already registered!');
+                    return;
                 }
-});
-            // Handle Google login callback
+                
+                // Add new user
+                users.push({
+                    name: name,
+                    email: email,
+                    password: password
+                });
+                
+                // Save to localStorage
+                localStorage.setItem('users', JSON.stringify(users));
+                
+                // Redirect to login
+                alert('Account created successfully! Please login.');
+                window.location.href = 'login.html';
+            });
+            
+            // Handle Google signup callback
             function handleCredentialResponse(response) {
                 // Decode JWT response
                 const responsePayload = JSON.parse(atob(response.credential.split('.')[1]));
                 
-                localStorage.setItem('isAdmin', responsePayload.email === "bezalelganam59@gmail.com" ? 'true' : 'false');
+                // Get existing users
+                const users = JSON.parse(localStorage.getItem('users'));
+                
+                // Check if user already exists
+                if (!users.some(user => user.email === responsePayload.email)) {
+                    // Add new user
+                    users.push({
+                        name: responsePayload.name,
+                        email: responsePayload.email,
+                        googleId: responsePayload.sub
+                    });
+                    
+                    // Save to localStorage
+                    localStorage.setItem('users', JSON.stringify(users));
+                }
+                
+                localStorage.setItem('isAdmin', 'false');
                 localStorage.setItem('userEmail', responsePayload.email);
                 localStorage.setItem('userName', responsePayload.name);
                 localStorage.setItem('userPicture', responsePayload.picture);
                 
-                if (responsePayload.email === "bezalelganam59@gmail.com") {
-                    window.location.href = 'admin.html';
-                } else {
-                    window.location.href = 'index.html';
-                }
-            }
-            // Initialize cart if not exists
-            if (!localStorage.getItem('cart')) {
-                localStorage.setItem('cart', JSON.stringify([]));
+                window.location.href = 'index.html';
             }
             
             // Add Google callback to window
             window.handleCredentialResponse = handleCredentialResponse;
-});
+        });
     </script>
 </body>
 </html>

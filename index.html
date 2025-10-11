@@ -7,7 +7,12 @@
     <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/feather-icons"></script>
-    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+    <script>
+        // Initialize EmailJS
+        emailjs.init('YOUR_EMAILJS_USER_ID');
+    </script>
+<script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.globe.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
@@ -79,15 +84,26 @@ body {
             <a href="login.html" class="nav-link text-white font-medium">Login</a>
         </div>
 =======
-<div class="flex items-center space-x-4">
-            <button class="md:hidden text-white">
-                <i data-feather="menu"></i>
-            </button>
+        <div class="flex items-center space-x-4">
+            <div class="md:hidden relative">
+                <button id="mobile-menu-btn" class="text-white">
+                    <i data-feather="menu"></i>
+                </button>
+                <div id="mobile-menu" class="hidden absolute right-0 mt-2 w-48 bg-gray-900 rounded-md shadow-lg py-1 z-50 border border-gray-800">
+                    <a href="#models" class="block px-4 py-2 text-white hover:bg-gray-800">Models</a>
+                    <a href="#energy" class="block px-4 py-2 text-white hover:bg-gray-800">Energy</a>
+                    <a href="#charging" class="block px-4 py-2 text-white hover:bg-gray-800">Charging</a>
+                    <a href="#discover" class="block px-4 py-2 text-white hover:bg-gray-800">Discover</a>
+                    <a href="#shop" class="block px-4 py-2 text-white hover:bg-gray-800">Shop</a>
+                    <a href="#contact" class="block px-4 py-2 text-white hover:bg-gray-800">Contact</a>
+                    <a href="login.html" class="block px-4 py-2 text-white hover:bg-gray-800">Login</a>
+                </div>
+            </div>
             <button class="hidden md:block bg-white text-black px-4 py-2 rounded font-medium hover:bg-opacity-90 transition">
                 Order Now
             </button>
         </div>
-    </nav>
+</nav>
 
     <!-- Hero Section -->
     <section class="relative h-screen flex items-center justify-center hero-gradient overflow-hidden">
@@ -328,19 +344,19 @@ body {
                     <h3 class="text-xl font-bold mb-4">Send us a message</h3>
                     <form id="contact-form" class="space-y-4">
                         <div>
-                            <input type="text" placeholder="Your Name" class="w-full bg-gray-800 text-white p-3 rounded focus:outline-none focus:ring-1 focus:ring-red-500" required>
+                            <input type="text" id="contact-name" placeholder="Your Name" class="w-full bg-gray-800 text-white p-3 rounded focus:outline-none focus:ring-1 focus:ring-red-500" required>
                         </div>
                         <div>
-                            <input type="email" placeholder="Your Email" class="w-full bg-gray-800 text-white p-3 rounded focus:outline-none focus:ring-1 focus:ring-red-500" required>
+                            <input type="email" id="contact-email" placeholder="Your Email" class="w-full bg-gray-800 text-white p-3 rounded focus:outline-none focus:ring-1 focus:ring-red-500" required>
                         </div>
                         <div>
-                            <textarea placeholder="Your Message" rows="5" class="w-full bg-gray-800 text-white p-3 rounded focus:outline-none focus:ring-1 focus:ring-red-500" required></textarea>
+                            <textarea id="contact-message" placeholder="Your Message" rows="5" class="w-full bg-gray-800 text-white p-3 rounded focus:outline-none focus:ring-1 focus:ring-red-500" required></textarea>
                         </div>
                         <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-8 py-3 rounded font-medium transition">
                             Send Message
                         </button>
                     </form>
-                </div>
+</div>
                 <div>
                     <h3 class="text-xl font-bold mb-4">Contact Information</h3>
                     <div class="space-y-6">
@@ -728,26 +744,27 @@ button.addEventListener('click', function() {
         });
 
         // Contact form handling
-        document.getElementById('contact-form').addEventListener('submit', (e) => {
+        document.getElementById('contact-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            const form = e.target;
-            const name = form.querySelector('input[type="text"]').value;
-            const email = form.querySelector('input[type="email"]').value;
-            const message = form.querySelector('textarea').value;
+            const name = document.getElementById('contact-name').value;
+            const email = document.getElementById('contact-email').value;
+            const message = document.getElementById('contact-message').value;
             
-            // Send email
-            const emailData = {
-                to: 'bezalelganam59@gmail.com',
-                subject: `New Contact Form Submission from ${name}`,
-                body: `Name: ${name}\nEmail: ${email}\nMessage: ${message}`
-            };
+            try {
+                await emailjs.send('YOUR_EMAILJS_SERVICE_ID', 'YOUR_EMAILJS_TEMPLATE_ID', {
+                    from_name: name,
+                    from_email: email,
+                    message: message,
+                    to_email: 'bezalelganam59@gmail.com'
+                });
 
-            // In a real app, you would send this to your backend
-            console.log('Contact details:', emailData);
-            
-            alert('Thank you for your message! We will get back to you soon.');
-            form.reset();
+                alert('Thank you for your message! We will get back to you soon.');
+                document.getElementById('contact-form').reset();
+            } catch (error) {
+                console.error('Error:', error);
+                alert('There was an error sending your message. Please try again later.');
+            }
         });
 // Initialize Vanta.js
         VANTA.GLOBE({
@@ -784,11 +801,26 @@ el: "#vanta-bg",
             }
             return responses['default'];
         }
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            feather.replace();
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!mobileMenu.contains(e.target) && e.target !== mobileMenuBtn) {
+                mobileMenu.classList.add('hidden');
+            }
+        });
 
         // Initialize first load
         if (!window.location.hash) {
             window.location.hash = 'models';
         }
-</script>
+    </script>
 </body>
 </html>
