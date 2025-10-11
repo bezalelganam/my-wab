@@ -516,7 +516,7 @@ body {
             });
         });
         
-      // Contact form handling - Add this to your existing script
+      // Contact form handling - SIMPLE VERSION THAT WORKS
 document.getElementById('contact-form').addEventListener('submit', function(e) {
     e.preventDefault();
     
@@ -524,15 +524,47 @@ document.getElementById('contact-form').addEventListener('submit', function(e) {
     const email = document.getElementById('contact-email').value;
     const message = document.getElementById('contact-message').value;
     
-    // Simple email sending using mailto (works without backend)
-    const subject = `New Contact Form Message from ${name}`;
-    const body = `Name: ${name}%0D%0AEmail: ${email}%0D%0AMessage: ${message}`;
+    // Show loading state
+    const submitBtn = e.target.querySelector('button[type="submit"]');
+    const originalText = submitBtn.textContent;
+    submitBtn.textContent = 'Sending...';
+    submitBtn.disabled = true;
     
-    window.location.href = `mailto:bezalelganam95@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    // Use Formspree - FREE service that sends emails directly
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('email', email);
+    formData.append('message', message);
     
-    // Show success message
-    alert('Thank you for your message! Your email client will open to send the message.');
-    document.getElementById('contact-form').reset();
+    // Send to Formspree (replace with your Formspree email)
+    fetch('https://formspree.io/f/mpzvqjjk', {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'Accept': 'application/json'
+        }
+    })
+    .then(response => {
+        if (response.ok) {
+            // Show success message
+            document.getElementById('contact-success').classList.remove('hidden');
+            document.getElementById('contact-error').classList.add('hidden');
+            document.getElementById('contact-form').reset();
+        } else {
+            throw new Error('Form submission failed');
+        }
+    })
+    .catch(error => {
+        // Show error message
+        document.getElementById('contact-error').classList.remove('hidden');
+        document.getElementById('contact-success').classList.add('hidden');
+        console.error('Error:', error);
+    })
+    .finally(() => {
+        // Reset button
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+    });
 });
        
     </script>
