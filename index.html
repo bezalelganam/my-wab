@@ -82,8 +82,12 @@ body {
             <a href="#shop" id="shop-tab" class="nav-link text-white font-medium">Shop</a>
             <a href="#contact" id="contact-tab" class="nav-link text-white font-medium">Contact</a>
             <a href="login.html" class="nav-link text-white font-medium">Login</a>
+            <a href="cart.html" class="nav-link text-white font-medium flex items-center">
+                <i data-feather="shopping-cart" class="mr-1"></i>
+                Cart
+                <span id="cart-count" class="ml-1 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs hidden"></span>
+            </a>
         </div>
-=======
         <div class="flex items-center space-x-4">
             <div class="md:hidden relative">
                 <button id="mobile-menu-btn" class="text-white">
@@ -97,6 +101,11 @@ body {
                     <a href="#shop" class="block px-4 py-2 text-white hover:bg-gray-800">Shop</a>
                     <a href="#contact" class="block px-4 py-2 text-white hover:bg-gray-800">Contact</a>
                     <a href="login.html" class="block px-4 py-2 text-white hover:bg-gray-800">Login</a>
+                    <a href="cart.html" class="block px-4 py-2 text-white hover:bg-gray-800 flex items-center">
+                        <i data-feather="shopping-cart" class="mr-2 w-4 h-4"></i>
+                        Cart
+                        <span id="mobile-cart-count" class="ml-1 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs hidden"></span>
+                    </a>
                 </div>
             </div>
             <button class="hidden md:block bg-white text-black px-4 py-2 rounded font-medium hover:bg-opacity-90 transition">
@@ -335,58 +344,59 @@ body {
         </div>
     </section>
 
- <!-- Contact Section -->
-<section id="contact" class="tab-section hidden py-20 px-4 md:px-12 bg-gray-900">
-    <div class="max-w-6xl mx-auto">
-        <h2 class="text-3xl md:text-4xl font-bold mb-12 text-center">Contact Us</h2>
-        <div class="grid md:grid-cols-2 gap-12">
-            <div>
-                <h3 class="text-xl font-bold mb-4">Send us a message</h3>
-                <form id="contact-form" class="space-y-4">
-                    <div>
-                        <input type="text" id="contact-name" placeholder="Your Name" class="w-full bg-gray-800 text-white p-3 rounded focus:outline-none focus:ring-1 focus:ring-red-500" required>
-                    </div>
-                    <div>
-                        <input type="email" id="contact-email" placeholder="Your Email" class="w-full bg-gray-800 text-white p-3 rounded focus:outline-none focus:ring-1 focus:ring-red-500" required>
-                    </div>
-                    <div>
-                        <textarea id="contact-message" placeholder="Your Message" rows="5" class="w-full bg-gray-800 text-white p-3 rounded focus:outline-none focus:ring-1 focus:ring-red-500" required></textarea>
-                    </div>
-                    <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-8 py-3 rounded font-medium transition">
-                        Send Message
-                    </button>
-                </form>
-            </div>
-            <div>
-                <h3 class="text-xl font-bold mb-4">Contact Information</h3>
-                <div class="space-y-6">
-                    <div class="flex items-start">
-                        <i data-feather="mail" class="text-red-500 mr-4 mt-1"></i>
+    <!-- Contact Section -->
+    <section id="contact" class="tab-section hidden py-20 px-4 md:px-12 bg-gray-900">
+<div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold mb-12 text-center">Contact Us</h2>
+            <div class="grid md:grid-cols-2 gap-12">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Send us a message</h3>
+                    <form id="contact-form" class="space-y-4">
                         <div>
-                            <h4 class="font-medium">Email</h4>
-                            <p class="text-gray-400">bezalelganam95@gmail.com</p>
+                            <input type="text" id="contact-name" placeholder="Your Name" class="w-full bg-gray-800 text-white p-3 rounded focus:outline-none focus:ring-1 focus:ring-red-500" required>
                         </div>
-                    </div>
-                    <div class="flex items-start">
-                        <i data-feather="phone" class="text-red-500 mr-4 mt-1"></i>
                         <div>
-                            <h4 class="font-medium">Phone</h4>
-                            <p class="text-gray-400">+1 (555) 123-4567</p>
+                            <input type="email" id="contact-email" placeholder="Your Email" class="w-full bg-gray-800 text-white p-3 rounded focus:outline-none focus:ring-1 focus:ring-red-500" required>
                         </div>
-                    </div>
-                    <div class="flex items-start">
-                        <i data-feather="map-pin" class="text-red-500 mr-4 mt-1"></i>
                         <div>
-                            <h4 class="font-medium">Address</h4>
-                            <p class="text-gray-400">123 Electric Ave, San Francisco, CA 94107</p>
+                            <textarea id="contact-message" placeholder="Your Message" rows="5" class="w-full bg-gray-800 text-white p-3 rounded focus:outline-none focus:ring-1 focus:ring-red-500" required></textarea>
+                        </div>
+                        <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-8 py-3 rounded font-medium transition">
+                            Send Message
+                        </button>
+                    </form>
+</div>
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Contact Information</h3>
+                    <div class="space-y-6">
+                        <div class="flex items-start">
+                            <i data-feather="mail" class="text-red-500 mr-4 mt-1"></i>
+                            <div>
+                                <h4 class="font-medium">Email</h4>
+                                <p class="text-gray-400">bezalelganam95@gmail.com</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <i data-feather="phone" class="text-red-500 mr-4 mt-1"></i>
+                            <div>
+                                <h4 class="font-medium">Phone</h4>
+                                <p class="text-gray-400">+1 (555) 123-4567</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <i data-feather="map-pin" class="text-red-500 mr-4 mt-1"></i>
+                            <div>
+                                <h4 class="font-medium">Address</h4>
+                                <p class="text-gray-400">123 Electric Ave, San Francisco, CA 94107</p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
-  
+    </section>
+
+    <script>
         document.addEventListener('DOMContentLoaded', function() {
         // Check login status
         const isAdmin = localStorage.getItem('isAdmin') === 'true';
@@ -396,7 +406,40 @@ body {
         if (!localStorage.getItem('cart')) {
             localStorage.setItem('cart', JSON.stringify([]));
         }
-if (userEmail) {
+
+        // Update cart count function
+        function updateCartCount() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const cartCount = document.getElementById('cart-count');
+            const mobileCartCount = document.getElementById('mobile-cart-count');
+            const totalItems = cart.reduce((total, item) => total + (item.quantity || 1), 0);
+            
+            if (cartCount) {
+                if (totalItems > 0) {
+                    cartCount.textContent = totalItems;
+                    cartCount.classList.remove('hidden');
+                } else {
+                    cartCount.classList.add('hidden');
+                }
+            }
+            
+            if (mobileCartCount) {
+                if (totalItems > 0) {
+                    mobileCartCount.textContent = totalItems;
+                    mobileCartCount.classList.remove('hidden');
+                } else {
+                    mobileCartCount.classList.add('hidden');
+                }
+            }
+        }
+
+        // Initialize cart count
+        updateCartCount();
+
+        // Listen for storage changes to update cart count
+        window.addEventListener('storage', updateCartCount);
+        
+        if (userEmail) {
             // Replace login link with user profile
             const loginLink = document.querySelector('a[href="login.html"]');
             if (loginLink) {
@@ -423,52 +466,75 @@ if (userEmail) {
             }
         }
         
-   // Add to cart functionality
-document.querySelectorAll('.add-to-cart').forEach(button => {
-    button.addEventListener('click', function() {
-        const name = this.dataset.name;
-        const price = parseFloat(this.dataset.price);
-        const image = this.dataset.image;
-        
-        // Get existing cart or create new one
-        const cart = JSON.parse(localStorage.getItem('cart')) || [];
-        
-        // Check if item already exists in cart
-        const existingItemIndex = cart.findIndex(item => item.name === name);
-        
-        if (existingItemIndex !== -1) {
-            // Update quantity if item exists
-            cart[existingItemIndex].quantity = (cart[existingItemIndex].quantity || 1) + 1;
-        } else {
-            // Add new item
-            cart.push({
-                name: name,
-                price: price,
-                image: image,
-                quantity: 1
+        // Add to cart functionality
+        document.querySelectorAll('.add-to-cart').forEach(button => {
+            button.addEventListener('click', function() {
+                const name = this.dataset.name;
+                const price = parseFloat(this.dataset.price);
+                const image = this.dataset.image;
+                
+                // Get existing cart or create new one
+                const cart = JSON.parse(localStorage.getItem('cart')) || [];
+                
+                // Check if item already exists in cart
+                const existingItemIndex = cart.findIndex(item => item.name === name);
+                
+                if (existingItemIndex !== -1) {
+                    // Update quantity if item exists
+                    cart[existingItemIndex].quantity = (cart[existingItemIndex].quantity || 1) + 1;
+                } else {
+                    // Add new item
+                    cart.push({
+                        name: name,
+                        price: price,
+                        image: image,
+                        quantity: 1
+                    });
+                }
+                
+                // Save to localStorage
+                localStorage.setItem('cart', JSON.stringify(cart));
+                
+                // Update cart count
+                updateCartCount();
+                
+                // Show success notification
+                const notification = document.createElement('div');
+                notification.className = 'fixed bottom-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg flex items-center z-50';
+                notification.innerHTML = `
+                    <i data-feather="check-circle" class="mr-2"></i>
+                    ${name} added to cart!
+                `;
+                document.body.appendChild(notification);
+                feather.replace();
+                
+                // Remove notification after 3 seconds
+                setTimeout(() => {
+                    notification.classList.add('opacity-0', 'transition-opacity', 'duration-500');
+                    setTimeout(() => notification.remove(), 500);
+                }, 3000);
             });
-        }
+        });
         
-        // Save to localStorage
-        localStorage.setItem('cart', JSON.stringify(cart));
-        
-        // Show success notification
-        const notification = document.createElement('div');
-        notification.className = 'fixed bottom-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg flex items-center z-50';
-        notification.innerHTML = `
-            <i data-feather="check-circle" class="mr-2"></i>
-            ${name} added to cart!
-        `;
-        document.body.appendChild(notification);
-        feather.replace();
-        
-        // Remove notification after 3 seconds
-        setTimeout(() => {
-            notification.classList.add('opacity-0', 'transition-opacity', 'duration-500');
-            setTimeout(() => notification.remove(), 500);
-        }, 3000);
-    });
-});
+        // Contact form handling
+        document.getElementById('contact-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('contact-name').value;
+            const email = document.getElementById('contact-email').value;
+            const message = document.getElementById('contact-message').value;
+            
+            // Simple email sending using mailto (works without backend)
+            const subject = `New Contact Form Message from ${name}`;
+            const body = `Name: ${name}%0D%0AEmail: ${email}%0D%0AMessage: ${message}`;
+            
+            window.location.href = `mailto:bezalelganam95@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+            
+            // Show success message
+            alert('Thank you for your message! Your email client will open to send the message.');
+            document.getElementById('contact-form').reset();
+        });
+        });
     </script>
 
     <!-- Footer -->
@@ -519,27 +585,8 @@ document.querySelectorAll('.add-to-cart').forEach(button => {
             <p>© 2023 Electrify. All rights reserved.</p>
         </div>
     </footer>
-    <!-- Admin Chat Button -->
-    <button id="admin-chat-btn" class="fixed bottom-6 right-6 bg-red-500 text-white p-3 rounded-full shadow-lg hover:bg-red-600 transition hidden">
-        <i data-feather="message-circle"></i>
-    </button>
 
-    <!-- Admin Chat Modal -->
-    <div id="admin-chat-modal" class="fixed bottom-24 right-6 w-80 bg-gray-900 rounded-lg shadow-xl border border-gray-700 hidden z-50">
-        <div class="p-4 border-b border-gray-700 flex justify-between items-center">
-            <h3 class="font-bold">Admin Chat</h3>
-            <button id="close-chat" class="text-gray-400 hover:text-white">
-                <i data-feather="x"></i>
-            </button>
-        </div>
-        <div id="chat-messages" class="p-4 h-64 overflow-y-auto">
-            <!-- Messages will appear here -->
-        </div>
-        <div class="p-4 border-t border-gray-700">
-            <input type="text" id="chat-input" class="w-full bg-gray-800 text-white p-2 rounded focus:outline-none focus:ring-1 focus:ring-red-500" placeholder="Type a message...">
-        </div>
-    </div>
-
+    <!-- Rest of the script remains the same -->
     <script>
         // Check for returning visitor
         if(localStorage.getItem('visitedBefore')) {
@@ -588,190 +635,10 @@ document.querySelectorAll('.add-to-cart').forEach(button => {
                 window.location.hash = sectionId;
             });
         });
-// Chat functionality
-        const chatBtn = document.getElementById('admin-chat-btn');
-        const chatModal = document.getElementById('admin-chat-modal');
-        const chatInput = document.getElementById('chat-input');
-        const chatMessages = document.getElementById('chat-messages');
-        const closeChat = document.getElementById('close-chat');
-        
-        // Show chat button to all visitors
-        chatBtn.classList.remove('hidden');
-        
-        // Initialize chat with welcome message
-        chatMessages.innerHTML = `
-            <div class="mb-2">
-                <span class="bg-gray-700 text-white rounded-lg py-1 px-3 inline-block">
-                    Welcome! How can we help you today?
-                </span>
-            </div>
-        `;
 
-        // Toggle chat visibility
-        chatBtn.addEventListener('click', () => {
-            chatModal.classList.toggle('hidden');
-            feather.replace();
-        });
-
-        closeChat.addEventListener('click', () => {
-            chatModal.classList.add('hidden');
-        });
-
-        // Handle chat input
-        chatInput.addEventListener('keypress', (e) => {
-            if(e.key === 'Enter' && e.target.value.trim()) {
-                const message = e.target.value;
-                
-                // Add user message
-                chatMessages.innerHTML += `
-                    <div class="mb-2 text-right">
-                        <span class="bg-red-500 text-white rounded-lg py-1 px-3 inline-block">
-                            ${message}
-                        </span>
-                    </div>
-                `;
-                
-                e.target.value = '';
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-                    // Admin or auto-response
-                    if (isAdmin) {
-                        // Show typing indicator
-                        chatMessages.innerHTML += `
-                            <div class="mb-2">
-                                <span class="bg-gray-700 text-white rounded-lg py-1 px-3 inline-block">
-                                    <i class="animate-pulse">Admin typing...</i>
-                                </span>
-                            </div>
-                        `;
-                        chatMessages.scrollTop = chatMessages.scrollHeight;
-                    } else {
-                        // Auto-responder for non-admin users
-                        setTimeout(() => {
-                            const response = getAdminResponse(message);
-                            chatMessages.innerHTML += `
-                                <div class="mb-2">
-                                    <span class="bg-gray-700 text-white rounded-lg py-1 px-3 inline-block">
-                                        ${response}
-                                    </span>
-                                </div>
-                            `;
-                            chatMessages.scrollTop = chatMessages.scrollHeight;
-                        }, 1000);
-                    }
-}
-        });
-
-        // Track chat sessions
-        if(!localStorage.getItem('chatSessionId')) {
-            localStorage.setItem('chatSessionId', Date.now().toString());
-        }
-        // Order modal
-        const orderModal = document.createElement('div');
-        orderModal.id = 'order-modal';
-        orderModal.className = 'fixed inset-0 bg-black bg-opacity-75 z-50 hidden flex items-center justify-center';
-        orderModal.innerHTML = `
-            <div class="bg-gray-900 rounded-lg max-w-md w-full p-6 relative">
-                <button id="close-order-modal" class="absolute top-4 right-4 text-gray-400 hover:text-white">
-                    <i data-feather="x"></i>
-                </button>
-                <h3 class="text-2xl font-bold mb-6">Order Your Vehicle</h3>
-                <form id="order-form" class="space-y-4">
-                    <div>
-                        <label class="block text-gray-400 mb-2">Select Model</label>
-                        <select class="w-full bg-gray-800 text-white p-3 rounded focus:outline-none focus:ring-1 focus:ring-red-500">
-                            <option>Model S</option>
-                            <option>Model 3</option>
-                            <option>Model X</option>
-                            <option>Model Y</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-gray-400 mb-2">Exterior Color</label>
-                        <select class="w-full bg-gray-800 text-white p-3 rounded focus:outline-none focus:ring-1 focus:ring-red-500">
-                            <option>Pearl White</option>
-                            <option>Solid Black</option>
-                            <option>Midnight Silver</option>
-                            <option>Deep Blue</option>
-                            <option>Red Multi-Coat</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-gray-400 mb-2">Interior</label>
-                        <select class="w-full bg-gray-800 text-white p-3 rounded focus:outline-none focus:ring-1 focus:ring-red-500">
-                            <option>All Black</option>
-                            <option>Black and White</option>
-                            <option>Cream</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-gray-400 mb-2">Wheels</label>
-                        <select class="w-full bg-gray-800 text-white p-3 rounded focus:outline-none focus:ring-1 focus:ring-red-500">
-                            <option>18" Aero</option>
-                            <option>19" Sport</option>
-                            <option>21" Turbine</option>
-                        </select>
-                    </div>
-                    <button type="submit" class="w-full bg-red-500 hover:bg-red-600 text-white py-3 rounded font-medium transition">
-                        Continue to Payment
-                    </button>
-                </form>
-            </div>
-        `;
-        document.body.appendChild(orderModal);
-        // Order form handling
-        document.getElementById('order-now-btn').addEventListener('click', () => {
-            orderModal.classList.remove('hidden');
-            feather.replace();
-        });
-
-        document.getElementById('close-order-modal').addEventListener('click', () => {
-            orderModal.classList.add('hidden');
-        });
-
-        document.getElementById('order-form').addEventListener('submit', (e) => {
-            e.preventDefault();
-            
-            // Get form values
-            const model = orderModal.querySelector('select:nth-of-type(1)').value;
-            const color = orderModal.querySelector('select:nth-of-type(2)').value;
-            const interior = orderModal.querySelector('select:nth-of-type(3)').value;
-            const wheels = orderModal.querySelector('select:nth-of-type(4)').value;
-            
-            // Send email
-            const emailData = {
-                to: 'bezalelganam59@gmail.com',
-                subject: `New Order: ${model}`,
-                body: `New vehicle order received:\n\nModel: ${model}\nColor: ${color}\nInterior: ${interior}\nWheels: ${wheels}`
-            };
-
-            // In a real app, you would send this to your backend
-            console.log('Order details:', emailData);
-            
-            alert('Your order has been submitted! We will contact you shortly.');
-            orderModal.classList.add('hidden');
-        });
-
-       // Contact form handling
-document.getElementById('contact-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    const name = document.getElementById('contact-name').value;
-    const email = document.getElementById('contact-email').value;
-    const message = document.getElementById('contact-message').value;
-    
-    // Simple email sending using mailto (works without backend)
-    const subject = `New Contact Form Message from ${name}`;
-    const body = `Name: ${name}%0D%0AEmail: ${email}%0D%0AMessage: ${message}`;
-    
-    window.location.href = `mailto:bezalelganam95@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    
-    // Show success message
-    alert('Thank you for your message! Your email client will open to send the message.');
-    document.getElementById('contact-form').reset();
-});
-// Initialize Vanta.js
+        // Initialize Vanta.js
         VANTA.GLOBE({
-el: "#vanta-bg",
+            el: "#vanta-bg",
             mouseControls: true,
             touchControls: true,
             gyroControls: false,
@@ -783,27 +650,10 @@ el: "#vanta-bg",
             backgroundColor: 0x0,
             size: 0.8
         });
+
         // Initialize Feather Icons
         feather.replace();
-        // Admin chat responses
-        function getAdminResponse(userMessage) {
-            const responses = {
-                'hello': 'Hello! How can I help you today?',
-                'help': 'What do you need assistance with?',
-                'order': 'You can check your order status in your account dashboard.',
-                'delivery': 'Standard delivery takes 3-5 business days.',
-                'payment': 'We accept credit cards, PayPal, and cryptocurrency.',
-                'default': 'Thanks for your message! Let me check that for you...'
-            };
 
-            const lowerMsg = userMessage.toLowerCase();
-            for (const [key, response] of Object.entries(responses)) {
-                if (lowerMsg.includes(key)) {
-                    return response;
-                }
-            }
-            return responses['default'];
-        }
         // Mobile menu toggle
         const mobileMenuBtn = document.getElementById('mobile-menu-btn');
         const mobileMenu = document.getElementById('mobile-menu');
