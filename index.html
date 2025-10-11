@@ -69,22 +69,15 @@ body {
                 <span class="text-white">⚡</span>
             </a>
         </div>
-        <div class="hidden md:flex space-x-8">
+        <div class="hidden md:flex space-x-8 items-center">
             <a href="#models" id="models-tab" class="nav-link text-white font-medium active-tab">Models</a>
             <a href="#energy" id="energy-tab" class="nav-link text-white font-medium">Energy</a>
             <a href="#charging" id="charging-tab" class="nav-link text-white font-medium">Charging</a>
             <a href="#discover" id="discover-tab" class="nav-link text-white font-medium">Discover</a>
             <a href="#shop" id="shop-tab" class="nav-link text-white font-medium">Shop</a>
             <a href="#contact" id="contact-tab" class="nav-link text-white font-medium">Contact</a>
+            <a href="login.html" class="nav-link text-white font-medium">Login</a>
         </div>
-        <div class="flex items-center space-x-4">
-            <a href="login.html" class="text-white hover:text-red-500">Login</a>
-<div class="hidden md:flex space-x-8">
-            <a href="#models" class="nav-link text-white font-medium">Models</a>
-            <a href="#energy" class="nav-link text-white font-medium">Energy</a>
-            <a href="#charging" class="nav-link text-white font-medium">Charging</a>
-            <a href="#discover" class="nav-link text-white font-medium">Discover</a>
-            <a href="#shop" class="nav-link text-white font-medium">Shop</a>
 =======
 <div class="flex items-center space-x-4">
             <button class="md:hidden text-white">
@@ -383,7 +376,11 @@ body {
         const isAdmin = localStorage.getItem('isAdmin') === 'true';
         const userEmail = localStorage.getItem('userEmail');
         
-        if (userEmail) {
+        // Initialize cart if not exists
+        if (!localStorage.getItem('cart')) {
+            localStorage.setItem('cart', JSON.stringify([]));
+        }
+if (userEmail) {
             // Replace login link with user profile
             const loginLink = document.querySelector('a[href="login.html"]');
             if (loginLink) {
