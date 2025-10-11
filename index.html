@@ -516,24 +516,24 @@ body {
             });
         });
         
-        // Contact form handling
-        document.getElementById('contact-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const name = document.getElementById('contact-name').value;
-            const email = document.getElementById('contact-email').value;
-            const message = document.getElementById('contact-message').value;
-            
-            // Simple email sending using mailto (works without backend)
-            const subject = `New Contact Form Message from ${name}`;
-            const body = `Name: ${name}%0D%0AEmail: ${email}%0D%0AMessage: ${message}`;
-            
-            window.location.href = `mailto:bezalelganam95@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-            
-            // Show success message
-            alert('Thank you for your message! Your email client will open to send the message.');
-            document.getElementById('contact-form').reset();
-        });
+      // Contact form handling - Add this to your existing script
+document.getElementById('contact-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const name = document.getElementById('contact-name').value;
+    const email = document.getElementById('contact-email').value;
+    const message = document.getElementById('contact-message').value;
+    
+    // Simple email sending using mailto (works without backend)
+    const subject = `New Contact Form Message from ${name}`;
+    const body = `Name: ${name}%0D%0AEmail: ${email}%0D%0AMessage: ${message}`;
+    
+    window.location.href = `mailto:bezalelganam95@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    
+    // Show success message
+    alert('Thank you for your message! Your email client will open to send the message.');
+    document.getElementById('contact-form').reset();
+});
        
     </script>
 
