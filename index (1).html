@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electrify Your Dreams | Tesla-Inspired EV Experience</title>
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.globe.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
+        .active-tab {
+            color: #ef4444;
+        }
+        .active-tab::after {
+            width: 100%;
+            background: #ef4444;
+        }
+body {
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+        }
+        .hero-gradient {
+            background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
+        }
+        .vanta-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            mix-blend-mode: overlay;
+            pointer-events: none;
+        }
+        .car-model {
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .car-model:hover {
+            transform: translateY(-10px);
+        }
+        .nav-link {
+            position: relative;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: white;
+            transition: width 0.3s;
+        }
+        .nav-link:hover::after {
+            width: 100%;
+        }
+    </style>
+</head>
+<body class="bg-black text-white">
+    <!-- Vanta.js Background -->
+    <div id="vanta-bg" class="fixed top-0 left-0 w-full h-full z-0"></div>
+    <!-- Navigation -->
+    <nav class="relative z-10 py-6 px-4 md:px-12 flex justify-between items-center">
+        <div class="flex items-center">
+                <a href="#models" class="text-2xl font-bold tracking-tight">
+<span class="text-red-500">ELECTRIFY</span>
+                <span class="text-white">⚡</span>
+            </a>
+        </div>
+        <div class="hidden md:flex space-x-8 items-center">
+            <a href="#models" id="models-tab" class="nav-link text-white font-medium active-tab">Models</a>
+            <a href="#energy" id="energy-tab" class="nav-link text-white font-medium">Energy</a>
+            <a href="#charging" id="charging-tab" class="nav-link text-white font-medium">Charging</a>
+            <a href="#discover" id="discover-tab" class="nav-link text-white font-medium">Discover</a>
+            <a href="#shop" id="shop-tab" class="nav-link text-white font-medium">Shop</a>
+            <a href="#contact" id="contact-tab" class="nav-link text-white font-medium">Contact</a>
+            <a href="login.html" class="nav-link text-white font-medium">Login</a>
+        </div>
+=======
+<div class="flex items-center space-x-4">
+            <button class="md:hidden text-white">
+                <i data-feather="menu"></i>
+            </button>
+            <button class="hidden md:block bg-white text-black px-4 py-2 rounded font-medium hover:bg-opacity-90 transition">
+                Order Now
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative h-screen flex items-center justify-center hero-gradient overflow-hidden">
+        <div class="vanta-overlay" id="vanta-overlay"></div>
+        <div class="relative z-10 text-center px-4 md:px-0">
+            <h1 class="text-4xl md:text-6xl font-bold mb-6">
+                The Future is <span class="text-red-500">Electric</span>
+            </h1>
+            <p class="text-xl md:text-2xl mb-10 max-w-2xl mx-auto">
+                Experience the thrill of instant torque and zero emissions with our cutting-edge electric vehicles.
+            </p>
+            <div class="flex flex-col md:flex-row justify-center gap-4">
+                <button id="order-now-btn" class="bg-red-500 hover:bg-red-600 text-white px-8 py-3 rounded font-medium transition">
+                    Custom Order
+                </button>
+<button class="bg-transparent border-2 border-white hover:bg-white hover:text-black text-white px-8 py-3 rounded font-medium transition">
+                    Test Drive
+                </button>
+            </div>
+        </div>
+        <div class="absolute bottom-10 left-0 right-0 flex justify-center">
+            <i data-feather="chevron-down" class="animate-bounce text-white w-8 h-8"></i>
+        </div>
+    </section>
+        <!-- Models Section -->
+        <section id="models" class="tab-section py-20 px-4 md:px-12">
+<div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold mb-16 text-center">Our Vehicle Lineup</h2>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Model 1 -->
+                <div class="car-model bg-gray-900 rounded-lg overflow-hidden hover:shadow-xl hover:shadow-red-500/20">
+                    <img src="http://static.photos/technology/1200x630/1" alt="Model S" class="w-full h-64 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold mb-2">Model S</h3>
+                        <p class="text-gray-400 mb-4">Plaid: 0-60 mph in 1.99s</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-xl font-medium">From $89,990</span>
+                        <button class="text-red-500 hover:text-red-400 font-medium add-to-cart" 
+                                data-name="Model S" 
+                                data-price="89990" 
+                                data-image="http://static.photos/technology/1200x630/1">Add to Cart</button>
+</div>
+                    </div>
+                </div>
+                
+                <!-- Model 2 -->
+                <div class="car-model bg-gray-900 rounded-lg overflow-hidden hover:shadow-xl hover:shadow-red-500/20">
+                    <img src="http://static.photos/technology/1200x630/2" alt="Model 3" class="w-full h-64 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold mb-2">Model 3</h3>
+                        <p class="text-gray-400 mb-4">Dual Motor All-Wheel Drive</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-xl font-medium">From $40,240</span>
+                        <button class="text-red-500 hover:text-red-400 font-medium add-to-cart" 
+                                data-name="Model 3" 
+                                data-price="40240" 
+                                data-image="http://static.photos/technology/1200x630/2">Add to Cart</button>
+</div>
+                    </div>
+                </div>
+                
+                <!-- Model 3 -->
+                <div class="car-model bg-gray-900 rounded-lg overflow-hidden hover:shadow-xl hover:shadow-red-500/20">
+                    <img src="http://static.photos/technology/1200x630/3" alt="Model X" class="w-full h-64 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold mb-2">Model X</h3>
+                        <p class="text-gray-400 mb-4">Plaid: 1,020 hp</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-xl font-medium">From $99,990</span>
+                        <button class="text-red-500 hover:text-red-400 font-medium add-to-cart" 
+                                data-name="Model X" 
+                                data-price="99990" 
+                                data-image="http://static.photos/technology/1200x630/3">Add to Cart</button>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Energy Section -->
+    <section id="energy" class="tab-section hidden py-20 px-4 md:px-12 bg-gray-900">
+<div class="max-w-6xl mx-auto">
+            <div class="flex flex-col md:flex-row items-center gap-12">
+                <div class="md:w-1/2">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-6">Autopilot & Full Self-Driving</h2>
+                    <p class="text-gray-400 mb-8 text-lg">
+                        Future of driving is here. Our advanced Autopilot system enables your car to steer, accelerate and brake automatically.
+                    </p>
+                    <ul class="space-y-4">
+                        <li class="flex items-start">
+                            <i data-feather="check-circle" class="text-green-500 mr-3 mt-1"></i>
+                            <span>Navigate on Autopilot</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i data-feather="check-circle" class="text-green-500 mr-3 mt-1"></i>
+                            <span>Auto Lane Change</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i data-feather="check-circle" class="text-green-500 mr-3 mt-1"></i>
+                            <span>Summon</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i data-feather="check-circle" class="text-green-500 mr-3 mt-1"></i>
+                            <span>Autopark</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="md:w-1/2">
+                    <div class="relative aspect-video bg-black rounded-xl overflow-hidden">
+                        <img src="http://static.photos/technology/1200x630/4" alt="Autopilot" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <button class="bg-white bg-opacity-20 backdrop-blur-sm rounded-full p-4 hover:bg-opacity-30 transition">
+                                <i data-feather="play" class="w-8 h-8"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Charging Section -->
+    <section id="charging" class="tab-section hidden py-20 px-4 md:px-12">
+<div class="max-w-6xl mx-auto text-center">
+            <h2 class="text-3xl md:text-4xl font-bold mb-6">Supercharger Network</h2>
+            <p class="text-xl text-gray-400 max-w-3xl mx-auto mb-12">
+                Travel anywhere with access to our global Supercharger network. Charge in minutes, not hours.
+            </p>
+            <div class="grid md:grid-cols-3 gap-8 mb-16">
+                <div class="bg-gray-900 p-8 rounded-lg">
+                    <i data-feather="zap" class="w-12 h-12 text-red-500 mb-4 mx-auto"></i>
+                    <h3 class="text-xl font-bold mb-2">250 kW</h3>
+                    <p class="text-gray-400">Peak charging power</p>
+                </div>
+                <div class="bg-gray-900 p-8 rounded-lg">
+                    <i data-feather="map-pin" class="w-12 h-12 text-red-500 mb-4 mx-auto"></i>
+                    <h3 class="text-xl font-bold mb-2">40,000+</h3>
+                    <p class="text-gray-400">Global Superchargers</p>
+                </div>
+                <div class="bg-gray-900 p-8 rounded-lg">
+                    <i data-feather="clock" class="w-12 h-12 text-red-500 mb-4 mx-auto"></i>
+                    <h3 class="text-xl font-bold mb-2">15 min</h3>
+                    <p class="text-gray-400">For 200 miles of charge</p>
+                </div>
+            </div>
+            <button class="bg-red-500 hover:bg-red-600 text-white px-8 py-3 rounded font-medium transition">
+                Find a Supercharger
+            </button>
+        </div>
+    </section>
+    <!-- Discover Section -->
+    <section id="discover" class="tab-section hidden py-20 px-4 md:px-12 bg-black">
+        <div class="max-w-6xl mx-auto text-center">
+            <h2 class="text-3xl md:text-4xl font-bold mb-6">Discover Electrify</h2>
+            <p class="text-xl text-gray-400 max-w-3xl mx-auto mb-12">
+                Learn more about our vision, technology, and the future of sustainable transportation.
+            </p>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-gray-900 p-8 rounded-lg hover:shadow-lg hover:shadow-red-500/20 transition">
+                    <i data-feather="book" class="w-12 h-12 text-red-500 mb-4 mx-auto"></i>
+                    <h3 class="text-xl font-bold mb-2">Our Story</h3>
+                    <p class="text-gray-400 mb-4">Learn about our mission and vision</p>
+                    <a href="#" class="text-red-500 hover:text-red-400 font-medium">Read More</a>
+                </div>
+                <div class="bg-gray-900 p-8 rounded-lg hover:shadow-lg hover:shadow-red-500/20 transition">
+                    <i data-feather="cpu" class="w-12 h-12 text-red-500 mb-4 mx-auto"></i>
+                    <h3 class="text-xl font-bold mb-2">Technology</h3>
+                    <p class="text-gray-400 mb-4">Explore our cutting-edge innovations</p>
+                    <a href="#" class="text-red-500 hover:text-red-400 font-medium">Read More</a>
+                </div>
+                <div class="bg-gray-900 p-8 rounded-lg hover:shadow-lg hover:shadow-red-500/20 transition">
+                    <i data-feather="globe" class="w-12 h-12 text-red-500 mb-4 mx-auto"></i>
+                    <h3 class="text-xl font-bold mb-2">Sustainability</h3>
+                    <p class="text-gray-400 mb-4">Our commitment to a greener future</p>
+                    <a href="#" class="text-red-500 hover:text-red-400 font-medium">Read More</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Shop Section -->
+    <section id="shop" class="tab-section hidden py-20 px-4 md:px-12">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold mb-16 text-center">Shop Accessories</h2>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-gray-900 rounded-lg overflow-hidden hover:shadow-xl hover:shadow-red-500/20 transition">
+                    <img src="http://static.photos/technology/640x360/5" alt="Wall Connector" class="w-full h-64 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold mb-2">Wall Connector</h3>
+                        <p class="text-gray-400 mb-4">Fast home charging solution</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-xl font-medium">$500</span>
+                        <button class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded font-medium transition add-to-cart" 
+                                data-name="Wall Connector" 
+                                data-price="500" 
+                                data-image="http://static.photos/technology/640x360/5">Add to Cart</button>
+</div>
+                    </div>
+                </div>
+                <div class="bg-gray-900 rounded-lg overflow-hidden hover:shadow-xl hover:shadow-red-500/20 transition">
+                    <img src="http://static.photos/technology/640x360/6" alt="Mobile Connector" class="w-full h-64 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold mb-2">Mobile Connector</h3>
+                        <p class="text-gray-400 mb-4">Portable charging adapter</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-xl font-medium">$230</span>
+                        <button class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded font-medium transition add-to-cart" 
+                                data-name="Mobile Connector" 
+                                data-price="230" 
+                                data-image="http://static.photos/technology/640x360/6">Add to Cart</button>
+</div>
+                    </div>
+                </div>
+                <div class="bg-gray-900 rounded-lg overflow-hidden hover:shadow-xl hover:shadow-red-500/20 transition">
+                    <img src="http://static.photos/technology/640x360/7" alt="Cable Organizer" class="w-full h-64 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-bold mb-2">Cable Organizer</h3>
+                        <p class="text-gray-400 mb-4">Keep your cables tidy</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-xl font-medium">$35</span>
+                        <button class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded font-medium transition add-to-cart" 
+                                data-name="Cable Organizer" 
+                                data-price="35" 
+                                data-image="http://static.photos/technology/640x360/7">Add to Cart</button>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="tab-section hidden py-20 px-4 md:px-12 bg-gray-900">
+<div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl md:text-4xl font-bold mb-12 text-center">Contact Us</h2>
+            <div class="grid md:grid-cols-2 gap-12">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Send us a message</h3>
+                    <form id="contact-form" class="space-y-4">
+                        <div>
+                            <input type="text" placeholder="Your Name" class="w-full bg-gray-800 text-white p-3 rounded focus:outline-none focus:ring-1 focus:ring-red-500" required>
+                        </div>
+                        <div>
+                            <input type="email" placeholder="Your Email" class="w-full bg-gray-800 text-white p-3 rounded focus:outline-none focus:ring-1 focus:ring-red-500" required>
+                        </div>
+                        <div>
+                            <textarea placeholder="Your Message" rows="5" class="w-full bg-gray-800 text-white p-3 rounded focus:outline-none focus:ring-1 focus:ring-red-500" required></textarea>
+                        </div>
+                        <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-8 py-3 rounded font-medium transition">
+                            Send Message
+                        </button>
+                    </form>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Contact Information</h3>
+                    <div class="space-y-6">
+                        <div class="flex items-start">
+                            <i data-feather="mail" class="text-red-500 mr-4 mt-1"></i>
+                            <div>
+                                <h4 class="font-medium">Email</h4>
+                                <p class="text-gray-400">bezalelganam59@gmail.com</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <i data-feather="phone" class="text-red-500 mr-4 mt-1"></i>
+                            <div>
+                                <h4 class="font-medium">Phone</h4>
+                                <p class="text-gray-400">+1 (555) 123-4567</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <i data-feather="map-pin" class="text-red-500 mr-4 mt-1"></i>
+                            <div>
+                                <h4 class="font-medium">Address</h4>
+                                <p class="text-gray-400">123 Electric Ave, San Francisco, CA 94107</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+        // Check login status
+        const isAdmin = localStorage.getItem('isAdmin') === 'true';
+        const userEmail = localStorage.getItem('userEmail');
+        
+        // Initialize cart if not exists
+        if (!localStorage.getItem('cart')) {
+            localStorage.setItem('cart', JSON.stringify([]));
+        }
+if (userEmail) {
+            // Replace login link with user profile
+            const loginLink = document.querySelector('a[href="login.html"]');
+            if (loginLink) {
+                loginLink.innerHTML = `
+                    <div class="flex items-center space-x-2">
+                        <span>${userEmail}</span>
+                        <i data-feather="user"></i>
+                    </div>
+                `;
+                loginLink.href = '#';
+                
+                // Add logout functionality
+                loginLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    localStorage.removeItem('isAdmin');
+                    localStorage.removeItem('userEmail');
+                    window.location.reload();
+                });
+            }
+            
+            // Show admin chat button if admin
+            if (isAdmin) {
+                document.getElementById('admin-chat-btn').classList.remove('hidden');
+            }
+        }
+        
+        // Add to cart functionality
+        document.querySelectorAll('.add-to-cart').forEach(button => {
+button.addEventListener('click', function() {
+                    const name = this.dataset.name;
+                    const price = this.dataset.price;
+                    const image = this.dataset.image;
+                    
+                    // Get existing cart or create new one
+                    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+                    
+                    // Add new item
+                    cart.push({
+                        name: name,
+                        price: price,
+                        image: image
+                    });
+                    
+                    // Save to localStorage
+                    localStorage.setItem('cart', JSON.stringify(cart));
+                    
+                    // Show success notification
+                    const notification = document.createElement('div');
+                    notification.className = 'fixed bottom-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg flex items-center';
+                    notification.innerHTML = `
+                        <i data-feather="check-circle" class="mr-2"></i>
+                        ${name} added to cart!
+                    `;
+                    document.body.appendChild(notification);
+                    feather.replace();
+                    
+                    // Remove notification after 3 seconds
+                    setTimeout(() => {
+                        notification.classList.add('opacity-0', 'transition-opacity', 'duration-500');
+                        setTimeout(() => notification.remove(), 500);
+                    }, 3000);
+                });
+            });
+        });
+    </script>
+
+    <!-- Footer -->
+<footer class="bg-black py-16 px-4 md:px-12 border-t border-gray-800">
+        <div class="max-w-6xl mx-auto grid md:grid-cols-4 gap-12">
+            <div>
+                <h3 class="text-xl font-bold mb-6">ELECTRIFY⚡</h3>
+                <p class="text-gray-400 mb-6">
+                    Accelerating the world's transition to sustainable energy.
+                </p>
+                <div class="flex space-x-4">
+                    <a href="#" class="text-gray-400 hover:text-white"><i data-feather="twitter"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-white"><i data-feather="facebook"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-white"><i data-feather="instagram"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-white"><i data-feather="youtube"></i></a>
+                </div>
+            </div>
+            <div>
+                <h4 class="font-bold mb-6">Models</h4>
+                <ul class="space-y-3">
+                        <li><a href="#models" class="text-gray-400 hover:text-white">Model S</a></li>
+                        <li><a href="#models" class="text-gray-400 hover:text-white">Model 3</a></li>
+                        <li><a href="#models" class="text-gray-400 hover:text-white">Model X</a></li>
+                        <li><a href="#models" class="text-gray-400 hover:text-white">Model Y</a></li>
+</ul>
+            </div>
+            <div>
+                <h4 class="font-bold mb-6">Company</h4>
+                <ul class="space-y-3">
+                        <li><a href="#discover" class="text-gray-400 hover:text-white">About</a></li>
+                        <li><a href="#discover" class="text-gray-400 hover:text-white">Careers</a></li>
+                        <li><a href="#discover" class="text-gray-400 hover:text-white">Investors</a></li>
+                        <li><a href="#contact" class="text-gray-400 hover:text-white">Contact</a></li>
+</ul>
+            </div>
+            <div>
+                <h4 class="font-bold mb-6">Support</h4>
+                <ul class="space-y-3">
+                    <li><a href="cart.html" class="text-gray-400 hover:text-white">View Cart</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white">Customer Support</a></li>
+<li><a href="#" class="text-gray-400 hover:text-white">Owner's Manual</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white">Warranty</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white">Roadside Assistance</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="max-w-6xl mx-auto mt-16 pt-8 border-t border-gray-800 text-center text-gray-500">
+            <p>© 2023 Electrify. All rights reserved.</p>
+        </div>
+    </footer>
+    <!-- Admin Chat Button -->
+    <button id="admin-chat-btn" class="fixed bottom-6 right-6 bg-red-500 text-white p-3 rounded-full shadow-lg hover:bg-red-600 transition hidden">
+        <i data-feather="message-circle"></i>
+    </button>
+
+    <!-- Admin Chat Modal -->
+    <div id="admin-chat-modal" class="fixed bottom-24 right-6 w-80 bg-gray-900 rounded-lg shadow-xl border border-gray-700 hidden z-50">
+        <div class="p-4 border-b border-gray-700 flex justify-between items-center">
+            <h3 class="font-bold">Admin Chat</h3>
+            <button id="close-chat" class="text-gray-400 hover:text-white">
+                <i data-feather="x"></i>
+            </button>
+        </div>
+        <div id="chat-messages" class="p-4 h-64 overflow-y-auto">
+            <!-- Messages will appear here -->
+        </div>
+        <div class="p-4 border-t border-gray-700">
+            <input type="text" id="chat-input" class="w-full bg-gray-800 text-white p-2 rounded focus:outline-none focus:ring-1 focus:ring-red-500" placeholder="Type a message...">
+        </div>
+    </div>
+
+    <script>
+        // Check for returning visitor
+        if(localStorage.getItem('visitedBefore')) {
+            console.log('Welcome back!');
+        } else {
+            localStorage.setItem('visitedBefore', 'true');
+        }
+        // Tab functionality
+        // Handle hash changes
+        function handleHashChange() {
+            const hash = window.location.hash.substring(1);
+            const validSections = ['models', 'energy', 'charging', 'discover', 'shop', 'contact'];
+            
+            if (validSections.includes(hash)) {
+                // Update active tab
+                document.querySelectorAll('[id$="-tab"]').forEach(t => t.classList.remove('active-tab'));
+                document.getElementById(`${hash}-tab`).classList.add('active-tab');
+                
+                // Hide all sections
+                document.querySelectorAll('.tab-section').forEach(section => {
+                    section.classList.add('hidden');
+                });
+                
+                // Show corresponding section
+                document.getElementById(hash).classList.remove('hidden');
+                
+                // Scroll to section
+                setTimeout(() => {
+                    document.getElementById(hash).scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            } else if (window.location.hash === '') {
+                // Default to models section
+                window.location.hash = 'models';
+            }
+        }
+
+        // Initial load and hash change
+        window.addEventListener('load', handleHashChange);
+        window.addEventListener('hashchange', handleHashChange);
+
+        // Tab click handling
+        document.querySelectorAll('[id$="-tab"]').forEach(tab => {
+            tab.addEventListener('click', (e) => {
+                e.preventDefault();
+                const sectionId = tab.id.replace('-tab', '');
+                window.location.hash = sectionId;
+            });
+        });
+// Chat functionality
+        const chatBtn = document.getElementById('admin-chat-btn');
+        const chatModal = document.getElementById('admin-chat-modal');
+        const chatInput = document.getElementById('chat-input');
+        const chatMessages = document.getElementById('chat-messages');
+        const closeChat = document.getElementById('close-chat');
+        
+        // Show chat button to all visitors
+        chatBtn.classList.remove('hidden');
+        
+        // Initialize chat with welcome message
+        chatMessages.innerHTML = `
+            <div class="mb-2">
+                <span class="bg-gray-700 text-white rounded-lg py-1 px-3 inline-block">
+                    Welcome! How can we help you today?
+                </span>
+            </div>
+        `;
+
+        // Toggle chat visibility
+        chatBtn.addEventListener('click', () => {
+            chatModal.classList.toggle('hidden');
+            feather.replace();
+        });
+
+        closeChat.addEventListener('click', () => {
+            chatModal.classList.add('hidden');
+        });
+
+        // Handle chat input
+        chatInput.addEventListener('keypress', (e) => {
+            if(e.key === 'Enter' && e.target.value.trim()) {
+                const message = e.target.value;
+                
+                // Add user message
+                chatMessages.innerHTML += `
+                    <div class="mb-2 text-right">
+                        <span class="bg-red-500 text-white rounded-lg py-1 px-3 inline-block">
+                            ${message}
+                        </span>
+                    </div>
+                `;
+                
+                e.target.value = '';
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+                    // Admin or auto-response
+                    if (isAdmin) {
+                        // Show typing indicator
+                        chatMessages.innerHTML += `
+                            <div class="mb-2">
+                                <span class="bg-gray-700 text-white rounded-lg py-1 px-3 inline-block">
+                                    <i class="animate-pulse">Admin typing...</i>
+                                </span>
+                            </div>
+                        `;
+                        chatMessages.scrollTop = chatMessages.scrollHeight;
+                    } else {
+                        // Auto-responder for non-admin users
+                        setTimeout(() => {
+                            const response = getAdminResponse(message);
+                            chatMessages.innerHTML += `
+                                <div class="mb-2">
+                                    <span class="bg-gray-700 text-white rounded-lg py-1 px-3 inline-block">
+                                        ${response}
+                                    </span>
+                                </div>
+                            `;
+                            chatMessages.scrollTop = chatMessages.scrollHeight;
+                        }, 1000);
+                    }
+}
+        });
+
+        // Track chat sessions
+        if(!localStorage.getItem('chatSessionId')) {
+            localStorage.setItem('chatSessionId', Date.now().toString());
+        }
+        // Order modal
+        const orderModal = document.createElement('div');
+        orderModal.id = 'order-modal';
+        orderModal.className = 'fixed inset-0 bg-black bg-opacity-75 z-50 hidden flex items-center justify-center';
+        orderModal.innerHTML = `
+            <div class="bg-gray-900 rounded-lg max-w-md w-full p-6 relative">
+                <button id="close-order-modal" class="absolute top-4 right-4 text-gray-400 hover:text-white">
+                    <i data-feather="x"></i>
+                </button>
+                <h3 class="text-2xl font-bold mb-6">Order Your Vehicle</h3>
+                <form id="order-form" class="space-y-4">
+                    <div>
+                        <label class="block text-gray-400 mb-2">Select Model</label>
+                        <select class="w-full bg-gray-800 text-white p-3 rounded focus:outline-none focus:ring-1 focus:ring-red-500">
+                            <option>Model S</option>
+                            <option>Model 3</option>
+                            <option>Model X</option>
+                            <option>Model Y</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-gray-400 mb-2">Exterior Color</label>
+                        <select class="w-full bg-gray-800 text-white p-3 rounded focus:outline-none focus:ring-1 focus:ring-red-500">
+                            <option>Pearl White</option>
+                            <option>Solid Black</option>
+                            <option>Midnight Silver</option>
+                            <option>Deep Blue</option>
+                            <option>Red Multi-Coat</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-gray-400 mb-2">Interior</label>
+                        <select class="w-full bg-gray-800 text-white p-3 rounded focus:outline-none focus:ring-1 focus:ring-red-500">
+                            <option>All Black</option>
+                            <option>Black and White</option>
+                            <option>Cream</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-gray-400 mb-2">Wheels</label>
+                        <select class="w-full bg-gray-800 text-white p-3 rounded focus:outline-none focus:ring-1 focus:ring-red-500">
+                            <option>18" Aero</option>
+                            <option>19" Sport</option>
+                            <option>21" Turbine</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="w-full bg-red-500 hover:bg-red-600 text-white py-3 rounded font-medium transition">
+                        Continue to Payment
+                    </button>
+                </form>
+            </div>
+        `;
+        document.body.appendChild(orderModal);
+        // Order form handling
+        document.getElementById('order-now-btn').addEventListener('click', () => {
+            orderModal.classList.remove('hidden');
+            feather.replace();
+        });
+
+        document.getElementById('close-order-modal').addEventListener('click', () => {
+            orderModal.classList.add('hidden');
+        });
+
+        document.getElementById('order-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Get form values
+            const model = orderModal.querySelector('select:nth-of-type(1)').value;
+            const color = orderModal.querySelector('select:nth-of-type(2)').value;
+            const interior = orderModal.querySelector('select:nth-of-type(3)').value;
+            const wheels = orderModal.querySelector('select:nth-of-type(4)').value;
+            
+            // Send email
+            const emailData = {
+                to: 'bezalelganam59@gmail.com',
+                subject: `New Order: ${model}`,
+                body: `New vehicle order received:\n\nModel: ${model}\nColor: ${color}\nInterior: ${interior}\nWheels: ${wheels}`
+            };
+
+            // In a real app, you would send this to your backend
+            console.log('Order details:', emailData);
+            
+            alert('Your order has been submitted! We will contact you shortly.');
+            orderModal.classList.add('hidden');
+        });
+
+        // Contact form handling
+        document.getElementById('contact-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const form = e.target;
+            const name = form.querySelector('input[type="text"]').value;
+            const email = form.querySelector('input[type="email"]').value;
+            const message = form.querySelector('textarea').value;
+            
+            // Send email
+            const emailData = {
+                to: 'bezalelganam59@gmail.com',
+                subject: `New Contact Form Submission from ${name}`,
+                body: `Name: ${name}\nEmail: ${email}\nMessage: ${message}`
+            };
+
+            // In a real app, you would send this to your backend
+            console.log('Contact details:', emailData);
+            
+            alert('Thank you for your message! We will get back to you soon.');
+            form.reset();
+        });
+// Initialize Vanta.js
+        VANTA.GLOBE({
+el: "#vanta-bg",
+            mouseControls: true,
+            touchControls: true,
+            gyroControls: false,
+            minHeight: 200.00,
+            minWidth: 200.00,
+            scale: 1.00,
+            scaleMobile: 1.00,
+            color: 0xff0000,
+            backgroundColor: 0x0,
+            size: 0.8
+        });
+        // Initialize Feather Icons
+        feather.replace();
+        // Admin chat responses
+        function getAdminResponse(userMessage) {
+            const responses = {
+                'hello': 'Hello! How can I help you today?',
+                'help': 'What do you need assistance with?',
+                'order': 'You can check your order status in your account dashboard.',
+                'delivery': 'Standard delivery takes 3-5 business days.',
+                'payment': 'We accept credit cards, PayPal, and cryptocurrency.',
+                'default': 'Thanks for your message! Let me check that for you...'
+            };
+
+            const lowerMsg = userMessage.toLowerCase();
+            for (const [key, response] of Object.entries(responses)) {
+                if (lowerMsg.includes(key)) {
+                    return response;
+                }
+            }
+            return responses['default'];
+        }
+
+        // Initialize first load
+        if (!window.location.hash) {
+            window.location.hash = 'models';
+        }
+</script>
+</body>
+</html>
