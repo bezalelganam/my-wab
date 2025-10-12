@@ -72,13 +72,19 @@
                 <span class="text-red-500">WantToWin</span>
             </a>
         </div>
-        <div class="hidden md:flex space-x-8">
-            <a href="#shop" id="shop-tab" class="nav-link text-white font-medium active-tab">Shop</a>
-            <a href="#contact" id="contact-tab" class="nav-link text-white font-medium">Contact</a>
-            <a href="#information" id="information-tab" class="nav-link text-white font-medium">Information</a>
-            <a href="#login" id="login-tab" class="nav-link text-white font-medium">Login</a>
-            <a href="#cart" id="cart-tab" class="nav-link text-white font-medium">Cart</a>
-        </div>
+       <div class="hidden md:flex space-x-8 items-center">
+    <a href="#shop" id="shop-tab" class="nav-link text-white font-medium active-tab">Shop</a>
+    <a href="#contact" id="contact-tab" class="nav-link text-white font-medium">Contact</a>
+    <a href="#information" id="information-tab" class="nav-link text-white font-medium">Information</a>
+    <a href="#login" id="login-tab" class="nav-link text-white font-medium">Login</a>
+    <a href="#cart" id="cart-tab" class="nav-link text-white font-medium">Cart</a>
+</div>
+
+<!-- ADD THIS RIGHT AFTER THE ABOVE DIV -->
+<div id="user-info" class="hidden items-center space-x-4">
+    <span id="user-email" class="text-white"></span>
+    <button id="logout-btn" class="text-red-500 hover:text-red-400 font-medium">Logout</button>
+</div>
         <div class="flex items-center space-x-4">
             <button class="md:hidden text-white" id="mobile-menu-btn">
                 <i data-feather="menu"></i>
@@ -86,14 +92,17 @@
         </div>
     </nav>
 
-    <!-- Mobile Menu -->
-    <div id="mobile-menu" class="hidden md:hidden bg-gray-900 py-2 px-4 border-b border-gray-800">
-        <a href="#shop" class="block py-2 text-white">Shop</a>
-        <a href="#contact" class="block py-2 text-white">Contact</a>
-        <a href="#information" class="block py-2 text-white">Information</a>
-        <a href="#login" class="block py-2 text-white">Login</a>
-        <a href="#cart" class="block py-2 text-white">Cart</a>
+ <div id="mobile-menu" class="hidden md:hidden bg-gray-900 py-2 px-4 border-b border-gray-800">
+    <a href="#shop" class="block py-2 text-white">Shop</a>
+    <a href="#contact" class="block py-2 text-white">Contact</a>
+    <a href="#information" class="block py-2 text-white">Information</a>
+    <a href="#login" id="mobile-login" class="block py-2 text-white">Login</a>
+    <div id="mobile-user-info" class="hidden">
+        <span id="mobile-user-email" class="block py-2 text-white"></span>
+        <button id="mobile-logout" class="block py-2 text-red-500 w-full text-left">Logout</button>
     </div>
+    <a href="#cart" class="block py-2 text-white">Cart</a>
+</div>
 
     <!-- Shop Section -->
     <section id="shop" class="tab-section py-16 px-4 md:px-12">
@@ -508,30 +517,32 @@
                     });
             });
 
-            // Login form functionality
-            document.getElementById('login-form').addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                const email = document.getElementById('email').value;
-                const password = document.getElementById('password').value;
-                
-                // Get existing users
-                const users = JSON.parse(localStorage.getItem('users')) || [];
-                
-                // Find user
-                const user = users.find(user => user.email === email && user.password === password);
-                
-                if (user) {
-                    localStorage.setItem('isLoggedIn', 'true');
-                    localStorage.setItem('userEmail', email);
-                    localStorage.setItem('userName', user.name || email.split('@')[0]);
-                    
-                    alert('Login successful!');
-                    window.location.hash = 'shop';
-                } else {
-                    alert('Invalid email or password. Please try again or sign up.');
-                }
-            });
+           // Login form functionality
+document.getElementById('login-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    
+    // Get existing users
+    const users = JSON.parse(localStorage.getItem('users')) || [];
+    
+    // Find user
+    const user = users.find(user => user.email === email && user.password === password);
+    
+    if (user) {
+        localStorage.setItem('isLoggedIn', 'true');
+        localStorage.setItem('userEmail', email);
+        localStorage.setItem('userName', user.name || email.split('@')[0]);
+        
+        // UPDATE NAVIGATION AND SHOW SUCCESS
+        updateNavigation();
+        alert('Login successful!');
+        window.location.hash = 'shop';
+    } else {
+        alert('Invalid email or password. Please try again or sign up.');
+    }
+});
 
             // Forgot password form functionality - FIXED
             document.getElementById('forgot-password-form').addEventListener('submit', function(e) {
@@ -794,6 +805,64 @@
                 window.location.hash = 'shop';
             }
         });
+        // Add this function to update the navigation based on login status
+function updateNavigation() {
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    const userEmail = localStorage.getItem('userEmail');
+    
+    // Desktop
+    const loginTab = document.getElementById('login-tab');
+    const userInfo = document.getElementById('user-info');
+    const userEmailSpan = document.getElementById('user-email');
+    
+    // Mobile
+    const mobileLogin = document.getElementById('mobile-login');
+    const mobileUserInfo = document.getElementById('mobile-user-info');
+    const mobileUserEmail = document.getElementById('mobile-user-email');
+    
+    if (isLoggedIn && userEmail) {
+        // User is logged in
+        loginTab.classList.add('hidden');
+        userInfo.classList.remove('hidden');
+        userInfo.classList.add('flex');
+        userEmailSpan.textContent = userEmail;
+        
+        mobileLogin.classList.add('hidden');
+        mobileUserInfo.classList.remove('hidden');
+        mobileUserEmail.textContent = userEmail;
+    } else {
+        // User is not logged in
+        loginTab.classList.remove('hidden');
+        userInfo.classList.add('hidden');
+        userInfo.classList.remove('flex');
+        
+        mobileLogin.classList.remove('hidden');
+        mobileUserInfo.classList.add('hidden');
+    }
+}
+
+// Add logout functionality
+document.getElementById('logout-btn').addEventListener('click', function() {
+    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('userEmail');
+    localStorage.removeItem('userName');
+    updateNavigation();
+    alert('You have been logged out.');
+    window.location.hash = 'shop';
+});
+
+// Add mobile logout
+document.getElementById('mobile-logout').addEventListener('click', function() {
+    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('userEmail');
+    localStorage.removeItem('userName');
+    updateNavigation();
+    alert('You have been logged out.');
+    window.location.hash = 'shop';
+});
+
+// Initialize navigation on page load
+updateNavigation();
     </script>
 </body>
 </html>
