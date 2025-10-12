@@ -693,4 +693,77 @@
             orderModal.innerHTML = `
                 <div class="bg-gray-900 rounded-lg max-w-md w-full p-6 relative">
                     <button id="close-order-modal" class="absolute top-4 right-4 text-gray-400 hover:text-white">
-                        <i data-feather="x"></i
+                        <i data-feather="x"></i>
+                    </button>
+                    <h3 class="text-xl font-bold mb-4">Start Your Order</h3>
+                    <p class="text-gray-400 mb-6">Please log in or create an account to place an order.</p>
+                    <div class="flex space-x-4">
+                        <a href="login.html" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded font-medium transition flex-1 text-center">
+                            Log In
+                        </a>
+                        <a href="register.html" class="bg-transparent border border-white hover:bg-white hover:text-black text-white px-4 py-2 rounded font-medium transition flex-1 text-center">
+                            Register
+                        </a>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(orderModal);
+            
+            // Order now button functionality
+            document.getElementById('order-now-btn').addEventListener('click', () => {
+                if (userEmail) {
+                    // User is logged in, proceed to order
+                    window.location.href = 'order.html';
+                } else {
+                    // Show login modal
+                    document.getElementById('order-modal').classList.remove('hidden');
+                    feather.replace();
+                }
+            });
+            
+            // Close order modal
+            document.getElementById('close-order-modal').addEventListener('click', () => {
+                document.getElementById('order-modal').classList.add('hidden');
+            });
+            
+            // Mobile menu functionality
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+                feather.replace();
+            });
+            
+            // Close mobile menu when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!mobileMenuBtn.contains(e.target) && !mobileMenu.contains(e.target)) {
+                    mobileMenu.classList.add('hidden');
+                }
+            });
+            
+            // Initialize icons
+            feather.replace();
+        });
+
+        // Admin response function
+        function getAdminResponse(message) {
+            const lowerMessage = message.toLowerCase();
+            
+            if (lowerMessage.includes('price') || lowerMessage.includes('cost')) {
+                return "Our prices start at $40,240 for Model 3. Would you like to know more about a specific model?";
+            } else if (lowerMessage.includes('delivery') || lowerMessage.includes('shipping')) {
+                return "Delivery typically takes 2-4 weeks depending on your location and model configuration.";
+            } else if (lowerMessage.includes('test drive')) {
+                return "You can schedule a test drive through our website or by visiting a showroom. Would you like me to help you find a location?";
+            } else if (lowerMessage.includes('charge') || lowerMessage.includes('charging')) {
+                return "Our vehicles can be charged at home, at work, or at our Supercharger network locations. A full charge gives you up to 400 miles of range.";
+            } else if (lowerMessage.includes('warranty')) {
+                return "All our vehicles come with a 4-year/50,000-mile limited warranty and an 8-year battery warranty.";
+            } else {
+                return "Thank you for your message. Our team will get back to you shortly with more information. Is there anything specific you'd like to know about our vehicles?";
+            }
+        }
+    </script>
+</body>
+</html>
