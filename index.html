@@ -10,7 +10,7 @@
     <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
     <script>
         // ⚠️ SETUP STEP 1A: Replace with your EmailJS User ID
-        emailjs.init('user_YOUR_EMAILJS_USER_ID'); // ← UPDATE THIS LINE
+        emailjs.init('AefX1sL9Wjlv6CXnz'); // ← UPDATE THIS LINE
     </script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
@@ -497,7 +497,7 @@
                 };
                 
                 // ⚠️ SETUP STEP 1B: Replace with your EmailJS Service ID and Template ID
-                emailjs.send('service_YOUR_SERVICE_ID', 'template_YOUR_TEMPLATE_ID', emailData)
+                emailjs.send('service_76p23kb', 'template_l3l7so9', emailData)
                     .then(function(response) {
                         console.log('SUCCESS!', response.status, response.text);
                         alert('Thank you for your message! We will get back to you soon.');
@@ -556,7 +556,7 @@
                     };
                     
                     // Send reset email using EmailJS
-                    emailjs.send('service_YOUR_SERVICE_ID', 'template_YOUR_TEMPLATE_ID', resetEmailData)
+                    emailjs.send('service_76p23kb', 'template_l3l7so9', resetEmailData)
                         .then(function(response) {
                             console.log('SUCCESS!', response.status, response.text);
                             alert('Password reset link has been sent to your email.');
