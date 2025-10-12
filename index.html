@@ -9,10 +9,10 @@
     <script src="https://unpkg.com/feather-icons"></script>
     <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
     <script>
-        // Initialize EmailJS
-        emailjs.init('YOUR_EMAILJS_USER_ID');
+        // Initialize EmailJS with your credentials
+        emailjs.init('user_YourEmailJSUserID'); // Replace with your actual EmailJS user ID
     </script>
-<script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.globe.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
@@ -23,7 +23,7 @@
             width: 100%;
             background: #ef4444;
         }
-body {
+        body {
             font-family: 'Montserrat', sans-serif;
             overflow-x: hidden;
         }
@@ -69,8 +69,8 @@ body {
     <!-- Navigation -->
     <nav class="relative z-10 py-6 px-4 md:px-12 flex justify-between items-center">
         <div class="flex items-center">
-                <a href="#models" class="text-2xl font-bold tracking-tight">
-<span class="text-red-500">ELECTRIFY</span>
+            <a href="#models" class="text-2xl font-bold tracking-tight">
+                <span class="text-red-500">ELECTRIFY</span>
                 <span class="text-white">⚡</span>
             </a>
         </div>
@@ -82,11 +82,6 @@ body {
             <a href="#shop" id="shop-tab" class="nav-link text-white font-medium">Shop</a>
             <a href="#contact" id="contact-tab" class="nav-link text-white font-medium">Contact</a>
             <a href="login.html" class="nav-link text-white font-medium">Login</a>
-            <a href="cart.html" class="nav-link text-white font-medium flex items-center">
-                <i data-feather="shopping-cart" class="mr-1"></i>
-                Cart
-                <span id="cart-count" class="ml-1 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs hidden"></span>
-            </a>
         </div>
         <div class="flex items-center space-x-4">
             <div class="md:hidden relative">
@@ -101,18 +96,13 @@ body {
                     <a href="#shop" class="block px-4 py-2 text-white hover:bg-gray-800">Shop</a>
                     <a href="#contact" class="block px-4 py-2 text-white hover:bg-gray-800">Contact</a>
                     <a href="login.html" class="block px-4 py-2 text-white hover:bg-gray-800">Login</a>
-                    <a href="cart.html" class="block px-4 py-2 text-white hover:bg-gray-800 flex items-center">
-                        <i data-feather="shopping-cart" class="mr-2 w-4 h-4"></i>
-                        Cart
-                        <span id="mobile-cart-count" class="ml-1 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs hidden"></span>
-                    </a>
                 </div>
             </div>
             <button class="hidden md:block bg-white text-black px-4 py-2 rounded font-medium hover:bg-opacity-90 transition">
                 Order Now
             </button>
         </div>
-</nav>
+    </nav>
 
     <!-- Hero Section -->
     <section class="relative h-screen flex items-center justify-center hero-gradient overflow-hidden">
@@ -128,7 +118,7 @@ body {
                 <button id="order-now-btn" class="bg-red-500 hover:bg-red-600 text-white px-8 py-3 rounded font-medium transition">
                     Custom Order
                 </button>
-<button class="bg-transparent border-2 border-white hover:bg-white hover:text-black text-white px-8 py-3 rounded font-medium transition">
+                <button class="bg-transparent border-2 border-white hover:bg-white hover:text-black text-white px-8 py-3 rounded font-medium transition">
                     Test Drive
                 </button>
             </div>
@@ -137,9 +127,10 @@ body {
             <i data-feather="chevron-down" class="animate-bounce text-white w-8 h-8"></i>
         </div>
     </section>
-        <!-- Models Section -->
-        <section id="models" class="tab-section py-20 px-4 md:px-12">
-<div class="max-w-6xl mx-auto">
+
+    <!-- Models Section -->
+    <section id="models" class="tab-section py-20 px-4 md:px-12">
+        <div class="max-w-6xl mx-auto">
             <h2 class="text-3xl md:text-4xl font-bold mb-16 text-center">Our Vehicle Lineup</h2>
             
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -151,11 +142,11 @@ body {
                         <p class="text-gray-400 mb-4">Plaid: 0-60 mph in 1.99s</p>
                         <div class="flex justify-between items-center">
                             <span class="text-xl font-medium">From $89,990</span>
-                        <button class="text-red-500 hover:text-red-400 font-medium add-to-cart" 
-                                data-name="Model S" 
-                                data-price="89990" 
-                                data-image="http://static.photos/technology/1200x630/1">Add to Cart</button>
-</div>
+                            <button class="text-red-500 hover:text-red-400 font-medium add-to-cart" 
+                                    data-name="Model S" 
+                                    data-price="89990" 
+                                    data-image="http://static.photos/technology/1200x630/1">Add to Cart</button>
+                        </div>
                     </div>
                 </div>
                 
@@ -167,11 +158,11 @@ body {
                         <p class="text-gray-400 mb-4">Dual Motor All-Wheel Drive</p>
                         <div class="flex justify-between items-center">
                             <span class="text-xl font-medium">From $40,240</span>
-                        <button class="text-red-500 hover:text-red-400 font-medium add-to-cart" 
-                                data-name="Model 3" 
-                                data-price="40240" 
-                                data-image="http://static.photos/technology/1200x630/2">Add to Cart</button>
-</div>
+                            <button class="text-red-500 hover:text-red-400 font-medium add-to-cart" 
+                                    data-name="Model 3" 
+                                    data-price="40240" 
+                                    data-image="http://static.photos/technology/1200x630/2">Add to Cart</button>
+                        </div>
                     </div>
                 </div>
                 
@@ -183,19 +174,20 @@ body {
                         <p class="text-gray-400 mb-4">Plaid: 1,020 hp</p>
                         <div class="flex justify-between items-center">
                             <span class="text-xl font-medium">From $99,990</span>
-                        <button class="text-red-500 hover:text-red-400 font-medium add-to-cart" 
-                                data-name="Model X" 
-                                data-price="99990" 
-                                data-image="http://static.photos/technology/1200x630/3">Add to Cart</button>
-</div>
+                            <button class="text-red-500 hover:text-red-400 font-medium add-to-cart" 
+                                    data-name="Model X" 
+                                    data-price="99990" 
+                                    data-image="http://static.photos/technology/1200x630/3">Add to Cart</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+
     <!-- Energy Section -->
     <section id="energy" class="tab-section hidden py-20 px-4 md:px-12 bg-gray-900">
-<div class="max-w-6xl mx-auto">
+        <div class="max-w-6xl mx-auto">
             <div class="flex flex-col md:flex-row items-center gap-12">
                 <div class="md:w-1/2">
                     <h2 class="text-3xl md:text-4xl font-bold mb-6">Autopilot & Full Self-Driving</h2>
@@ -234,9 +226,10 @@ body {
             </div>
         </div>
     </section>
+
     <!-- Charging Section -->
     <section id="charging" class="tab-section hidden py-20 px-4 md:px-12">
-<div class="max-w-6xl mx-auto text-center">
+        <div class="max-w-6xl mx-auto text-center">
             <h2 class="text-3xl md:text-4xl font-bold mb-6">Supercharger Network</h2>
             <p class="text-xl text-gray-400 max-w-3xl mx-auto mb-12">
                 Travel anywhere with access to our global Supercharger network. Charge in minutes, not hours.
@@ -263,6 +256,7 @@ body {
             </button>
         </div>
     </section>
+
     <!-- Discover Section -->
     <section id="discover" class="tab-section hidden py-20 px-4 md:px-12 bg-black">
         <div class="max-w-6xl mx-auto text-center">
@@ -305,11 +299,11 @@ body {
                         <p class="text-gray-400 mb-4">Fast home charging solution</p>
                         <div class="flex justify-between items-center">
                             <span class="text-xl font-medium">$500</span>
-                        <button class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded font-medium transition add-to-cart" 
-                                data-name="Wall Connector" 
-                                data-price="500" 
-                                data-image="http://static.photos/technology/640x360/5">Add to Cart</button>
-</div>
+                            <button class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded font-medium transition add-to-cart" 
+                                    data-name="Wall Connector" 
+                                    data-price="500" 
+                                    data-image="http://static.photos/technology/640x360/5">Add to Cart</button>
+                        </div>
                     </div>
                 </div>
                 <div class="bg-gray-900 rounded-lg overflow-hidden hover:shadow-xl hover:shadow-red-500/20 transition">
@@ -319,11 +313,11 @@ body {
                         <p class="text-gray-400 mb-4">Portable charging adapter</p>
                         <div class="flex justify-between items-center">
                             <span class="text-xl font-medium">$230</span>
-                        <button class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded font-medium transition add-to-cart" 
-                                data-name="Mobile Connector" 
-                                data-price="230" 
-                                data-image="http://static.photos/technology/640x360/6">Add to Cart</button>
-</div>
+                            <button class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded font-medium transition add-to-cart" 
+                                    data-name="Mobile Connector" 
+                                    data-price="230" 
+                                    data-image="http://static.photos/technology/640x360/6">Add to Cart</button>
+                        </div>
                     </div>
                 </div>
                 <div class="bg-gray-900 rounded-lg overflow-hidden hover:shadow-xl hover:shadow-red-500/20 transition">
@@ -333,11 +327,11 @@ body {
                         <p class="text-gray-400 mb-4">Keep your cables tidy</p>
                         <div class="flex justify-between items-center">
                             <span class="text-xl font-medium">$35</span>
-                        <button class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded font-medium transition add-to-cart" 
-                                data-name="Cable Organizer" 
-                                data-price="35" 
-                                data-image="http://static.photos/technology/640x360/7">Add to Cart</button>
-</div>
+                            <button class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded font-medium transition add-to-cart" 
+                                    data-name="Cable Organizer" 
+                                    data-price="35" 
+                                    data-image="http://static.photos/technology/640x360/7">Add to Cart</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -346,7 +340,7 @@ body {
 
     <!-- Contact Section -->
     <section id="contact" class="tab-section hidden py-20 px-4 md:px-12 bg-gray-900">
-<div class="max-w-6xl mx-auto">
+        <div class="max-w-6xl mx-auto">
             <h2 class="text-3xl md:text-4xl font-bold mb-12 text-center">Contact Us</h2>
             <div class="grid md:grid-cols-2 gap-12">
                 <div>
@@ -365,7 +359,7 @@ body {
                             Send Message
                         </button>
                     </form>
-</div>
+                </div>
                 <div>
                     <h3 class="text-xl font-bold mb-4">Contact Information</h3>
                     <div class="space-y-6">
@@ -373,7 +367,7 @@ body {
                             <i data-feather="mail" class="text-red-500 mr-4 mt-1"></i>
                             <div>
                                 <h4 class="font-medium">Email</h4>
-                                <p class="text-gray-400">bezalelganam95@gmail.com</p>
+                                <p class="text-gray-400">bezalelganam59@gmail.com</p>
                             </div>
                         </div>
                         <div class="flex items-start">
@@ -396,181 +390,8 @@ body {
         </div>
     </section>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-        // Check login status
-        const isAdmin = localStorage.getItem('isAdmin') === 'true';
-        const userEmail = localStorage.getItem('userEmail');
-        
-        // Initialize cart if not exists
-        if (!localStorage.getItem('cart')) {
-            localStorage.setItem('cart', JSON.stringify([]));
-        }
-
-        // Update cart count function
-        function updateCartCount() {
-            const cart = JSON.parse(localStorage.getItem('cart')) || [];
-            const cartCount = document.getElementById('cart-count');
-            const mobileCartCount = document.getElementById('mobile-cart-count');
-            const totalItems = cart.reduce((total, item) => total + (item.quantity || 1), 0);
-            
-            if (cartCount) {
-                if (totalItems > 0) {
-                    cartCount.textContent = totalItems;
-                    cartCount.classList.remove('hidden');
-                } else {
-                    cartCount.classList.add('hidden');
-                }
-            }
-            
-            if (mobileCartCount) {
-                if (totalItems > 0) {
-                    mobileCartCount.textContent = totalItems;
-                    mobileCartCount.classList.remove('hidden');
-                } else {
-                    mobileCartCount.classList.add('hidden');
-                }
-            }
-        }
-
-        // Initialize cart count
-        updateCartCount();
-
-        // Listen for storage changes to update cart count
-        window.addEventListener('storage', updateCartCount);
-        
-        if (userEmail) {
-            // Replace login link with user profile
-            const loginLink = document.querySelector('a[href="login.html"]');
-            if (loginLink) {
-                loginLink.innerHTML = `
-                    <div class="flex items-center space-x-2">
-                        <span>${userEmail}</span>
-                        <i data-feather="user"></i>
-                    </div>
-                `;
-                loginLink.href = '#';
-                
-                // Add logout functionality
-                loginLink.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    localStorage.removeItem('isAdmin');
-                    localStorage.removeItem('userEmail');
-                    window.location.reload();
-                });
-            }
-            
-            // Show admin chat button if admin
-            if (isAdmin) {
-                document.getElementById('admin-chat-btn').classList.remove('hidden');
-            }
-        }
-        
-        // Add to cart functionality
-        document.querySelectorAll('.add-to-cart').forEach(button => {
-            button.addEventListener('click', function() {
-                const name = this.dataset.name;
-                const price = parseFloat(this.dataset.price);
-                const image = this.dataset.image;
-                
-                // Get existing cart or create new one
-                const cart = JSON.parse(localStorage.getItem('cart')) || [];
-                
-                // Check if item already exists in cart
-                const existingItemIndex = cart.findIndex(item => item.name === name);
-                
-                if (existingItemIndex !== -1) {
-                    // Update quantity if item exists
-                    cart[existingItemIndex].quantity = (cart[existingItemIndex].quantity || 1) + 1;
-                } else {
-                    // Add new item
-                    cart.push({
-                        name: name,
-                        price: price,
-                        image: image,
-                        quantity: 1
-                    });
-                }
-                
-                // Save to localStorage
-                localStorage.setItem('cart', JSON.stringify(cart));
-                
-                // Update cart count
-                updateCartCount();
-                
-                // Show success notification
-                const notification = document.createElement('div');
-                notification.className = 'fixed bottom-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg flex items-center z-50';
-                notification.innerHTML = `
-                    <i data-feather="check-circle" class="mr-2"></i>
-                    ${name} added to cart!
-                `;
-                document.body.appendChild(notification);
-                feather.replace();
-                
-                // Remove notification after 3 seconds
-                setTimeout(() => {
-                    notification.classList.add('opacity-0', 'transition-opacity', 'duration-500');
-                    setTimeout(() => notification.remove(), 500);
-                }, 3000);
-            });
-        });
-        
-      // Contact form handling - SIMPLE VERSION THAT WORKS
-document.getElementById('contact-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    const name = document.getElementById('contact-name').value;
-    const email = document.getElementById('contact-email').value;
-    const message = document.getElementById('contact-message').value;
-    
-    // Show loading state
-    const submitBtn = e.target.querySelector('button[type="submit"]');
-    const originalText = submitBtn.textContent;
-    submitBtn.textContent = 'Sending...';
-    submitBtn.disabled = true;
-    
-    // Use Formspree - FREE service that sends emails directly
-    const formData = new FormData();
-    formData.append('name', name);
-    formData.append('email', email);
-    formData.append('message', message);
-    
-    // Send to Formspree (replace with your Formspree email)
-    fetch('https://formspree.io/f/mpzvqjjk', {
-        method: 'POST',
-        body: formData,
-        headers: {
-            'Accept': 'application/json'
-        }
-    })
-    .then(response => {
-        if (response.ok) {
-            // Show success message
-            document.getElementById('contact-success').classList.remove('hidden');
-            document.getElementById('contact-error').classList.add('hidden');
-            document.getElementById('contact-form').reset();
-        } else {
-            throw new Error('Form submission failed');
-        }
-    })
-    .catch(error => {
-        // Show error message
-        document.getElementById('contact-error').classList.remove('hidden');
-        document.getElementById('contact-success').classList.add('hidden');
-        console.error('Error:', error);
-    })
-    .finally(() => {
-        // Reset button
-        submitBtn.textContent = originalText;
-        submitBtn.disabled = false;
-    });
-});
-       
-    </script>
-
     <!-- Footer -->
-<footer class="bg-black py-16 px-4 md:px-12 border-t border-gray-800">
+    <footer class="bg-black py-16 px-4 md:px-12 border-t border-gray-800">
         <div class="max-w-6xl mx-auto grid md:grid-cols-4 gap-12">
             <div>
                 <h3 class="text-xl font-bold mb-6">ELECTRIFY⚡</h3>
@@ -587,27 +408,27 @@ document.getElementById('contact-form').addEventListener('submit', function(e) {
             <div>
                 <h4 class="font-bold mb-6">Models</h4>
                 <ul class="space-y-3">
-                        <li><a href="#models" class="text-gray-400 hover:text-white">Model S</a></li>
-                        <li><a href="#models" class="text-gray-400 hover:text-white">Model 3</a></li>
-                        <li><a href="#models" class="text-gray-400 hover:text-white">Model X</a></li>
-                        <li><a href="#models" class="text-gray-400 hover:text-white">Model Y</a></li>
-</ul>
+                    <li><a href="#models" class="text-gray-400 hover:text-white">Model S</a></li>
+                    <li><a href="#models" class="text-gray-400 hover:text-white">Model 3</a></li>
+                    <li><a href="#models" class="text-gray-400 hover:text-white">Model X</a></li>
+                    <li><a href="#models" class="text-gray-400 hover:text-white">Model Y</a></li>
+                </ul>
             </div>
             <div>
                 <h4 class="font-bold mb-6">Company</h4>
                 <ul class="space-y-3">
-                        <li><a href="#discover" class="text-gray-400 hover:text-white">About</a></li>
-                        <li><a href="#discover" class="text-gray-400 hover:text-white">Careers</a></li>
-                        <li><a href="#discover" class="text-gray-400 hover:text-white">Investors</a></li>
-                        <li><a href="#contact" class="text-gray-400 hover:text-white">Contact</a></li>
-</ul>
+                    <li><a href="#discover" class="text-gray-400 hover:text-white">About</a></li>
+                    <li><a href="#discover" class="text-gray-400 hover:text-white">Careers</a></li>
+                    <li><a href="#discover" class="text-gray-400 hover:text-white">Investors</a></li>
+                    <li><a href="#contact" class="text-gray-400 hover:text-white">Contact</a></li>
+                </ul>
             </div>
             <div>
                 <h4 class="font-bold mb-6">Support</h4>
                 <ul class="space-y-3">
                     <li><a href="cart.html" class="text-gray-400 hover:text-white">View Cart</a></li>
                     <li><a href="#" class="text-gray-400 hover:text-white">Customer Support</a></li>
-<li><a href="#" class="text-gray-400 hover:text-white">Owner's Manual</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white">Owner's Manual</a></li>
                     <li><a href="#" class="text-gray-400 hover:text-white">Warranty</a></li>
                     <li><a href="#" class="text-gray-400 hover:text-white">Roadside Assistance</a></li>
                 </ul>
@@ -618,94 +439,258 @@ document.getElementById('contact-form').addEventListener('submit', function(e) {
         </div>
     </footer>
 
-    <!-- Rest of the script remains the same -->
+    <!-- Admin Chat Button -->
+    <button id="admin-chat-btn" class="fixed bottom-6 right-6 bg-red-500 text-white p-3 rounded-full shadow-lg hover:bg-red-600 transition hidden">
+        <i data-feather="message-circle"></i>
+    </button>
+
+    <!-- Admin Chat Modal -->
+    <div id="admin-chat-modal" class="fixed bottom-24 right-6 w-80 bg-gray-900 rounded-lg shadow-xl border border-gray-700 hidden z-50">
+        <div class="p-4 border-b border-gray-700 flex justify-between items-center">
+            <h3 class="font-bold">Admin Chat</h3>
+            <button id="close-chat" class="text-gray-400 hover:text-white">
+                <i data-feather="x"></i>
+            </button>
+        </div>
+        <div id="chat-messages" class="p-4 h-64 overflow-y-auto">
+            <!-- Messages will appear here -->
+        </div>
+        <div class="p-4 border-t border-gray-700">
+            <input type="text" id="chat-input" class="w-full bg-gray-800 text-white p-2 rounded focus:outline-none focus:ring-1 focus:ring-red-500" placeholder="Type a message...">
+        </div>
+    </div>
+
     <script>
-        // Check for returning visitor
-        if(localStorage.getItem('visitedBefore')) {
-            console.log('Welcome back!');
-        } else {
-            localStorage.setItem('visitedBefore', 'true');
-        }
-        // Tab functionality
-        // Handle hash changes
-        function handleHashChange() {
-            const hash = window.location.hash.substring(1);
-            const validSections = ['models', 'energy', 'charging', 'discover', 'shop', 'contact'];
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check login status
+            const isAdmin = localStorage.getItem('isAdmin') === 'true';
+            const userEmail = localStorage.getItem('userEmail');
             
-            if (validSections.includes(hash)) {
-                // Update active tab
-                document.querySelectorAll('[id$="-tab"]').forEach(t => t.classList.remove('active-tab'));
-                document.getElementById(`${hash}-tab`).classList.add('active-tab');
+            // Initialize cart if not exists
+            if (!localStorage.getItem('cart')) {
+                localStorage.setItem('cart', JSON.stringify([]));
+            }
+            
+            if (userEmail) {
+                // Replace login link with user profile
+                const loginLink = document.querySelector('a[href="login.html"]');
+                if (loginLink) {
+                    loginLink.innerHTML = `
+                        <div class="flex items-center space-x-2">
+                            <span>${userEmail}</span>
+                            <i data-feather="user"></i>
+                        </div>
+                    `;
+                    loginLink.href = '#';
+                    
+                    // Add logout functionality
+                    loginLink.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        localStorage.removeItem('isAdmin');
+                        localStorage.removeItem('userEmail');
+                        window.location.reload();
+                    });
+                }
                 
-                // Hide all sections
-                document.querySelectorAll('.tab-section').forEach(section => {
-                    section.classList.add('hidden');
+                // Show admin chat button if admin
+                if (isAdmin) {
+                    document.getElementById('admin-chat-btn').classList.remove('hidden');
+                }
+            }
+            
+            // Add to cart functionality - FIXED
+            document.querySelectorAll('.add-to-cart').forEach(button => {
+                button.addEventListener('click', function() {
+                    const name = this.dataset.name;
+                    const price = parseFloat(this.dataset.price);
+                    const image = this.dataset.image;
+                    
+                    // Get existing cart or create new one
+                    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+                    
+                    // Add new item
+                    cart.push({
+                        name: name,
+                        price: price,
+                        image: image
+                    });
+                    
+                    // Save to localStorage
+                    localStorage.setItem('cart', JSON.stringify(cart));
+                    
+                    // Show success notification
+                    const notification = document.createElement('div');
+                    notification.className = 'fixed bottom-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg flex items-center z-50';
+                    notification.innerHTML = `
+                        <i data-feather="check-circle" class="mr-2"></i>
+                        ${name} added to cart!
+                    `;
+                    document.body.appendChild(notification);
+                    feather.replace();
+                    
+                    // Remove notification after 3 seconds
+                    setTimeout(() => {
+                        notification.classList.add('opacity-0', 'transition-opacity', 'duration-500');
+                        setTimeout(() => notification.remove(), 500);
+                    }, 3000);
                 });
-                
-                // Show corresponding section
-                document.getElementById(hash).classList.remove('hidden');
-                
-                // Scroll to section
-                setTimeout(() => {
-                    document.getElementById(hash).scrollIntoView({ behavior: 'smooth' });
-                }, 100);
-            } else if (window.location.hash === '') {
-                // Default to models section
-                window.location.hash = 'models';
-            }
-        }
-
-        // Initial load and hash change
-        window.addEventListener('load', handleHashChange);
-        window.addEventListener('hashchange', handleHashChange);
-
-        // Tab click handling
-        document.querySelectorAll('[id$="-tab"]').forEach(tab => {
-            tab.addEventListener('click', (e) => {
-                e.preventDefault();
-                const sectionId = tab.id.replace('-tab', '');
-                window.location.hash = sectionId;
             });
-        });
-
-        // Initialize Vanta.js
-        VANTA.GLOBE({
-            el: "#vanta-bg",
-            mouseControls: true,
-            touchControls: true,
-            gyroControls: false,
-            minHeight: 200.00,
-            minWidth: 200.00,
-            scale: 1.00,
-            scaleMobile: 1.00,
-            color: 0xff0000,
-            backgroundColor: 0x0,
-            size: 0.8
-        });
-
-        // Initialize Feather Icons
-        feather.replace();
-
-        // Mobile menu toggle
-        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
-
-        mobileMenuBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-            feather.replace();
-        });
-
-        // Close mobile menu when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!mobileMenu.contains(e.target) && e.target !== mobileMenuBtn) {
-                mobileMenu.classList.add('hidden');
+            
+            // Contact form functionality - FIXED
+            document.getElementById('contact-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const name = document.getElementById('contact-name').value;
+                const email = document.getElementById('contact-email').value;
+                const message = document.getElementById('contact-message').value;
+                
+                // Create email data
+                const emailData = {
+                    to_email: 'bezalelganam95@gmail.com',
+                    from_name: name,
+                    from_email: email,
+                    message: message,
+                    subject: `New Contact Form Message from ${name}`
+                };
+                
+                // Send email using EmailJS
+                emailjs.send('service_YourServiceID', 'template_YourTemplateID', emailData)
+                    .then(function(response) {
+                        console.log('SUCCESS!', response.status, response.text);
+                        alert('Thank you for your message! We will get back to you soon.');
+                        document.getElementById('contact-form').reset();
+                    }, function(error) {
+                        console.log('FAILED...', error);
+                        alert('There was an error sending your message. Please try again later.');
+                    });
+            });
+            
+            // Tab functionality
+            // Handle hash changes
+            function handleHashChange() {
+                const hash = window.location.hash.substring(1);
+                const validSections = ['models', 'energy', 'charging', 'discover', 'shop', 'contact'];
+                
+                if (validSections.includes(hash)) {
+                    // Update active tab
+                    document.querySelectorAll('[id$="-tab"]').forEach(t => t.classList.remove('active-tab'));
+                    document.getElementById(`${hash}-tab`).classList.add('active-tab');
+                    
+                    // Hide all sections
+                    document.querySelectorAll('.tab-section').forEach(section => {
+                        section.classList.add('hidden');
+                    });
+                    
+                    // Show corresponding section
+                    document.getElementById(hash).classList.remove('hidden');
+                    
+                    // Scroll to section
+                    setTimeout(() => {
+                        document.getElementById(hash).scrollIntoView({ behavior: 'smooth' });
+                    }, 100);
+                } else if (window.location.hash === '') {
+                    // Default to models section
+                    window.location.hash = 'models';
+                }
             }
-        });
 
-        // Initialize first load
-        if (!window.location.hash) {
-            window.location.hash = 'models';
-        }
-    </script>
-</body>
-</html>
+            // Initial load and hash change
+            window.addEventListener('load', handleHashChange);
+            window.addEventListener('hashchange', handleHashChange);
+
+            // Tab click handling
+            document.querySelectorAll('[id$="-tab"]').forEach(tab => {
+                tab.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const sectionId = tab.id.replace('-tab', '');
+                    window.location.hash = sectionId;
+                });
+            });
+            
+            // Chat functionality
+            const chatBtn = document.getElementById('admin-chat-btn');
+            const chatModal = document.getElementById('admin-chat-modal');
+            const chatInput = document.getElementById('chat-input');
+            const chatMessages = document.getElementById('chat-messages');
+            const closeChat = document.getElementById('close-chat');
+            
+            // Show chat button to all visitors
+            chatBtn.classList.remove('hidden');
+            
+            // Initialize chat with welcome message
+            chatMessages.innerHTML = `
+                <div class="mb-2">
+                    <span class="bg-gray-700 text-white rounded-lg py-1 px-3 inline-block">
+                        Welcome! How can we help you today?
+                    </span>
+                </div>
+            `;
+
+            // Toggle chat visibility
+            chatBtn.addEventListener('click', () => {
+                chatModal.classList.toggle('hidden');
+                feather.replace();
+            });
+
+            closeChat.addEventListener('click', () => {
+                chatModal.classList.add('hidden');
+            });
+
+            // Handle chat input
+            chatInput.addEventListener('keypress', (e) => {
+                if(e.key === 'Enter' && e.target.value.trim()) {
+                    const message = e.target.value;
+                    
+                    // Add user message
+                    chatMessages.innerHTML += `
+                        <div class="mb-2 text-right">
+                            <span class="bg-red-500 text-white rounded-lg py-1 px-3 inline-block">
+                                ${message}
+                            </span>
+                        </div>
+                    `;
+                    
+                    e.target.value = '';
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                    
+                    // Admin or auto-response
+                    if (isAdmin) {
+                        // Show typing indicator
+                        chatMessages.innerHTML += `
+                            <div class="mb-2">
+                                <span class="bg-gray-700 text-white rounded-lg py-1 px-3 inline-block">
+                                    <i class="animate-pulse">Admin typing...</i>
+                                </span>
+                            </div>
+                        `;
+                        chatMessages.scrollTop = chatMessages.scrollHeight;
+                    } else {
+                        // Auto-responder for non-admin users
+                        setTimeout(() => {
+                            const response = getAdminResponse(message);
+                            chatMessages.innerHTML += `
+                                <div class="mb-2">
+                                    <span class="bg-gray-700 text-white rounded-lg py-1 px-3 inline-block">
+                                        ${response}
+                                    </span>
+                                </div>
+                            `;
+                            chatMessages.scrollTop = chatMessages.scrollHeight;
+                        }, 1000);
+                    }
+                }
+            });
+
+            // Track chat sessions
+            if(!localStorage.getItem('chatSessionId')) {
+                localStorage.setItem('chatSessionId', Date.now().toString());
+            }
+            
+            // Order modal
+            const orderModal = document.createElement('div');
+            orderModal.id = 'order-modal';
+            orderModal.className = 'fixed inset-0 bg-black bg-opacity-75 z-50 hidden flex items-center justify-center';
+            orderModal.innerHTML = `
+                <div class="bg-gray-900 rounded-lg max-w-md w-full p-6 relative">
+                    <button id="close-order-modal" class="absolute top-4 right-4 text-gray-400 hover:text-white">
+                        <i data-feather="x"></i
