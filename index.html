@@ -3,47 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Electrify Your Dreams | Tesla-Inspired EV Experience</title>
-    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    <title>WantToWin - Making the Odds for You</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/feather-icons"></script>
     <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
     <script>
         // Initialize EmailJS with your credentials
-        emailjs.init('user_YourEmailJSUserID'); // Replace with your actual EmailJS user ID
+        emailjs.init('user_YOUR_EMAILJS_USER_ID'); // Replace with your actual EmailJS user ID
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.globe.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+            background-color: #000;
+            color: #fff;
+        }
         .active-tab {
             color: #ef4444;
         }
         .active-tab::after {
             width: 100%;
             background: #ef4444;
-        }
-        body {
-            font-family: 'Montserrat', sans-serif;
-            overflow-x: hidden;
-        }
-        .hero-gradient {
-            background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
-        }
-        .vanta-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            mix-blend-mode: overlay;
-            pointer-events: none;
-        }
-        .car-model {
-            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .car-model:hover {
-            transform: translateY(-10px);
         }
         .nav-link {
             position: relative;
@@ -61,276 +43,108 @@
         .nav-link:hover::after {
             width: 100%;
         }
+        .shop-item {
+            transition: all 0.3s ease;
+        }
+        .shop-item:hover {
+            transform: translateY(-5px);
+        }
+        .chat-message {
+            max-width: 80%;
+            padding: 8px 12px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+        }
+        .user-message {
+            background-color: #ef4444;
+            margin-left: auto;
+        }
+        .admin-message {
+            background-color: #374151;
+        }
     </style>
 </head>
-<body class="bg-black text-white">
-    <!-- Vanta.js Background -->
-    <div id="vanta-bg" class="fixed top-0 left-0 w-full h-full z-0"></div>
+<body>
     <!-- Navigation -->
-    <nav class="relative z-10 py-6 px-4 md:px-12 flex justify-between items-center">
+    <nav class="py-6 px-4 md:px-12 flex justify-between items-center border-b border-gray-800">
         <div class="flex items-center">
-            <a href="#models" class="text-2xl font-bold tracking-tight">
-                <span class="text-red-500">ELECTRIFY</span>
-                <span class="text-white">⚡</span>
+            <a href="#shop" class="text-2xl font-bold tracking-tight">
+                <span class="text-red-500">WantToWin</span>
             </a>
         </div>
-        <div class="hidden md:flex space-x-8 items-center">
-            <a href="#models" id="models-tab" class="nav-link text-white font-medium active-tab">Models</a>
-            <a href="#energy" id="energy-tab" class="nav-link text-white font-medium">Energy</a>
-            <a href="#charging" id="charging-tab" class="nav-link text-white font-medium">Charging</a>
-            <a href="#discover" id="discover-tab" class="nav-link text-white font-medium">Discover</a>
-            <a href="#shop" id="shop-tab" class="nav-link text-white font-medium">Shop</a>
+        <div class="hidden md:flex space-x-8">
+            <a href="#shop" id="shop-tab" class="nav-link text-white font-medium active-tab">Shop</a>
             <a href="#contact" id="contact-tab" class="nav-link text-white font-medium">Contact</a>
-            <a href="login.html" class="nav-link text-white font-medium">Login</a>
+            <a href="#information" id="information-tab" class="nav-link text-white font-medium">Information</a>
+            <a href="#login" id="login-tab" class="nav-link text-white font-medium">Login</a>
+            <a href="#cart" id="cart-tab" class="nav-link text-white font-medium">Cart</a>
         </div>
         <div class="flex items-center space-x-4">
-            <div class="md:hidden relative">
-                <button id="mobile-menu-btn" class="text-white">
-                    <i data-feather="menu"></i>
-                </button>
-                <div id="mobile-menu" class="hidden absolute right-0 mt-2 w-48 bg-gray-900 rounded-md shadow-lg py-1 z-50 border border-gray-800">
-                    <a href="#models" class="block px-4 py-2 text-white hover:bg-gray-800">Models</a>
-                    <a href="#energy" class="block px-4 py-2 text-white hover:bg-gray-800">Energy</a>
-                    <a href="#charging" class="block px-4 py-2 text-white hover:bg-gray-800">Charging</a>
-                    <a href="#discover" class="block px-4 py-2 text-white hover:bg-gray-800">Discover</a>
-                    <a href="#shop" class="block px-4 py-2 text-white hover:bg-gray-800">Shop</a>
-                    <a href="#contact" class="block px-4 py-2 text-white hover:bg-gray-800">Contact</a>
-                    <a href="login.html" class="block px-4 py-2 text-white hover:bg-gray-800">Login</a>
-                </div>
-            </div>
-            <button class="hidden md:block bg-white text-black px-4 py-2 rounded font-medium hover:bg-opacity-90 transition">
-                Order Now
+            <button class="md:hidden text-white" id="mobile-menu-btn">
+                <i data-feather="menu"></i>
             </button>
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section class="relative h-screen flex items-center justify-center hero-gradient overflow-hidden">
-        <div class="vanta-overlay" id="vanta-overlay"></div>
-        <div class="relative z-10 text-center px-4 md:px-0">
-            <h1 class="text-4xl md:text-6xl font-bold mb-6">
-                The Future is <span class="text-red-500">Electric</span>
-            </h1>
-            <p class="text-xl md:text-2xl mb-10 max-w-2xl mx-auto">
-                Experience the thrill of instant torque and zero emissions with our cutting-edge electric vehicles.
-            </p>
-            <div class="flex flex-col md:flex-row justify-center gap-4">
-                <button id="order-now-btn" class="bg-red-500 hover:bg-red-600 text-white px-8 py-3 rounded font-medium transition">
-                    Custom Order
-                </button>
-                <button class="bg-transparent border-2 border-white hover:bg-white hover:text-black text-white px-8 py-3 rounded font-medium transition">
-                    Test Drive
-                </button>
-            </div>
-        </div>
-        <div class="absolute bottom-10 left-0 right-0 flex justify-center">
-            <i data-feather="chevron-down" class="animate-bounce text-white w-8 h-8"></i>
-        </div>
-    </section>
-
-    <!-- Models Section -->
-    <section id="models" class="tab-section py-20 px-4 md:px-12">
-        <div class="max-w-6xl mx-auto">
-            <h2 class="text-3xl md:text-4xl font-bold mb-16 text-center">Our Vehicle Lineup</h2>
-            
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Model 1 -->
-                <div class="car-model bg-gray-900 rounded-lg overflow-hidden hover:shadow-xl hover:shadow-red-500/20">
-                    <img src="http://static.photos/technology/1200x630/1" alt="Model S" class="w-full h-64 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-2xl font-bold mb-2">Model S</h3>
-                        <p class="text-gray-400 mb-4">Plaid: 0-60 mph in 1.99s</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-xl font-medium">From $89,990</span>
-                            <button class="text-red-500 hover:text-red-400 font-medium add-to-cart" 
-                                    data-name="Model S" 
-                                    data-price="89990" 
-                                    data-image="http://static.photos/technology/1200x630/1">Add to Cart</button>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Model 2 -->
-                <div class="car-model bg-gray-900 rounded-lg overflow-hidden hover:shadow-xl hover:shadow-red-500/20">
-                    <img src="http://static.photos/technology/1200x630/2" alt="Model 3" class="w-full h-64 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-2xl font-bold mb-2">Model 3</h3>
-                        <p class="text-gray-400 mb-4">Dual Motor All-Wheel Drive</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-xl font-medium">From $40,240</span>
-                            <button class="text-red-500 hover:text-red-400 font-medium add-to-cart" 
-                                    data-name="Model 3" 
-                                    data-price="40240" 
-                                    data-image="http://static.photos/technology/1200x630/2">Add to Cart</button>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Model 3 -->
-                <div class="car-model bg-gray-900 rounded-lg overflow-hidden hover:shadow-xl hover:shadow-red-500/20">
-                    <img src="http://static.photos/technology/1200x630/3" alt="Model X" class="w-full h-64 object-cover">
-                    <div class="p-6">
-                        <h3 class="text-2xl font-bold mb-2">Model X</h3>
-                        <p class="text-gray-400 mb-4">Plaid: 1,020 hp</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-xl font-medium">From $99,990</span>
-                            <button class="text-red-500 hover:text-red-400 font-medium add-to-cart" 
-                                    data-name="Model X" 
-                                    data-price="99990" 
-                                    data-image="http://static.photos/technology/1200x630/3">Add to Cart</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Energy Section -->
-    <section id="energy" class="tab-section hidden py-20 px-4 md:px-12 bg-gray-900">
-        <div class="max-w-6xl mx-auto">
-            <div class="flex flex-col md:flex-row items-center gap-12">
-                <div class="md:w-1/2">
-                    <h2 class="text-3xl md:text-4xl font-bold mb-6">Autopilot & Full Self-Driving</h2>
-                    <p class="text-gray-400 mb-8 text-lg">
-                        Future of driving is here. Our advanced Autopilot system enables your car to steer, accelerate and brake automatically.
-                    </p>
-                    <ul class="space-y-4">
-                        <li class="flex items-start">
-                            <i data-feather="check-circle" class="text-green-500 mr-3 mt-1"></i>
-                            <span>Navigate on Autopilot</span>
-                        </li>
-                        <li class="flex items-start">
-                            <i data-feather="check-circle" class="text-green-500 mr-3 mt-1"></i>
-                            <span>Auto Lane Change</span>
-                        </li>
-                        <li class="flex items-start">
-                            <i data-feather="check-circle" class="text-green-500 mr-3 mt-1"></i>
-                            <span>Summon</span>
-                        </li>
-                        <li class="flex items-start">
-                            <i data-feather="check-circle" class="text-green-500 mr-3 mt-1"></i>
-                            <span>Autopark</span>
-                        </li>
-                    </ul>
-                </div>
-                <div class="md:w-1/2">
-                    <div class="relative aspect-video bg-black rounded-xl overflow-hidden">
-                        <img src="http://static.photos/technology/1200x630/4" alt="Autopilot" class="w-full h-full object-cover">
-                        <div class="absolute inset-0 flex items-center justify-center">
-                            <button class="bg-white bg-opacity-20 backdrop-blur-sm rounded-full p-4 hover:bg-opacity-30 transition">
-                                <i data-feather="play" class="w-8 h-8"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Charging Section -->
-    <section id="charging" class="tab-section hidden py-20 px-4 md:px-12">
-        <div class="max-w-6xl mx-auto text-center">
-            <h2 class="text-3xl md:text-4xl font-bold mb-6">Supercharger Network</h2>
-            <p class="text-xl text-gray-400 max-w-3xl mx-auto mb-12">
-                Travel anywhere with access to our global Supercharger network. Charge in minutes, not hours.
-            </p>
-            <div class="grid md:grid-cols-3 gap-8 mb-16">
-                <div class="bg-gray-900 p-8 rounded-lg">
-                    <i data-feather="zap" class="w-12 h-12 text-red-500 mb-4 mx-auto"></i>
-                    <h3 class="text-xl font-bold mb-2">250 kW</h3>
-                    <p class="text-gray-400">Peak charging power</p>
-                </div>
-                <div class="bg-gray-900 p-8 rounded-lg">
-                    <i data-feather="map-pin" class="w-12 h-12 text-red-500 mb-4 mx-auto"></i>
-                    <h3 class="text-xl font-bold mb-2">40,000+</h3>
-                    <p class="text-gray-400">Global Superchargers</p>
-                </div>
-                <div class="bg-gray-900 p-8 rounded-lg">
-                    <i data-feather="clock" class="w-12 h-12 text-red-500 mb-4 mx-auto"></i>
-                    <h3 class="text-xl font-bold mb-2">15 min</h3>
-                    <p class="text-gray-400">For 200 miles of charge</p>
-                </div>
-            </div>
-            <button class="bg-red-500 hover:bg-red-600 text-white px-8 py-3 rounded font-medium transition">
-                Find a Supercharger
-            </button>
-        </div>
-    </section>
-
-    <!-- Discover Section -->
-    <section id="discover" class="tab-section hidden py-20 px-4 md:px-12 bg-black">
-        <div class="max-w-6xl mx-auto text-center">
-            <h2 class="text-3xl md:text-4xl font-bold mb-6">Discover Electrify</h2>
-            <p class="text-xl text-gray-400 max-w-3xl mx-auto mb-12">
-                Learn more about our vision, technology, and the future of sustainable transportation.
-            </p>
-            <div class="grid md:grid-cols-3 gap-8">
-                <div class="bg-gray-900 p-8 rounded-lg hover:shadow-lg hover:shadow-red-500/20 transition">
-                    <i data-feather="book" class="w-12 h-12 text-red-500 mb-4 mx-auto"></i>
-                    <h3 class="text-xl font-bold mb-2">Our Story</h3>
-                    <p class="text-gray-400 mb-4">Learn about our mission and vision</p>
-                    <a href="#" class="text-red-500 hover:text-red-400 font-medium">Read More</a>
-                </div>
-                <div class="bg-gray-900 p-8 rounded-lg hover:shadow-lg hover:shadow-red-500/20 transition">
-                    <i data-feather="cpu" class="w-12 h-12 text-red-500 mb-4 mx-auto"></i>
-                    <h3 class="text-xl font-bold mb-2">Technology</h3>
-                    <p class="text-gray-400 mb-4">Explore our cutting-edge innovations</p>
-                    <a href="#" class="text-red-500 hover:text-red-400 font-medium">Read More</a>
-                </div>
-                <div class="bg-gray-900 p-8 rounded-lg hover:shadow-lg hover:shadow-red-500/20 transition">
-                    <i data-feather="globe" class="w-12 h-12 text-red-500 mb-4 mx-auto"></i>
-                    <h3 class="text-xl font-bold mb-2">Sustainability</h3>
-                    <p class="text-gray-400 mb-4">Our commitment to a greener future</p>
-                    <a href="#" class="text-red-500 hover:text-red-400 font-medium">Read More</a>
-                </div>
-            </div>
-        </div>
-    </section>
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden md:hidden bg-gray-900 py-2 px-4 border-b border-gray-800">
+        <a href="#shop" class="block py-2 text-white">Shop</a>
+        <a href="#contact" class="block py-2 text-white">Contact</a>
+        <a href="#information" class="block py-2 text-white">Information</a>
+        <a href="#login" class="block py-2 text-white">Login</a>
+        <a href="#cart" class="block py-2 text-white">Cart</a>
+    </div>
 
     <!-- Shop Section -->
-    <section id="shop" class="tab-section hidden py-20 px-4 md:px-12">
+    <section id="shop" class="tab-section py-16 px-4 md:px-12">
         <div class="max-w-6xl mx-auto">
-            <h2 class="text-3xl md:text-4xl font-bold mb-16 text-center">Shop Accessories</h2>
+            <h1 class="text-4xl font-bold mb-12">Shop</h1>
+            
             <div class="grid md:grid-cols-3 gap-8">
-                <div class="bg-gray-900 rounded-lg overflow-hidden hover:shadow-xl hover:shadow-red-500/20 transition">
-                    <img src="http://static.photos/technology/640x360/5" alt="Wall Connector" class="w-full h-64 object-cover">
+                <!-- Item 1 -->
+                <div class="shop-item bg-gray-900 rounded-lg overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c2hvZXN8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60" alt="Premium Shoes" class="w-full h-48 object-cover">
                     <div class="p-6">
-                        <h3 class="text-2xl font-bold mb-2">Wall Connector</h3>
-                        <p class="text-gray-400 mb-4">Fast home charging solution</p>
+                        <h3 class="text-xl font-bold mb-2">Premium Shoes</h3>
+                        <p class="text-gray-400 mb-4">High-quality premium shoes for winners</p>
                         <div class="flex justify-between items-center">
-                            <span class="text-xl font-medium">$500</span>
-                            <button class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded font-medium transition add-to-cart" 
-                                    data-name="Wall Connector" 
-                                    data-price="500" 
-                                    data-image="http://static.photos/technology/640x360/5">Add to Cart</button>
+                            <span class="text-lg font-medium">$100</span>
+                            <button class="text-red-500 hover:text-red-400 font-medium add-to-cart" 
+                                    data-name="Premium Shoes" 
+                                    data-price="100" 
+                                    data-image="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c2hvZXN8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60">Add to Cart</button>
                         </div>
                     </div>
                 </div>
-                <div class="bg-gray-900 rounded-lg overflow-hidden hover:shadow-xl hover:shadow-red-500/20 transition">
-                    <img src="http://static.photos/technology/640x360/6" alt="Mobile Connector" class="w-full h-64 object-cover">
+                
+                <!-- Item 2 -->
+                <div class="shop-item bg-gray-900 rounded-lg overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8d2F0Y2h8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60" alt="Luxury Watch" class="w-full h-48 object-cover">
                     <div class="p-6">
-                        <h3 class="text-2xl font-bold mb-2">Mobile Connector</h3>
-                        <p class="text-gray-400 mb-4">Portable charging adapter</p>
+                        <h3 class="text-xl font-bold mb-2">Luxury Watch</h3>
+                        <p class="text-gray-400 mb-4">Elegant timepiece for successful people</p>
                         <div class="flex justify-between items-center">
-                            <span class="text-xl font-medium">$230</span>
-                            <button class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded font-medium transition add-to-cart" 
-                                    data-name="Mobile Connector" 
-                                    data-price="230" 
-                                    data-image="http://static.photos/technology/640x360/6">Add to Cart</button>
+                            <span class="text-lg font-medium">$1000</span>
+                            <button class="text-red-500 hover:text-red-400 font-medium add-to-cart" 
+                                    data-name="Luxury Watch" 
+                                    data-price="1000" 
+                                    data-image="https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8d2F0Y2h8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60">Add to Cart</button>
                         </div>
                     </div>
                 </div>
-                <div class="bg-gray-900 rounded-lg overflow-hidden hover:shadow-xl hover:shadow-red-500/20 transition">
-                    <img src="http://static.photos/technology/640x360/7" alt="Cable Organizer" class="w-full h-64 object-cover">
+                
+                <!-- Item 3 -->
+                <div class="shop-item bg-gray-900 rounded-lg overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aGVhZHBob25lc3xlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60" alt="Wireless Headphones" class="w-full h-48 object-cover">
                     <div class="p-6">
-                        <h3 class="text-2xl font-bold mb-2">Cable Organizer</h3>
-                        <p class="text-gray-400 mb-4">Keep your cables tidy</p>
+                        <h3 class="text-xl font-bold mb-2">Wireless Headphones</h3>
+                        <p class="text-gray-400 mb-4">Premium sound quality for immersive experience</p>
                         <div class="flex justify-between items-center">
-                            <span class="text-xl font-medium">$35</span>
-                            <button class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded font-medium transition add-to-cart" 
-                                    data-name="Cable Organizer" 
-                                    data-price="35" 
-                                    data-image="http://static.photos/technology/640x360/7">Add to Cart</button>
+                            <span class="text-lg font-medium">$200</span>
+                            <button class="text-red-500 hover:text-red-400 font-medium add-to-cart" 
+                                    data-name="Wireless Headphones" 
+                                    data-price="200" 
+                                    data-image="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aGVhZHBob25lc3xlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60">Add to Cart</button>
                         </div>
                     </div>
                 </div>
@@ -339,9 +153,9 @@
     </section>
 
     <!-- Contact Section -->
-    <section id="contact" class="tab-section hidden py-20 px-4 md:px-12 bg-gray-900">
+    <section id="contact" class="tab-section hidden py-16 px-4 md:px-12 bg-gray-900">
         <div class="max-w-6xl mx-auto">
-            <h2 class="text-3xl md:text-4xl font-bold mb-12 text-center">Contact Us</h2>
+            <h2 class="text-3xl font-bold mb-12 text-center">Contact Us</h2>
             <div class="grid md:grid-cols-2 gap-12">
                 <div>
                     <h3 class="text-xl font-bold mb-4">Send us a message</h3>
@@ -367,7 +181,7 @@
                             <i data-feather="mail" class="text-red-500 mr-4 mt-1"></i>
                             <div>
                                 <h4 class="font-medium">Email</h4>
-                                <p class="text-gray-400">bezalelganam59@gmail.com</p>
+                                <p class="text-gray-400">bezalelganam95@gmail.com</p>
                             </div>
                         </div>
                         <div class="flex items-start">
@@ -381,7 +195,7 @@
                             <i data-feather="map-pin" class="text-red-500 mr-4 mt-1"></i>
                             <div>
                                 <h4 class="font-medium">Address</h4>
-                                <p class="text-gray-400">123 Electric Ave, San Francisco, CA 94107</p>
+                                <p class="text-gray-400">123 Winner Street, Success City, SC 12345</p>
                             </div>
                         </div>
                     </div>
@@ -390,64 +204,207 @@
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="bg-black py-16 px-4 md:px-12 border-t border-gray-800">
-        <div class="max-w-6xl mx-auto grid md:grid-cols-4 gap-12">
-            <div>
-                <h3 class="text-xl font-bold mb-6">ELECTRIFY⚡</h3>
-                <p class="text-gray-400 mb-6">
-                    Accelerating the world's transition to sustainable energy.
-                </p>
-                <div class="flex space-x-4">
-                    <a href="#" class="text-gray-400 hover:text-white"><i data-feather="twitter"></i></a>
-                    <a href="#" class="text-gray-400 hover:text-white"><i data-feather="facebook"></i></a>
-                    <a href="#" class="text-gray-400 hover:text-white"><i data-feather="instagram"></i></a>
-                    <a href="#" class="text-gray-400 hover:text-white"><i data-feather="youtube"></i></a>
+    <!-- Information Section -->
+    <section id="information" class="tab-section hidden py-16 px-4 md:px-12">
+        <div class="max-w-6xl mx-auto text-center">
+            <h2 class="text-3xl md:text-4xl font-bold mb-6">WantToWin</h2>
+            <p class="text-xl text-gray-400 max-w-3xl mx-auto mb-12">
+                We are making the odds for you
+            </p>
+            <div class="bg-gray-900 rounded-lg p-8 max-w-2xl mx-auto">
+                <div class="space-y-6">
+                    <div class="flex items-start">
+                        <i data-feather="mail" class="text-red-500 mr-4 mt-1"></i>
+                        <div class="text-left">
+                            <h4 class="font-medium">Email</h4>
+                            <p class="text-gray-400">bezalelganam95@gmail.com</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <i data-feather="phone" class="text-red-500 mr-4 mt-1"></i>
+                        <div class="text-left">
+                            <h4 class="font-medium">Phone</h4>
+                            <p class="text-gray-400">+1 (555) 123-4567</p>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div>
-                <h4 class="font-bold mb-6">Models</h4>
-                <ul class="space-y-3">
-                    <li><a href="#models" class="text-gray-400 hover:text-white">Model S</a></li>
-                    <li><a href="#models" class="text-gray-400 hover:text-white">Model 3</a></li>
-                    <li><a href="#models" class="text-gray-400 hover:text-white">Model X</a></li>
-                    <li><a href="#models" class="text-gray-400 hover:text-white">Model Y</a></li>
-                </ul>
+        </div>
+    </section>
+
+    <!-- Login Section -->
+    <section id="login" class="tab-section hidden py-16 px-4 md:px-12 bg-gray-900">
+        <div class="max-w-md mx-auto bg-black rounded-lg p-8 shadow-lg">
+            <h1 class="text-3xl font-bold mb-8 text-center">Login</h1>
+            
+            <!-- Google Sign In -->
+            <div id="g_id_onload"
+                data-client_id="YOUR_GOOGLE_CLIENT_ID"
+                data-context="signin"
+                data-ux_mode="popup"
+                data-login_uri="/auth/google/callback"
+                data-auto_prompt="false">
             </div>
-            <div>
-                <h4 class="font-bold mb-6">Company</h4>
-                <ul class="space-y-3">
-                    <li><a href="#discover" class="text-gray-400 hover:text-white">About</a></li>
-                    <li><a href="#discover" class="text-gray-400 hover:text-white">Careers</a></li>
-                    <li><a href="#discover" class="text-gray-400 hover:text-white">Investors</a></li>
-                    <li><a href="#contact" class="text-gray-400 hover:text-white">Contact</a></li>
-                </ul>
+            <div class="g_id_signin mb-6 w-full"
+                data-type="standard"
+                data-shape="rectangular"
+                data-theme="filled_black"
+                data-text="signin_with"
+                data-size="large"
+                data-logo_alignment="left">
             </div>
-            <div>
-                <h4 class="font-bold mb-6">Support</h4>
-                <ul class="space-y-3">
-                    <li><a href="cart.html" class="text-gray-400 hover:text-white">View Cart</a></li>
-                    <li><a href="#" class="text-gray-400 hover:text-white">Customer Support</a></li>
-                    <li><a href="#" class="text-gray-400 hover:text-white">Owner's Manual</a></li>
-                    <li><a href="#" class="text-gray-400 hover:text-white">Warranty</a></li>
-                    <li><a href="#" class="text-gray-400 hover:text-white">Roadside Assistance</a></li>
-                </ul>
+            
+            <div class="flex items-center mb-6">
+                <div class="flex-grow border-t border-gray-700"></div>
+                <span class="mx-4 text-gray-400">or</span>
+                <div class="flex-grow border-t border-gray-700"></div>
+            </div>
+            
+            <!-- Email Login Form -->
+            <form id="login-form" class="space-y-6">
+                <div>
+                    <label for="email" class="block text-gray-400 mb-2">Email</label>
+                    <input type="email" id="email" class="w-full bg-gray-800 text-white p-3 rounded focus:outline-none focus:ring-1 focus:ring-red-500" required>
+                </div>
+                <div>
+                    <label for="password" class="block text-gray-400 mb-2">Password</label>
+                    <input type="password" id="password" class="w-full bg-gray-800 text-white p-3 rounded focus:outline-none focus:ring-1 focus:ring-red-500" required>
+                </div>
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <input type="checkbox" id="remember" class="mr-2">
+                        <label for="remember" class="text-gray-400">Remember me</label>
+                    </div>
+                    <a href="#forgot-password" class="text-red-500 hover:text-red-400 text-sm forgot-password">Forgot password?</a>
+                </div>
+                <button type="submit" class="w-full bg-red-500 hover:bg-red-600 text-white py-3 rounded font-medium transition">
+                    Sign In
+                </button>
+            </form>
+            <div class="mt-6 text-center">
+                <p class="text-gray-400">Don't have an account? <a href="#signup" class="text-red-500 hover:text-red-400 signup-link">Sign up</a></p>
             </div>
         </div>
-        <div class="max-w-6xl mx-auto mt-16 pt-8 border-t border-gray-800 text-center text-gray-500">
-            <p>© 2023 Electrify. All rights reserved.</p>
+    </section>
+
+    <!-- Forgot Password Section -->
+    <section id="forgot-password" class="tab-section hidden py-16 px-4 md:px-12 bg-gray-900">
+        <div class="max-w-md mx-auto bg-black rounded-lg p-8 shadow-lg">
+            <h1 class="text-3xl font-bold mb-8 text-center">Reset Password</h1>
+            <form id="forgot-password-form" class="space-y-6">
+                <div>
+                    <label for="reset-email" class="block text-gray-400 mb-2">Email</label>
+                    <input type="email" id="reset-email" class="w-full bg-gray-800 text-white p-3 rounded focus:outline-none focus:ring-1 focus:ring-red-500" required>
+                </div>
+                <button type="submit" class="w-full bg-red-500 hover:bg-red-600 text-white py-3 rounded font-medium transition">
+                    Send Reset Link
+                </button>
+            </form>
+            <div class="mt-6 text-center">
+                <p class="text-gray-400">Remember your password? <a href="#login" class="text-red-500 hover:text-red-400 back-to-login">Back to Login</a></p>
+            </div>
         </div>
-    </footer>
+    </section>
+
+    <!-- Signup Section -->
+    <section id="signup" class="tab-section hidden py-16 px-4 md:px-12 bg-gray-900">
+        <div class="max-w-md mx-auto bg-black rounded-lg p-8 shadow-lg">
+            <h1 class="text-3xl font-bold mb-8 text-center">Create Account</h1>
+            
+            <!-- Google Sign Up -->
+            <div id="g_id_onload"
+                data-client_id="YOUR_GOOGLE_CLIENT_ID"
+                data-context="signup"
+                data-ux_mode="popup"
+                data-login_uri="/auth/google/callback"
+                data-auto_prompt="false">
+            </div>
+            <div class="g_id_signin mb-6 w-full"
+                data-type="standard"
+                data-shape="rectangular"
+                data-theme="filled_black"
+                data-text="signup_with"
+                data-size="large"
+                data-logo_alignment="left">
+            </div>
+            
+            <div class="flex items-center mb-6">
+                <div class="flex-grow border-t border-gray-700"></div>
+                <span class="mx-4 text-gray-400">or</span>
+                <div class="flex-grow border-t border-gray-700"></div>
+            </div>
+            
+            <!-- Email Signup Form -->
+            <form id="signup-form" class="space-y-6">
+                <div>
+                    <label for="name" class="block text-gray-400 mb-2">Full Name</label>
+                    <input type="text" id="name" class="w-full bg-gray-800 text-white p-3 rounded focus:outline-none focus:ring-1 focus:ring-red-500" required>
+                </div>
+                <div>
+                    <label for="signup-email" class="block text-gray-400 mb-2">Email</label>
+                    <input type="email" id="signup-email" class="w-full bg-gray-800 text-white p-3 rounded focus:outline-none focus:ring-1 focus:ring-red-500" required>
+                </div>
+                <div>
+                    <label for="signup-password" class="block text-gray-400 mb-2">Password</label>
+                    <input type="password" id="signup-password" class="w-full bg-gray-800 text-white p-3 rounded focus:outline-none focus:ring-1 focus:ring-red-500" required>
+                </div>
+                <div>
+                    <label for="confirm-password" class="block text-gray-400 mb-2">Confirm Password</label>
+                    <input type="password" id="confirm-password" class="w-full bg-gray-800 text-white p-3 rounded focus:outline-none focus:ring-1 focus:ring-red-500" required>
+                </div>
+                <button type="submit" class="w-full bg-red-500 hover:bg-red-600 text-white py-3 rounded font-medium transition">
+                    Create Account
+                </button>
+            </form>
+            <div class="mt-6 text-center">
+                <p class="text-gray-400">Already have an account? <a href="#login" class="text-red-500 hover:text-red-400 back-to-login">Login</a></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cart Section -->
+    <section id="cart" class="tab-section hidden py-16 px-4 md:px-12">
+        <div class="max-w-6xl mx-auto">
+            <h1 class="text-3xl md:text-4xl font-bold mb-8">Your Cart</h1>
+            
+            <div id="cart-items" class="mb-8">
+                <!-- Cart items will be dynamically inserted here -->
+                <div id="empty-cart-message" class="text-center py-12">
+                    <i data-feather="shopping-cart" class="w-12 h-12 mx-auto text-gray-500 mb-4"></i>
+                    <p class="text-xl text-gray-400">Your cart is empty</p>
+                    <a href="#shop" class="text-red-500 hover:text-red-400 mt-4 inline-block">Start Shopping</a>
+                </div>
+            </div>
+
+            <div class="bg-gray-900 rounded-lg p-6">
+                <div class="flex justify-between mb-4">
+                    <span class="text-gray-400">Subtotal</span>
+                    <span id="subtotal" class="font-medium">$0</span>
+                </div>
+                <div class="flex justify-between mb-4">
+                    <span class="text-gray-400">Shipping</span>
+                    <span class="font-medium">Free</span>
+                </div>
+                <div class="flex justify-between mb-6 border-t border-gray-800 pt-4">
+                    <span class="text-lg">Total</span>
+                    <span id="total" class="text-xl font-bold">$0</span>
+                </div>
+                <button id="checkout-btn" class="w-full bg-red-500 hover:bg-red-600 text-white py-3 rounded font-medium transition">
+                    Proceed to Checkout
+                </button>
+            </div>
+        </div>
+    </section>
 
     <!-- Admin Chat Button -->
-    <button id="admin-chat-btn" class="fixed bottom-6 right-6 bg-red-500 text-white p-3 rounded-full shadow-lg hover:bg-red-600 transition hidden">
+    <button id="admin-chat-btn" class="fixed bottom-6 right-6 bg-red-500 text-white p-3 rounded-full shadow-lg hover:bg-red-600 transition">
         <i data-feather="message-circle"></i>
     </button>
 
     <!-- Admin Chat Modal -->
     <div id="admin-chat-modal" class="fixed bottom-24 right-6 w-80 bg-gray-900 rounded-lg shadow-xl border border-gray-700 hidden z-50">
         <div class="p-4 border-b border-gray-700 flex justify-between items-center">
-            <h3 class="font-bold">Admin Chat</h3>
+            <h3 class="font-bold">Chat Support</h3>
             <button id="close-chat" class="text-gray-400 hover:text-white">
                 <i data-feather="x"></i>
             </button>
@@ -462,43 +419,75 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Check login status
-            const isAdmin = localStorage.getItem('isAdmin') === 'true';
-            const userEmail = localStorage.getItem('userEmail');
+            feather.replace();
             
-            // Initialize cart if not exists
+            // Initialize storage if not exists
+            if (!localStorage.getItem('users')) {
+                localStorage.setItem('users', JSON.stringify([]));
+            }
             if (!localStorage.getItem('cart')) {
                 localStorage.setItem('cart', JSON.stringify([]));
             }
-            
-            if (userEmail) {
-                // Replace login link with user profile
-                const loginLink = document.querySelector('a[href="login.html"]');
-                if (loginLink) {
-                    loginLink.innerHTML = `
-                        <div class="flex items-center space-x-2">
-                            <span>${userEmail}</span>
-                            <i data-feather="user"></i>
-                        </div>
-                    `;
-                    loginLink.href = '#';
-                    
-                    // Add logout functionality
-                    loginLink.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        localStorage.removeItem('isAdmin');
-                        localStorage.removeItem('userEmail');
-                        window.location.reload();
-                    });
-                }
+            if (!localStorage.getItem('chats')) {
+                localStorage.setItem('chats', JSON.stringify({}));
+            }
+            if (!localStorage.getItem('chatSessionId')) {
+                localStorage.setItem('chatSessionId', Date.now().toString());
+            }
+
+            // Tab functionality
+            function handleHashChange() {
+                const hash = window.location.hash.substring(1);
+                const validSections = ['shop', 'contact', 'information', 'login', 'cart', 'forgot-password', 'signup'];
                 
-                // Show admin chat button if admin
-                if (isAdmin) {
-                    document.getElementById('admin-chat-btn').classList.remove('hidden');
+                if (validSections.includes(hash)) {
+                    // Update active tab
+                    document.querySelectorAll('[id$="-tab"]').forEach(t => t.classList.remove('active-tab'));
+                    if (document.getElementById(`${hash}-tab`)) {
+                        document.getElementById(`${hash}-tab`).classList.add('active-tab');
+                    }
+                    
+                    // Hide all sections
+                    document.querySelectorAll('.tab-section').forEach(section => {
+                        section.classList.add('hidden');
+                    });
+                    
+                    // Show corresponding section
+                    document.getElementById(hash).classList.remove('hidden');
+                    
+                    // Special handling for cart
+                    if (hash === 'cart') {
+                        renderCart();
+                    }
+                } else if (window.location.hash === '') {
+                    // Default to shop section
+                    window.location.hash = 'shop';
                 }
             }
-            
-            // Add to cart functionality - FIXED
+
+            // Initial load and hash change
+            window.addEventListener('load', handleHashChange);
+            window.addEventListener('hashchange', handleHashChange);
+
+            // Tab click handling
+            document.querySelectorAll('[id$="-tab"]').forEach(tab => {
+                tab.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const sectionId = tab.id.replace('-tab', '');
+                    window.location.hash = sectionId;
+                });
+            });
+
+            // Mobile menu toggle
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+                feather.replace();
+            });
+
+            // Add to cart functionality
             document.querySelectorAll('.add-to-cart').forEach(button => {
                 button.addEventListener('click', function() {
                     const name = this.dataset.name;
@@ -535,8 +524,8 @@
                     }, 3000);
                 });
             });
-            
-            // Contact form functionality - FIXED
+
+            // Contact form functionality
             document.getElementById('contact-form').addEventListener('submit', function(e) {
                 e.preventDefault();
                 
@@ -554,7 +543,7 @@
                 };
                 
                 // Send email using EmailJS
-                emailjs.send('service_YourServiceID', 'template_YourTemplateID', emailData)
+                emailjs.send('service_YOUR_SERVICE_ID', 'template_YOUR_TEMPLATE_ID', emailData)
                     .then(function(response) {
                         console.log('SUCCESS!', response.status, response.text);
                         alert('Thank you for your message! We will get back to you soon.');
@@ -564,49 +553,181 @@
                         alert('There was an error sending your message. Please try again later.');
                     });
             });
-            
-            // Tab functionality
-            // Handle hash changes
-            function handleHashChange() {
-                const hash = window.location.hash.substring(1);
-                const validSections = ['models', 'energy', 'charging', 'discover', 'shop', 'contact'];
+
+            // Login form functionality
+            document.getElementById('login-form').addEventListener('submit', function(e) {
+                e.preventDefault();
                 
-                if (validSections.includes(hash)) {
-                    // Update active tab
-                    document.querySelectorAll('[id$="-tab"]').forEach(t => t.classList.remove('active-tab'));
-                    document.getElementById(`${hash}-tab`).classList.add('active-tab');
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                
+                // Get existing users
+                const users = JSON.parse(localStorage.getItem('users')) || [];
+                
+                // Find user
+                const user = users.find(user => user.email === email && user.password === password);
+                
+                if (user) {
+                    localStorage.setItem('isLoggedIn', 'true');
+                    localStorage.setItem('userEmail', email);
+                    localStorage.setItem('userName', user.name || email.split('@')[0]);
                     
-                    // Hide all sections
-                    document.querySelectorAll('.tab-section').forEach(section => {
-                        section.classList.add('hidden');
-                    });
-                    
-                    // Show corresponding section
-                    document.getElementById(hash).classList.remove('hidden');
-                    
-                    // Scroll to section
-                    setTimeout(() => {
-                        document.getElementById(hash).scrollIntoView({ behavior: 'smooth' });
-                    }, 100);
-                } else if (window.location.hash === '') {
-                    // Default to models section
-                    window.location.hash = 'models';
+                    alert('Login successful!');
+                    window.location.hash = 'shop';
+                } else {
+                    alert('Invalid email or password. Please try again or sign up.');
                 }
-            }
+            });
 
-            // Initial load and hash change
-            window.addEventListener('load', handleHashChange);
-            window.addEventListener('hashchange', handleHashChange);
+            // Forgot password form functionality
+            document.getElementById('forgot-password-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const email = document.getElementById('reset-email').value;
+                
+                // Get existing users
+                const users = JSON.parse(localStorage.getItem('users')) || [];
+                
+                // Check if user exists
+                const userExists = users.some(user => user.email === email);
+                
+                if (userExists) {
+                    // In a real app, this would send an email with a reset link
+                    alert('Password reset link has been sent to your email.');
+                    window.location.hash = 'login';
+                } else {
+                    alert('No account found with this email address.');
+                }
+            });
 
-            // Tab click handling
-            document.querySelectorAll('[id$="-tab"]').forEach(tab => {
-                tab.addEventListener('click', (e) => {
+            // Signup form functionality
+            document.getElementById('signup-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const name = document.getElementById('name').value;
+                const email = document.getElementById('signup-email').value;
+                const password = document.getElementById('signup-password').value;
+                const confirmPassword = document.getElementById('confirm-password').value;
+                
+                // Validate passwords match
+                if (password !== confirmPassword) {
+                    alert('Passwords do not match!');
+                    return;
+                }
+                
+                // Get existing users
+                const users = JSON.parse(localStorage.getItem('users')) || [];
+                
+                // Check if user already exists
+                if (users.some(user => user.email === email)) {
+                    alert('This email is already registered!');
+                    return;
+                }
+                
+                // Add new user
+                users.push({
+                    name: name,
+                    email: email,
+                    password: password
+                });
+                
+                // Save to localStorage
+                localStorage.setItem('users', JSON.stringify(users));
+                
+                // Redirect to login
+                alert('Account created successfully! Please login.');
+                window.location.hash = 'login';
+            });
+
+            // Navigation links
+            document.querySelectorAll('.forgot-password').forEach(link => {
+                link.addEventListener('click', (e) => {
                     e.preventDefault();
-                    const sectionId = tab.id.replace('-tab', '');
-                    window.location.hash = sectionId;
+                    window.location.hash = 'forgot-password';
                 });
             });
-            
+
+            document.querySelectorAll('.signup-link').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    window.location.hash = 'signup';
+                });
+            });
+
+            document.querySelectorAll('.back-to-login').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    window.location.hash = 'login';
+                });
+            });
+
+            // Cart functionality
+            function renderCart() {
+                const cart = JSON.parse(localStorage.getItem('cart')) || [];
+                const cartItemsEl = document.getElementById('cart-items');
+                const emptyCartMessage = document.getElementById('empty-cart-message');
+                const subtotalEl = document.getElementById('subtotal');
+                const totalEl = document.getElementById('total');
+
+                if (cart.length === 0) {
+                    emptyCartMessage.classList.remove('hidden');
+                    cartItemsEl.innerHTML = '';
+                    cartItemsEl.appendChild(emptyCartMessage);
+                    return;
+                }
+
+                emptyCartMessage.classList.add('hidden');
+                
+                let html = '';
+                let subtotal = 0;
+                
+                cart.forEach((item, index) => {
+                    subtotal += parseFloat(item.price);
+                    html += `
+                        <div class="flex items-center justify-between py-4 border-b border-gray-800">
+                            <div class="flex items-center">
+                                <img src="${item.image}" alt="${item.name}" class="w-16 h-16 object-cover rounded">
+                                <div class="ml-4">
+                                    <h3 class="font-medium">${item.name}</h3>
+                                    <p class="text-gray-400">$${item.price}</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <button class="text-red-500 hover:text-red-400 remove-item" data-index="${index}">
+                                    <i data-feather="trash-2"></i>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                cartItemsEl.innerHTML = html;
+                subtotalEl.textContent = `$${subtotal.toFixed(2)}`;
+                totalEl.textContent = `$${subtotal.toFixed(2)}`;
+                feather.replace();
+            }
+
+            // Remove item from cart
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('remove-item') || e.target.closest('.remove-item')) {
+                    const index = e.target.closest('.remove-item').dataset.index;
+                    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+                    cart.splice(index, 1);
+                    localStorage.setItem('cart', JSON.stringify(cart));
+                    renderCart();
+                }
+            });
+
+            // Checkout button
+            document.getElementById('checkout-btn').addEventListener('click', function() {
+                const cart = JSON.parse(localStorage.getItem('cart')) || [];
+                if (cart.length > 0) {
+                    alert('Thank you for your order! We will process it shortly.');
+                    localStorage.setItem('cart', JSON.stringify([]));
+                    renderCart();
+                }
+            });
+
             // Chat functionality
             const chatBtn = document.getElementById('admin-chat-btn');
             const chatModal = document.getElementById('admin-chat-modal');
@@ -614,17 +735,28 @@
             const chatMessages = document.getElementById('chat-messages');
             const closeChat = document.getElementById('close-chat');
             
-            // Show chat button to all visitors
-            chatBtn.classList.remove('hidden');
-            
-            // Initialize chat with welcome message
-            chatMessages.innerHTML = `
-                <div class="mb-2">
-                    <span class="bg-gray-700 text-white rounded-lg py-1 px-3 inline-block">
+            // Load chat history
+            const chatSessionId = localStorage.getItem('chatSessionId');
+            const chats = JSON.parse(localStorage.getItem('chats')) || {};
+            if (chats[chatSessionId]) {
+                chats[chatSessionId].forEach(msg => {
+                    const messageClass = msg.isAdmin ? 'admin-message' : 'user-message';
+                    chatMessages.innerHTML += `
+                        <div class="chat-message ${messageClass}">
+                            ${msg.message}
+                        </div>
+                    `;
+                });
+            } else {
+                // Initialize with welcome message
+                chatMessages.innerHTML = `
+                    <div class="chat-message admin-message">
                         Welcome! How can we help you today?
-                    </span>
-                </div>
-            `;
+                    </div>
+                `;
+                chats[chatSessionId] = [{ message: "Welcome! How can we help you today?", isAdmin: true }];
+                localStorage.setItem('chats', JSON.stringify(chats));
+            }
 
             // Toggle chat visibility
             chatBtn.addEventListener('click', () => {
@@ -643,127 +775,55 @@
                     
                     // Add user message
                     chatMessages.innerHTML += `
-                        <div class="mb-2 text-right">
-                            <span class="bg-red-500 text-white rounded-lg py-1 px-3 inline-block">
-                                ${message}
-                            </span>
+                        <div class="chat-message user-message">
+                            ${message}
                         </div>
                     `;
+                    
+                    // Save to chat history
+                    chats[chatSessionId].push({ message: message, isAdmin: false });
+                    localStorage.setItem('chats', JSON.stringify(chats));
                     
                     e.target.value = '';
                     chatMessages.scrollTop = chatMessages.scrollHeight;
                     
-                    // Admin or auto-response
-                    if (isAdmin) {
-                        // Show typing indicator
+                    // Auto-response
+                    setTimeout(() => {
+                        const response = getAdminResponse(message);
                         chatMessages.innerHTML += `
-                            <div class="mb-2">
-                                <span class="bg-gray-700 text-white rounded-lg py-1 px-3 inline-block">
-                                    <i class="animate-pulse">Admin typing...</i>
-                                </span>
+                            <div class="chat-message admin-message">
+                                ${response}
                             </div>
                         `;
+                        chats[chatSessionId].push({ message: response, isAdmin: true });
+                        localStorage.setItem('chats', JSON.stringify(chats));
                         chatMessages.scrollTop = chatMessages.scrollHeight;
-                    } else {
-                        // Auto-responder for non-admin users
-                        setTimeout(() => {
-                            const response = getAdminResponse(message);
-                            chatMessages.innerHTML += `
-                                <div class="mb-2">
-                                    <span class="bg-gray-700 text-white rounded-lg py-1 px-3 inline-block">
-                                        ${response}
-                                    </span>
-                                </div>
-                            `;
-                            chatMessages.scrollTop = chatMessages.scrollHeight;
-                        }, 1000);
-                    }
+                    }, 1000);
                 }
             });
 
-            // Track chat sessions
-            if(!localStorage.getItem('chatSessionId')) {
-                localStorage.setItem('chatSessionId', Date.now().toString());
-            }
-            
-            // Order modal
-            const orderModal = document.createElement('div');
-            orderModal.id = 'order-modal';
-            orderModal.className = 'fixed inset-0 bg-black bg-opacity-75 z-50 hidden flex items-center justify-center';
-            orderModal.innerHTML = `
-                <div class="bg-gray-900 rounded-lg max-w-md w-full p-6 relative">
-                    <button id="close-order-modal" class="absolute top-4 right-4 text-gray-400 hover:text-white">
-                        <i data-feather="x"></i>
-                    </button>
-                    <h3 class="text-xl font-bold mb-4">Start Your Order</h3>
-                    <p class="text-gray-400 mb-6">Please log in or create an account to place an order.</p>
-                    <div class="flex space-x-4">
-                        <a href="login.html" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded font-medium transition flex-1 text-center">
-                            Log In
-                        </a>
-                        <a href="register.html" class="bg-transparent border border-white hover:bg-white hover:text-black text-white px-4 py-2 rounded font-medium transition flex-1 text-center">
-                            Register
-                        </a>
-                    </div>
-                </div>
-            `;
-            document.body.appendChild(orderModal);
-            
-            // Order now button functionality
-            document.getElementById('order-now-btn').addEventListener('click', () => {
-                if (userEmail) {
-                    // User is logged in, proceed to order
-                    window.location.href = 'order.html';
+            // Admin response function
+            function getAdminResponse(message) {
+                const lowerMessage = message.toLowerCase();
+                
+                if (lowerMessage.includes('price') || lowerMessage.includes('cost')) {
+                    return "Our prices range from $100 to $1000. Is there a specific product you're interested in?";
+                } else if (lowerMessage.includes('delivery') || lowerMessage.includes('shipping')) {
+                    return "We offer free shipping on all orders. Delivery typically takes 3-5 business days.";
+                } else if (lowerMessage.includes('return') || lowerMessage.includes('refund')) {
+                    return "We have a 30-day return policy. If you're not satisfied with your purchase, you can return it for a full refund.";
+                } else if (lowerMessage.includes('contact') || lowerMessage.includes('email')) {
+                    return "You can reach us at bezalelganam95@gmail.com or through our contact form.";
                 } else {
-                    // Show login modal
-                    document.getElementById('order-modal').classList.remove('hidden');
-                    feather.replace();
+                    return "Thank you for your message. Our team will get back to you shortly with more information.";
                 }
-            });
-            
-            // Close order modal
-            document.getElementById('close-order-modal').addEventListener('click', () => {
-                document.getElementById('order-modal').classList.add('hidden');
-            });
-            
-            // Mobile menu functionality
-            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-            const mobileMenu = document.getElementById('mobile-menu');
-            
-            mobileMenuBtn.addEventListener('click', () => {
-                mobileMenu.classList.toggle('hidden');
-                feather.replace();
-            });
-            
-            // Close mobile menu when clicking outside
-            document.addEventListener('click', (e) => {
-                if (!mobileMenuBtn.contains(e.target) && !mobileMenu.contains(e.target)) {
-                    mobileMenu.classList.add('hidden');
-                }
-            });
-            
-            // Initialize icons
-            feather.replace();
-        });
-
-        // Admin response function
-        function getAdminResponse(message) {
-            const lowerMessage = message.toLowerCase();
-            
-            if (lowerMessage.includes('price') || lowerMessage.includes('cost')) {
-                return "Our prices start at $40,240 for Model 3. Would you like to know more about a specific model?";
-            } else if (lowerMessage.includes('delivery') || lowerMessage.includes('shipping')) {
-                return "Delivery typically takes 2-4 weeks depending on your location and model configuration.";
-            } else if (lowerMessage.includes('test drive')) {
-                return "You can schedule a test drive through our website or by visiting a showroom. Would you like me to help you find a location?";
-            } else if (lowerMessage.includes('charge') || lowerMessage.includes('charging')) {
-                return "Our vehicles can be charged at home, at work, or at our Supercharger network locations. A full charge gives you up to 400 miles of range.";
-            } else if (lowerMessage.includes('warranty')) {
-                return "All our vehicles come with a 4-year/50,000-mile limited warranty and an 8-year battery warranty.";
-            } else {
-                return "Thank you for your message. Our team will get back to you shortly with more information. Is there anything specific you'd like to know about our vehicles?";
             }
-        }
+
+            // Initialize first load
+            if (!window.location.hash) {
+                window.location.hash = 'shop';
+            }
+        });
     </script>
 </body>
 </html>
