@@ -428,36 +428,52 @@
                 }
             }
 
-     function handleHashChange() {
+    function handleHashChange() {
     const hash = window.location.hash.substring(1);
     const validSections = ['shop', 'contact', 'information', 'login', 'cart', 'forgot-password', 'signup'];
     
+    console.log('Hash changed to:', hash);
+    
     if (validSections.includes(hash)) {
+        console.log('Valid section:', hash);
+        
         // Update active tab
-        document.querySelectorAll('[id$="-tab"]').forEach(t => t.classList.remove('active-tab'));
-        if (document.getElementById(`${hash}-tab`)) {
-            document.getElementById(`${hash}-tab`).classList.add('active-tab');
+        document.querySelectorAll('[id$="-tab"]').forEach(t => {
+            t.classList.remove('active-tab');
+        });
+        
+        const activeTab = document.getElementById(`${hash}-tab`);
+        if (activeTab) {
+            activeTab.classList.add('active-tab');
+            console.log('Activated tab:', activeTab.id);
         }
         
         // Hide all sections
         document.querySelectorAll('.tab-section').forEach(section => {
+            section.style.display = 'none'; // Force hide
             section.classList.add('hidden');
         });
         
         // Show corresponding section
-        document.getElementById(hash).classList.remove('hidden');
+        const targetSection = document.getElementById(hash);
+        if (targetSection) {
+            targetSection.style.display = 'block'; // Force show
+            targetSection.classList.remove('hidden');
+            console.log('Showing section:', hash);
+        } else {
+            console.log('Section not found:', hash);
+        }
         
         // Special handling for sections
         if (hash === 'cart') {
             renderCart();
         } else if (hash === 'shop') {
-            // Re-setup add to cart listeners when shop section is shown
             setTimeout(() => {
                 setupAddToCartListeners();
             }, 100);
         }
     } else if (window.location.hash === '') {
-        // Default to shop section
+        console.log('Empty hash, defaulting to shop');
         window.location.hash = 'shop';
     }
 }
