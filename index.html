@@ -9,8 +9,8 @@
     <script src="https://unpkg.com/feather-icons"></script>
     <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
     <script>
-        // Initialize EmailJS with your credentials
-        emailjs.init('AefX1sL9Wjlv6CXnz'); // Replace with your actual EmailJS user ID
+        // ⚠️ SETUP STEP 1A: Replace with your EmailJS User ID
+        emailjs.init('user_YOUR_EMAILJS_USER_ID'); // ← UPDATE THIS LINE
     </script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
@@ -108,7 +108,7 @@
                         <h3 class="text-xl font-bold mb-2">Premium Shoes</h3>
                         <p class="text-gray-400 mb-4">High-quality premium shoes for winners</p>
                         <div class="flex justify-between items-center">
-                            <span class="text-lg font-medium">$100</span>
+                            <span class="text-lg font-medium">₪100</span>
                             <button class="text-red-500 hover:text-red-400 font-medium add-to-cart" 
                                     data-name="Premium Shoes" 
                                     data-price="100" 
@@ -124,7 +124,7 @@
                         <h3 class="text-xl font-bold mb-2">Luxury Watch</h3>
                         <p class="text-gray-400 mb-4">Elegant timepiece for successful people</p>
                         <div class="flex justify-between items-center">
-                            <span class="text-lg font-medium">$1000</span>
+                            <span class="text-lg font-medium">₪1000</span>
                             <button class="text-red-500 hover:text-red-400 font-medium add-to-cart" 
                                     data-name="Luxury Watch" 
                                     data-price="1000" 
@@ -140,7 +140,7 @@
                         <h3 class="text-xl font-bold mb-2">Wireless Headphones</h3>
                         <p class="text-gray-400 mb-4">Premium sound quality for immersive experience</p>
                         <div class="flex justify-between items-center">
-                            <span class="text-lg font-medium">$200</span>
+                            <span class="text-lg font-medium">₪200</span>
                             <button class="text-red-500 hover:text-red-400 font-medium add-to-cart" 
                                     data-name="Wireless Headphones" 
                                     data-price="200" 
@@ -237,29 +237,6 @@
         <div class="max-w-md mx-auto bg-black rounded-lg p-8 shadow-lg">
             <h1 class="text-3xl font-bold mb-8 text-center">Login</h1>
             
-            <!-- Google Sign In -->
-            <div id="g_id_onload"
-                data-client_id="YOUR_GOOGLE_CLIENT_ID"
-                data-context="signin"
-                data-ux_mode="popup"
-                data-login_uri="/auth/google/callback"
-                data-auto_prompt="false">
-            </div>
-            <div class="g_id_signin mb-6 w-full"
-                data-type="standard"
-                data-shape="rectangular"
-                data-theme="filled_black"
-                data-text="signin_with"
-                data-size="large"
-                data-logo_alignment="left">
-            </div>
-            
-            <div class="flex items-center mb-6">
-                <div class="flex-grow border-t border-gray-700"></div>
-                <span class="mx-4 text-gray-400">or</span>
-                <div class="flex-grow border-t border-gray-700"></div>
-            </div>
-            
             <!-- Email Login Form -->
             <form id="login-form" class="space-y-6">
                 <div>
@@ -311,29 +288,6 @@
         <div class="max-w-md mx-auto bg-black rounded-lg p-8 shadow-lg">
             <h1 class="text-3xl font-bold mb-8 text-center">Create Account</h1>
             
-            <!-- Google Sign Up -->
-            <div id="g_id_onload"
-                data-client_id="YOUR_GOOGLE_CLIENT_ID"
-                data-context="signup"
-                data-ux_mode="popup"
-                data-login_uri="/auth/google/callback"
-                data-auto_prompt="false">
-            </div>
-            <div class="g_id_signin mb-6 w-full"
-                data-type="standard"
-                data-shape="rectangular"
-                data-theme="filled_black"
-                data-text="signup_with"
-                data-size="large"
-                data-logo_alignment="left">
-            </div>
-            
-            <div class="flex items-center mb-6">
-                <div class="flex-grow border-t border-gray-700"></div>
-                <span class="mx-4 text-gray-400">or</span>
-                <div class="flex-grow border-t border-gray-700"></div>
-            </div>
-            
             <!-- Email Signup Form -->
             <form id="signup-form" class="space-y-6">
                 <div>
@@ -379,7 +333,7 @@
             <div class="bg-gray-900 rounded-lg p-6">
                 <div class="flex justify-between mb-4">
                     <span class="text-gray-400">Subtotal</span>
-                    <span id="subtotal" class="font-medium">$0</span>
+                    <span id="subtotal" class="font-medium">₪0</span>
                 </div>
                 <div class="flex justify-between mb-4">
                     <span class="text-gray-400">Shipping</span>
@@ -387,7 +341,7 @@
                 </div>
                 <div class="flex justify-between mb-6 border-t border-gray-800 pt-4">
                     <span class="text-lg">Total</span>
-                    <span id="total" class="text-xl font-bold">$0</span>
+                    <span id="total" class="text-xl font-bold">₪0</span>
                 </div>
                 <button id="checkout-btn" class="w-full bg-red-500 hover:bg-red-600 text-white py-3 rounded font-medium transition">
                     Proceed to Checkout
@@ -542,8 +496,8 @@
                     subject: `New Contact Form Message from ${name}`
                 };
                 
-                // Send email using EmailJS
-                emailjs.send('service_76p23kb', 'template_l3l7so9', emailData)
+                // ⚠️ SETUP STEP 1B: Replace with your EmailJS Service ID and Template ID
+                emailjs.send('service_YOUR_SERVICE_ID', 'template_YOUR_TEMPLATE_ID', emailData)
                     .then(function(response) {
                         console.log('SUCCESS!', response.status, response.text);
                         alert('Thank you for your message! We will get back to you soon.');
@@ -579,7 +533,7 @@
                 }
             });
 
-            // Forgot password form functionality
+            // Forgot password form functionality - FIXED
             document.getElementById('forgot-password-form').addEventListener('submit', function(e) {
                 e.preventDefault();
                 
@@ -592,9 +546,25 @@
                 const userExists = users.some(user => user.email === email);
                 
                 if (userExists) {
-                    // In a real app, this would send an email with a reset link
-                    alert('Password reset link has been sent to your email.');
-                    window.location.hash = 'login';
+                    // Create email data for password reset
+                    const resetEmailData = {
+                        to_email: email,
+                        from_name: 'WantToWin Support',
+                        from_email: 'bezalelganam95@gmail.com',
+                        subject: 'Password Reset Request',
+                        message: `You requested a password reset. Please click the link below to reset your password:\n\nReset Link: https://yourwebsite.com/reset-password?token=random123\n\nIf you didn't request this, please ignore this email.`
+                    };
+                    
+                    // Send reset email using EmailJS
+                    emailjs.send('service_YOUR_SERVICE_ID', 'template_YOUR_TEMPLATE_ID', resetEmailData)
+                        .then(function(response) {
+                            console.log('SUCCESS!', response.status, response.text);
+                            alert('Password reset link has been sent to your email.');
+                            window.location.hash = 'login';
+                        }, function(error) {
+                            console.log('FAILED...', error);
+                            alert('There was an error sending the reset email. Please try again later.');
+                        });
                 } else {
                     alert('No account found with this email address.');
                 }
@@ -661,7 +631,7 @@
                 });
             });
 
-            // Cart functionality
+            // Cart functionality - FIXED DELETE FUNCTION
             function renderCart() {
                 const cart = JSON.parse(localStorage.getItem('cart')) || [];
                 const cartItemsEl = document.getElementById('cart-items');
@@ -673,6 +643,8 @@
                     emptyCartMessage.classList.remove('hidden');
                     cartItemsEl.innerHTML = '';
                     cartItemsEl.appendChild(emptyCartMessage);
+                    subtotalEl.textContent = '₪0';
+                    totalEl.textContent = '₪0';
                     return;
                 }
 
@@ -689,34 +661,32 @@
                                 <img src="${item.image}" alt="${item.name}" class="w-16 h-16 object-cover rounded">
                                 <div class="ml-4">
                                     <h3 class="font-medium">${item.name}</h3>
-                                    <p class="text-gray-400">$${item.price}</p>
+                                    <p class="text-gray-400">₪${item.price}</p>
                                 </div>
                             </div>
-                            <div class="flex items-center">
-                                <button class="text-red-500 hover:text-red-400 remove-item" data-index="${index}">
-                                    <i data-feather="trash-2"></i>
-                                </button>
-                            </div>
+                            <button class="text-red-500 hover:text-red-400 remove-item" data-index="${index}">
+                                <i data-feather="trash-2"></i>
+                            </button>
                         </div>
                     `;
                 });
 
                 cartItemsEl.innerHTML = html;
-                subtotalEl.textContent = `$${subtotal.toFixed(2)}`;
-                totalEl.textContent = `$${subtotal.toFixed(2)}`;
+                subtotalEl.textContent = `₪${subtotal.toFixed(2)}`;
+                totalEl.textContent = `₪${subtotal.toFixed(2)}`;
                 feather.replace();
+                
+                // Add event listeners to delete buttons - FIXED
+                document.querySelectorAll('.remove-item').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const index = parseInt(this.dataset.index);
+                        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+                        cart.splice(index, 1);
+                        localStorage.setItem('cart', JSON.stringify(cart));
+                        renderCart();
+                    });
+                });
             }
-
-            // Remove item from cart
-            document.addEventListener('click', function(e) {
-                if (e.target.classList.contains('remove-item') || e.target.closest('.remove-item')) {
-                    const index = e.target.closest('.remove-item').dataset.index;
-                    const cart = JSON.parse(localStorage.getItem('cart')) || [];
-                    cart.splice(index, 1);
-                    localStorage.setItem('cart', JSON.stringify(cart));
-                    renderCart();
-                }
-            });
 
             // Checkout button
             document.getElementById('checkout-btn').addEventListener('click', function() {
@@ -807,7 +777,7 @@
                 const lowerMessage = message.toLowerCase();
                 
                 if (lowerMessage.includes('price') || lowerMessage.includes('cost')) {
-                    return "Our prices range from $100 to $1000. Is there a specific product you're interested in?";
+                    return "Our prices range from ₪100 to ₪1000. Is there a specific product you're interested in?";
                 } else if (lowerMessage.includes('delivery') || lowerMessage.includes('shipping')) {
                     return "We offer free shipping on all orders. Delivery typically takes 3-5 business days.";
                 } else if (lowerMessage.includes('return') || lowerMessage.includes('refund')) {
