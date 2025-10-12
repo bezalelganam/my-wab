@@ -488,16 +488,11 @@ mobileMenuBtn.addEventListener('click', () => {
     }
 });
 
-     // Add to cart functionality - FIXED FOR DYNAMIC CONTENT
+  // Add to cart functionality - FIXED FOR DYNAMIC CONTENT
 function setupAddToCartListeners() {
     document.querySelectorAll('.add-to-cart').forEach(button => {
-        // Remove any existing event listeners first
-        button.replaceWith(button.cloneNode(true));
-    });
-
-    // Re-attach event listeners to the new buttons
-    document.querySelectorAll('.add-to-cart').forEach(button => {
-        button.addEventListener('click', function() {
+        // Remove any existing event listeners by using onclick
+        button.onclick = function() {
             const name = this.dataset.name;
             const price = parseFloat(this.dataset.price);
             const image = this.dataset.image;
@@ -537,7 +532,7 @@ function setupAddToCartListeners() {
                 notification.classList.add('opacity-0', 'transition-opacity', 'duration-500');
                 setTimeout(() => notification.remove(), 500);
             }, 3000);
-        });
+        };
     });
 }
 
@@ -697,7 +692,7 @@ document.getElementById('login-form').addEventListener('submit', function(e) {
                 });
             });
 
-          // Cart functionality - USER SPECIFIC CARTS
+      // Cart functionality - USER SPECIFIC CARTS
 function renderCart() {
     // Get user-specific cart
     const userEmail = localStorage.getItem('userEmail');
@@ -744,26 +739,26 @@ function renderCart() {
     cartItemsEl.innerHTML = html;
     subtotalEl.textContent = `₪${subtotal.toFixed(2)}`;
     totalEl.textContent = `₪${subtotal.toFixed(2)}`;
+    
+    // Re-initialize Feather icons
     feather.replace();
     
-  // Add event listeners to delete buttons - FIXED IMMEDIATE DELETE
-document.querySelectorAll('.remove-item').forEach(button => {
-    // Remove any existing event listeners first
-    button.replaceWith(button.cloneNode(true));
-});
-
-// Re-attach event listeners to the new buttons
-document.querySelectorAll('.remove-item').forEach(button => {
-    button.addEventListener('click', function() {
-        const index = parseInt(this.dataset.index);
-        const userEmail = localStorage.getItem('userEmail');
-        const cartKey = userEmail ? `cart_${userEmail}` : 'cart_guest';
-        const cart = JSON.parse(localStorage.getItem(cartKey)) || [];
-        cart.splice(index, 1);
-        localStorage.setItem(cartKey, JSON.stringify(cart));
-        renderCart(); // This will re-render immediately
+    // Add event listeners to delete buttons - FIXED
+    document.querySelectorAll('.remove-item').forEach(button => {
+        button.addEventListener('click', function() {
+            const index = parseInt(this.dataset.index);
+            const userEmail = localStorage.getItem('userEmail');
+            const cartKey = userEmail ? `cart_${userEmail}` : 'cart_guest';
+            const cart = JSON.parse(localStorage.getItem(cartKey)) || [];
+            
+            // Remove item from cart
+            cart.splice(index, 1);
+            localStorage.setItem(cartKey, JSON.stringify(cart));
+            
+            // Re-render cart immediately
+            renderCart();
+        });
     });
-});
 }
             
 
