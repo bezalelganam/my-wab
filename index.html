@@ -399,34 +399,7 @@
             }
 
             // Tab functionality
-            function handleHashChange() {
-                const hash = window.location.hash.substring(1);
-                const validSections = ['shop', 'contact', 'information', 'login', 'cart', 'forgot-password', 'signup'];
-                
-                if (validSections.includes(hash)) {
-                    // Update active tab
-                    document.querySelectorAll('[id$="-tab"]').forEach(t => t.classList.remove('active-tab'));
-                    if (document.getElementById(`${hash}-tab`)) {
-                        document.getElementById(`${hash}-tab`).classList.add('active-tab');
-                    }
-                    
-                    // Hide all sections
-                    document.querySelectorAll('.tab-section').forEach(section => {
-                        section.classList.add('hidden');
-                    });
-                    
-                    // Show corresponding section
-                    document.getElementById(hash).classList.remove('hidden');
-                    
-                    // Special handling for cart
-                    if (hash === 'cart') {
-                        renderCart();
-                    }
-                } else if (window.location.hash === '') {
-                    // Default to shop section
-                    window.location.hash = 'shop';
-                }
-            }
+          
 
     function handleHashChange() {
     const hash = window.location.hash.substring(1);
@@ -477,6 +450,18 @@
         window.location.hash = 'shop';
     }
 }
+            // Add these lines after the handleHashChange function:
+window.addEventListener('hashchange', handleHashChange);
+
+// Mobile menu link handlers
+document.querySelectorAll('#mobile-menu a').forEach(link => {
+    link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const sectionId = link.getAttribute('href').substring(1);
+        window.location.hash = sectionId;
+        mobileMenu.classList.add('hidden');
+    });
+});
 
             // Tab click handling
             document.querySelectorAll('[id$="-tab"]').forEach(tab => {
