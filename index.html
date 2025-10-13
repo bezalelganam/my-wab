@@ -514,40 +514,10 @@
         
 
 
-// Mobile menu link handlers
-document.querySelectorAll('#mobile-menu a').forEach(link => {
-    link.addEventListener('click', (e) => {
-        e.preventDefault();
-        const sectionId = link.getAttribute('href').substring(1);
-        window.location.hash = sectionId;
-        mobileMenu.classList.add('hidden');
-    });
-});
 
-            // Tab click handling
-            document.querySelectorAll('[id$="-tab"]').forEach(tab => {
-                tab.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    const sectionId = tab.id.replace('-tab', '');
-                    window.location.hash = sectionId;
-                });
-            });
+      
 
-           // Mobile menu toggle
-const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-const mobileMenu = document.getElementById('mobile-menu');
 
-mobileMenuBtn.addEventListener('click', () => {
-    mobileMenu.classList.toggle('hidden');
-    feather.replace();
-    
-    // Re-setup add to cart listeners when mobile menu might affect layout
-    if (window.location.hash === '#shop') {
-        setTimeout(() => {
-            setupAddToCartListeners();
-        }, 100);
-    }
-});
 
 // Add to cart functionality - SIMPLE VERSION
 function setupAddToCartListeners() {
