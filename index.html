@@ -461,6 +461,7 @@
         emailjs.init('AefX1sL9Wjlv6CXnz');
         const EMAILJS_SERVICE_ID = 'service_76p23kb';
         const EMAILJS_TEMPLATE_ID = 'template_l3l7so9';
+        const EMAILJS_TEMPLATE_ID_Rest='template_51c3yio';
 
         document.addEventListener('DOMContentLoaded', function() {
             console.log('DOM loaded - initializing app');
@@ -750,7 +751,7 @@ function handleHashChange() {
         };
         
         // Send reset email using EmailJS
-        emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, resetEmailData)
+        emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID_Rest, resetEmailData)
             .then(function(response) {
                 console.log('SUCCESS!', response.status, response.text);
                 alert('Password reset link has been sent to your email!');
