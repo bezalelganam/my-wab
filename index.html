@@ -540,12 +540,12 @@
             // Close mobile menu after navigation
             document.getElementById('mobile-menu').classList.add('hidden');
             
-            // Section-specific setup
-            if (hash === 'cart') {
-                setTimeout(renderCart, 100);
-            }
-            if (hash === 'shop') {
-                setTimeout(setupAddToCartListeners, 100);
+           // Section-specific setup
+          if (hash === 'cart') {
+            renderCart(); // ✅ FIXED: Remove setTimeout, call directly
+           }
+          if (hash === 'shop') {
+            setupAddToCartListeners(); // ✅ FIXED: Remove setTimeout, call directly
             }
         }
 
