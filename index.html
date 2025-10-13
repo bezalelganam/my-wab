@@ -65,11 +65,6 @@
             background-color: #374151;
         }
         
-        .loading {
-            opacity: 0.6;
-            pointer-events: none;
-        }
-        
         .fade-in {
             animation: fadeIn 0.5s ease-in;
         }
@@ -209,21 +204,18 @@
                             <input type="text" id="contact-name" placeholder="Your Name" 
                                    class="w-full bg-gray-800 text-white p-3 rounded focus:outline-none focus:ring-2 focus:ring-red-500"
                                    minlength="2" maxlength="50" required>
-                            <div class="text-red-400 text-sm mt-1 hidden" id="name-error"></div>
                         </div>
                         <div>
                             <input type="email" id="contact-email" placeholder="Your Email" 
                                    class="w-full bg-gray-800 text-white p-3 rounded focus:outline-none focus:ring-2 focus:ring-red-500"
                                    required>
-                            <div class="text-red-400 text-sm mt-1 hidden" id="email-error"></div>
                         </div>
                         <div>
                             <textarea id="contact-message" placeholder="Your Message" rows="5" 
                                       class="w-full bg-gray-800 text-white p-3 rounded focus:outline-none focus:ring-2 focus:ring-red-500"
                                       minlength="10" maxlength="500" required></textarea>
-                            <div class="text-red-400 text-sm mt-1 hidden" id="message-error"></div>
                         </div>
-                        <button type="submit" id="contact-submit" class="bg-red-500 hover:bg-red-600 text-white px-8 py-3 rounded font-medium transition disabled:opacity-50">
+                        <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-8 py-3 rounded font-medium transition">
                             Send Message
                         </button>
                     </form>
@@ -304,14 +296,12 @@
                     <input type="email" id="email" 
                            class="w-full bg-gray-800 text-white p-3 rounded focus:outline-none focus:ring-2 focus:ring-red-500"
                            required>
-                    <div class="text-red-400 text-sm mt-1 hidden" id="login-email-error"></div>
                 </div>
                 <div>
                     <label for="password" class="block text-gray-400 mb-2">Password</label>
                     <input type="password" id="password" 
                            class="w-full bg-gray-800 text-white p-3 rounded focus:outline-none focus:ring-2 focus:ring-red-500"
                            minlength="6" required>
-                    <div class="text-red-400 text-sm mt-1 hidden" id="login-password-error"></div>
                 </div>
                 <div class="flex items-center justify-between">
                     <div class="flex items-center">
@@ -320,7 +310,7 @@
                     </div>
                     <a href="#forgot-password" class="text-red-500 hover:text-red-400 text-sm forgot-password">Forgot password?</a>
                 </div>
-                <button type="submit" id="login-submit" class="w-full bg-red-500 hover:bg-red-600 text-white py-3 rounded font-medium transition disabled:opacity-50">
+                <button type="submit" class="w-full bg-red-500 hover:bg-red-600 text-white py-3 rounded font-medium transition">
                     Sign In
                 </button>
             </form>
@@ -340,9 +330,8 @@
                     <input type="email" id="reset-email" 
                            class="w-full bg-gray-800 text-white p-3 rounded focus:outline-none focus:ring-2 focus:ring-red-500"
                            required>
-                    <div class="text-red-400 text-sm mt-1 hidden" id="reset-email-error"></div>
                 </div>
-                <button type="submit" id="reset-submit" class="w-full bg-red-500 hover:bg-red-600 text-white py-3 rounded font-medium transition disabled:opacity-50">
+                <button type="submit" class="w-full bg-red-500 hover:bg-red-600 text-white py-3 rounded font-medium transition">
                     Send Reset Link
                 </button>
             </form>
@@ -363,30 +352,26 @@
                     <input type="text" id="name" 
                            class="w-full bg-gray-800 text-white p-3 rounded focus:outline-none focus:ring-2 focus:ring-red-500"
                            minlength="2" maxlength="50" required>
-                    <div class="text-red-400 text-sm mt-1 hidden" id="signup-name-error"></div>
                 </div>
                 <div>
                     <label for="signup-email" class="block text-gray-400 mb-2">Email</label>
                     <input type="email" id="signup-email" 
                            class="w-full bg-gray-800 text-white p-3 rounded focus:outline-none focus:ring-2 focus:ring-red-500"
                            required>
-                    <div class="text-red-400 text-sm mt-1 hidden" id="signup-email-error"></div>
                 </div>
                 <div>
                     <label for="signup-password" class="block text-gray-400 mb-2">Password</label>
                     <input type="password" id="signup-password" 
                            class="w-full bg-gray-800 text-white p-3 rounded focus:outline-none focus:ring-2 focus:ring-red-500"
                            minlength="6" required>
-                    <div class="text-red-400 text-sm mt-1 hidden" id="signup-password-error"></div>
                 </div>
                 <div>
                     <label for="confirm-password" class="block text-gray-400 mb-2">Confirm Password</label>
                     <input type="password" id="confirm-password" 
                            class="w-full bg-gray-800 text-white p-3 rounded focus:outline-none focus:ring-2 focus:ring-red-500"
                            minlength="6" required>
-                    <div class="text-red-400 text-sm mt-1 hidden" id="confirm-password-error"></div>
                 </div>
-                <button type="submit" id="signup-submit" class="w-full bg-red-500 hover:bg-red-600 text-white py-3 rounded font-medium transition disabled:opacity-50">
+                <button type="submit" class="w-full bg-red-500 hover:bg-red-600 text-white py-3 rounded font-medium transition">
                     Create Account
                 </button>
             </form>
@@ -422,7 +407,7 @@
                     <span class="text-lg">Total</span>
                     <span id="total" class="text-xl font-bold">₪0</span>
                 </div>
-                <button id="checkout-btn" class="w-full bg-red-500 hover:bg-red-600 text-white py-3 rounded font-medium transition disabled:opacity-50">
+                <button id="checkout-btn" class="w-full bg-red-500 hover:bg-red-600 text-white py-3 rounded font-medium transition">
                     Proceed to Checkout
                 </button>
             </div>
@@ -472,730 +457,584 @@
     </div>
 
     <script>
-        // EmailJS Configuration
+        // EmailJS Configuration - YOUR KEYS
         emailjs.init('AefX1sL9Wjlv6CXnz');
         const EMAILJS_SERVICE_ID = 'service_76p23kb';
         const EMAILJS_TEMPLATE_ID = 'template_l3l7so9';
 
-        class ECommerceApp {
-            constructor() {
-                this.init();
-            }
-
-            init() {
-                this.setupEventListeners();
-                this.initializeData();
-                this.updateNavigation();
-                feather.replace();
-                
-                // Handle initial hash
-                if (!window.location.hash || window.location.hash === '#') {
-                    window.location.hash = 'shop';
-                } else {
-                    this.handleHashChange();
-                }
-            }
-
-            initializeData() {
-                // Initialize localStorage data with versioning
-                const dataStructure = {
-                    users: [],
-                    orders: [],
-                    chats: {},
-                    appVersion: '1.0'
-                };
-
-                Object.keys(dataStructure).forEach(key => {
-                    if (!localStorage.getItem(key)) {
-                        localStorage.setItem(key, JSON.stringify(dataStructure[key]));
-                    }
-                });
-
-                // Initialize user-specific data
-                if (!localStorage.getItem('cart')) {
-                    localStorage.setItem('cart', JSON.stringify([]));
-                }
-
-                if (!localStorage.getItem('chatSessionId')) {
-                    localStorage.setItem('chatSessionId', Date.now().toString());
-                }
-            }
-
-            setupEventListeners() {
-                // Hash change handling
-                window.addEventListener('hashchange', () => this.handleHashChange());
-
-                // Mobile menu
-                document.getElementById('mobile-menu-btn').addEventListener('click', () => {
-                    document.getElementById('mobile-menu').classList.toggle('hidden');
-                    feather.replace();
-                });
-
-                // Mobile menu links
-                document.querySelectorAll('#mobile-menu a').forEach(link => {
-                    link.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        const sectionId = link.getAttribute('href').substring(1);
-                        window.location.hash = sectionId;
-                        document.getElementById('mobile-menu').classList.add('hidden');
-                    });
-                });
-
-                // Tab navigation
-                document.querySelectorAll('[id$="-tab"]').forEach(tab => {
-                    tab.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        const sectionId = tab.id.replace('-tab', '');
-                        window.location.hash = sectionId;
-                    });
-                });
-
-                // Form submissions
-                document.getElementById('contact-form').addEventListener('submit', (e) => this.handleContactForm(e));
-                document.getElementById('login-form').addEventListener('submit', (e) => this.handleLogin(e));
-                document.getElementById('signup-form').addEventListener('submit', (e) => this.handleSignup(e));
-                document.getElementById('forgot-password-form').addEventListener('submit', (e) => this.handleForgotPassword(e));
-
-                // Navigation links
-                document.querySelectorAll('.forgot-password').forEach(link => {
-                    link.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        window.location.hash = 'forgot-password';
-                    });
-                });
-
-                document.querySelectorAll('.signup-link, .back-to-login').forEach(link => {
-                    link.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        window.location.hash = 'login';
-                    });
-                });
-
-                // Cart and checkout
-                document.getElementById('checkout-btn').addEventListener('click', () => this.handleCheckout());
-
-                // Chat functionality
-                document.getElementById('admin-chat-btn').addEventListener('click', () => this.toggleChat());
-                document.getElementById('close-chat').addEventListener('click', () => this.toggleChat());
-                document.getElementById('chat-input').addEventListener('keypress', (e) => this.handleChatInput(e));
-
-                // Logout functionality
-                document.getElementById('logout-btn').addEventListener('click', () => this.handleLogout());
-                document.getElementById('mobile-logout').addEventListener('click', () => this.handleLogout());
-            }
-
-            handleHashChange() {
-                const hash = window.location.hash.substring(1);
-                const validSections = ['shop', 'contact', 'information', 'login', 'cart', 'forgot-password', 'signup', 'order-confirmation'];
-                
-                if (validSections.includes(hash)) {
-                    // Update active tab
-                    document.querySelectorAll('[id$="-tab"]').forEach(tab => {
-                        tab.classList.remove('active-tab');
-                    });
-                    
-                    const activeTab = document.getElementById(`${hash}-tab`);
-                    if (activeTab) {
-                        activeTab.classList.add('active-tab');
-                    }
-                    
-                    // Hide all sections and show target
-                    document.querySelectorAll('.tab-section').forEach(section => {
-                        section.classList.add('hidden');
-                    });
-                    
-                    const targetSection = document.getElementById(hash);
-                    if (targetSection) {
-                        targetSection.classList.remove('hidden');
-                        
-                        // Section-specific initialization
-                        switch(hash) {
-                            case 'cart':
-                                this.renderCart();
-                                break;
-                            case 'shop':
-                                setTimeout(() => this.setupAddToCartListeners(), 100);
-                                break;
-                        }
-                    }
-                }
-            }
-
-            // Security: Basic input sanitization
-            sanitizeInput(input) {
-                const div = document.createElement('div');
-                div.textContent = input;
-                return div.innerHTML;
-            }
-
-            // Validation helpers
-            validateEmail(email) {
-                const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                return re.test(email);
-            }
-
-            showError(elementId, message) {
-                const errorElement = document.getElementById(elementId);
-                errorElement.textContent = message;
-                errorElement.classList.remove('hidden');
-            }
-
-            hideError(elementId) {
-                const errorElement = document.getElementById(elementId);
-                errorElement.classList.add('hidden');
-            }
-
-            setLoading(button, isLoading) {
-                if (isLoading) {
-                    button.disabled = true;
-                    button.classList.add('loading');
-                    button.innerHTML = 'Loading...';
-                } else {
-                    button.disabled = false;
-                    button.classList.remove('loading');
-                    button.innerHTML = button.getAttribute('data-original-text') || button.textContent;
-                }
-            }
-
-            // Contact Form Handler
-            async handleContactForm(e) {
-                e.preventDefault();
-                const submitBtn = document.getElementById('contact-submit');
-                this.setLoading(submitBtn, true);
-
-                // Clear previous errors
-                this.hideError('name-error');
-                this.hideError('email-error');
-                this.hideError('message-error');
-
-                const name = this.sanitizeInput(document.getElementById('contact-name').value.trim());
-                const email = document.getElementById('contact-email').value.trim();
-                const message = this.sanitizeInput(document.getElementById('contact-message').value.trim());
-
-                let isValid = true;
-
-                // Validation
-                if (name.length < 2) {
-                    this.showError('name-error', 'Name must be at least 2 characters long');
-                    isValid = false;
-                }
-
-                if (!this.validateEmail(email)) {
-                    this.showError('email-error', 'Please enter a valid email address');
-                    isValid = false;
-                }
-
-                if (message.length < 10) {
-                    this.showError('message-error', 'Message must be at least 10 characters long');
-                    isValid = false;
-                }
-
-                if (!isValid) {
-                    this.setLoading(submitBtn, false);
-                    return;
-                }
-
-                try {
-                    const emailData = {
-                        to_email: 'bezalelganam95@gmail.com',
-                        from_name: name,
-                        from_email: email,
-                        message: message,
-                        subject: `New Contact Form Message from ${name}`
-                    };
-
-                    await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, emailData);
-                    
-                    alert('Thank you for your message! We will get back to you soon.');
-                    document.getElementById('contact-form').reset();
-                } catch (error) {
-                    console.error('Email sending failed:', error);
-                    alert('There was an error sending your message. Please try again later.');
-                } finally {
-                    this.setLoading(submitBtn, false);
-                }
-            }
-
-            // Authentication Handlers
-            handleLogin(e) {
-                e.preventDefault();
-                const submitBtn = document.getElementById('login-submit');
-                this.setLoading(submitBtn, true);
-
-                this.hideError('login-email-error');
-                this.hideError('login-password-error');
-
-                const email = document.getElementById('email').value.trim();
-                const password = document.getElementById('password').value;
-
-                let isValid = true;
-
-                if (!this.validateEmail(email)) {
-                    this.showError('login-email-error', 'Please enter a valid email address');
-                    isValid = false;
-                }
-
-                if (password.length < 6) {
-                    this.showError('login-password-error', 'Password must be at least 6 characters long');
-                    isValid = false;
-                }
-
-                if (!isValid) {
-                    this.setLoading(submitBtn, false);
-                    return;
-                }
-
-                // Simulate authentication (in real app, this would be a server call)
-                setTimeout(() => {
-                    const users = JSON.parse(localStorage.getItem('users'));
-                    const user = users.find(u => u.email === email && u.password === password);
-
-                    if (user) {
-                        localStorage.setItem('isLoggedIn', 'true');
-                        localStorage.setItem('userEmail', email);
-                        localStorage.setItem('userName', user.name);
-                        
-                        this.updateNavigation();
-                        alert('Login successful!');
-                        window.location.hash = 'shop';
-                    } else {
-                        this.showError('login-password-error', 'Invalid email or password');
-                    }
-                    
-                    this.setLoading(submitBtn, false);
-                }, 1000);
-            }
-
-            handleSignup(e) {
-                e.preventDefault();
-                const submitBtn = document.getElementById('signup-submit');
-                this.setLoading(submitBtn, true);
-
-                // Clear errors
-                ['signup-name-error', 'signup-email-error', 'signup-password-error', 'confirm-password-error'].forEach(this.hideError.bind(this));
-
-                const name = this.sanitizeInput(document.getElementById('name').value.trim());
-                const email = document.getElementById('signup-email').value.trim();
-                const password = document.getElementById('signup-password').value;
-                const confirmPassword = document.getElementById('confirm-password').value;
-
-                let isValid = true;
-
-                if (name.length < 2) {
-                    this.showError('signup-name-error', 'Name must be at least 2 characters long');
-                    isValid = false;
-                }
-
-                if (!this.validateEmail(email)) {
-                    this.showError('signup-email-error', 'Please enter a valid email address');
-                    isValid = false;
-                }
-
-                if (password.length < 6) {
-                    this.showError('signup-password-error', 'Password must be at least 6 characters long');
-                    isValid = false;
-                }
-
-                if (password !== confirmPassword) {
-                    this.showError('confirm-password-error', 'Passwords do not match');
-                    isValid = false;
-                }
-
-                if (!isValid) {
-                    this.setLoading(submitBtn, false);
-                    return;
-                }
-
-                // Check if user already exists
-                const users = JSON.parse(localStorage.getItem('users'));
-                if (users.some(user => user.email === email)) {
-                    this.showError('signup-email-error', 'This email is already registered');
-                    this.setLoading(submitBtn, false);
-                    return;
-                }
-
-                // Add new user (in real app, password would be hashed)
-                users.push({ name, email, password });
-                localStorage.setItem('users', JSON.stringify(users));
-
-                this.setLoading(submitBtn, false);
-                alert('Account created successfully! Please login.');
-                window.location.hash = 'login';
-            }
-
-            handleForgotPassword(e) {
-                e.preventDefault();
-                const submitBtn = document.getElementById('reset-submit');
-                this.setLoading(submitBtn, true);
-
-                this.hideError('reset-email-error');
-
-                const email = document.getElementById('reset-email').value.trim();
-
-                if (!this.validateEmail(email)) {
-                    this.showError('reset-email-error', 'Please enter a valid email address');
-                    this.setLoading(submitBtn, false);
-                    return;
-                }
-
-                // Simulate password reset
-                setTimeout(() => {
-                    const users = JSON.parse(localStorage.getItem('users'));
-                    const userExists = users.some(user => user.email === email);
-
-                    if (userExists) {
-                        alert('Password reset link has been sent to your email.');
-                        window.location.hash = 'login';
-                    } else {
-                        this.showError('reset-email-error', 'No account found with this email address');
-                    }
-                    
-                    this.setLoading(submitBtn, false);
-                }, 1000);
-            }
-
-            // Cart functionality
-            setupAddToCartListeners() {
-                document.querySelectorAll('.add-to-cart').forEach(button => {
-                    button.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        
-                        const product = {
-                            id: button.dataset.id,
-                            name: button.dataset.name,
-                            price: parseFloat(button.dataset.price),
-                            image: button.dataset.image
-                        };
-
-                        this.addToCart(product);
-                    });
-                });
-            }
-  function addToCart(product) {
-    const cart = JSON.parse(localStorage.getItem('cart')) || [];
-    
-    // Check if product already exists
-    const existingIndex = cart.findIndex(item => item.id === product.id);
-    
-    if (existingIndex > -1) {
-        // Increase quantity if exists
-        cart[existingIndex].quantity = (cart[existingIndex].quantity || 1) + 1;
-    } else {
-        // Add new item with quantity
-        product.quantity = 1;
-        cart.push(product);
-    }
-    
-    localStorage.setItem('cart', JSON.stringify(cart));
-    
-    // IMMEDIATE VISUAL FEEDBACK
-    const button = event.target;
-    const originalText = button.textContent;
-    button.textContent = '✓ Added';
-    button.classList.add('bg-green-500', 'hover:bg-green-600');
-    
-    setTimeout(() => {
-        button.textContent = originalText;
-        button.classList.remove('bg-green-500', 'hover:bg-green-600');
-    }, 1500);
-
-    // UPDATE EVERYTHING IMMEDIATELY
-    updateCartBadge();
-    
-    // If on cart page, update cart display immediately
-    if (window.location.hash === '#cart') {
-        renderCart();
-    }
-}
-
-           function renderCart() {
-    const cart = JSON.parse(localStorage.getItem('cart')) || [];
-    const cartItemsEl = document.getElementById('cart-items');
-    const emptyCartMessage = document.getElementById('empty-cart-message');
-    const subtotalEl = document.getElementById('subtotal');
-    const totalEl = document.getElementById('total');
-    const checkoutBtn = document.getElementById('checkout-btn');
-
-    // Clear current content
-    cartItemsEl.innerHTML = '';
-    
-    if (cart.length === 0) {
-        emptyCartMessage.classList.remove('hidden');
-        subtotalEl.textContent = '₪0';
-        totalEl.textContent = '₪0';
-        checkoutBtn.disabled = true;
-        checkoutBtn.classList.add('opacity-50', 'cursor-not-allowed');
-        return;
-    }
-
-    emptyCartMessage.classList.add('hidden');
-    checkoutBtn.disabled = false;
-    checkoutBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-    
-    let subtotal = 0;
-    
-    cart.forEach((item, index) => {
-        const quantity = item.quantity || 1;
-        const itemTotal = item.price * quantity;
-        subtotal += itemTotal;
-        
-        const itemHTML = `
-            <div class="flex items-center justify-between py-4 border-b border-gray-800 cart-item">
-                <div class="flex items-center space-x-4">
-                    <img src="${item.image}" alt="${item.name}" class="w-16 h-16 object-cover rounded">
-                    <div>
-                        <h3 class="font-medium">${item.name}</h3>
-                        <p class="text-gray-400">₪${item.price}</p>
-                        <div class="flex items-center space-x-2 mt-2">
-                            <button class="quantity-btn text-gray-400 hover:text-white" data-index="${index}" data-action="decrease">-</button>
-                            <span class="quantity">${quantity}</span>
-                            <button class="quantity-btn text-gray-400 hover:text-white" data-index="${index}" data-action="increase">+</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="flex items-center space-x-4">
-                    <span class="font-medium">₪${itemTotal.toFixed(2)}</span>
-                    <button class="text-red-500 hover:text-red-400 remove-item" data-index="${index}">
-                        <i data-feather="trash-2" class="w-5 h-5"></i>
-                    </button>
-                </div>
-            </div>
-        `;
-        cartItemsEl.innerHTML += itemHTML;
-    });
-
-    subtotalEl.textContent = `₪${subtotal.toFixed(2)}`;
-    totalEl.textContent = `₪${subtotal.toFixed(2)}`;
-    
-    // RE-ATTACH EVENT LISTENERS AFTER RENDERING
-    setupCartEventListeners();
-    feather.replace();
-           }
-
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded - initializing app');
+            feather.replace();
             
-            setupCartEventListeners() {
-                // Remove items
-                document.querySelectorAll('.remove-item').forEach(button => {
-                    button.addEventListener('click', () => {
-                        const index = parseInt(button.dataset.index);
-                        this.removeFromCart(index);
-                    });
-                });
-
-                // Quantity adjustments
-                document.querySelectorAll('.quantity-btn').forEach(button => {
-                    button.addEventListener('click', () => {
-                        const index = parseInt(button.dataset.index);
-                        const action = button.dataset.action;
-                        this.adjustQuantity(index, action);
-                    });
-                });
-            }
-
-            removeFromCart(index) {
-                const cart = JSON.parse(localStorage.getItem('cart')) || [];
-                if (index >= 0 && index < cart.length) {
-                    cart.splice(index, 1);
-                    localStorage.setItem('cart', JSON.stringify(cart));
-                    this.renderCart();
-                    this.updateCartBadge();
-                }
-            }
-
-            adjustQuantity(index, action) {
-                const cart = JSON.parse(localStorage.getItem('cart')) || [];
-                if (index >= 0 && index < cart.length) {
-                    const item = cart[index];
-                    item.quantity = item.quantity || 1;
-                    
-                    if (action === 'increase') {
-                        item.quantity++;
-                    } else if (action === 'decrease' && item.quantity > 1) {
-                        item.quantity--;
-                    }
-                    
-                    localStorage.setItem('cart', JSON.stringify(cart));
-                    this.renderCart();
-                    this.updateCartBadge();
-                }
-            }
-
-          function updateCartBadge() {
-    const cart = JSON.parse(localStorage.getItem('cart')) || [];
-    const cartTab = document.getElementById('cart-tab');
-    
-    if (cartTab) {
-        const totalItems = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
-        cartTab.textContent = totalItems > 0 ? `Cart (${totalItems})` : 'Cart';
-    }
-}
-
-            handleCheckout() {
-                const cart = JSON.parse(localStorage.getItem('cart')) || [];
-                const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-                
-                if (cart.length === 0) {
-                    alert('Your cart is empty!');
-                    return;
-                }
-
-                if (!isLoggedIn) {
-                    alert('Please login to complete your purchase.');
-                    window.location.hash = 'login';
-                    return;
-                }
-
-                // Create order
-                const orders = JSON.parse(localStorage.getItem('orders')) || [];
-                const order = {
-                    id: Date.now(),
-                    userEmail: localStorage.getItem('userEmail'),
-                    items: [...cart],
-                    total: cart.reduce((sum, item) => sum + (item.price * (item.quantity || 1)), 0),
-                    date: new Date().toLocaleString(),
-                    status: 'confirmed'
-                };
-
-                orders.push(order);
-                localStorage.setItem('orders', JSON.stringify(orders));
-
-                // Clear cart
+            // Initialize data
+            if (!localStorage.getItem('cart')) {
                 localStorage.setItem('cart', JSON.stringify([]));
-                this.updateCartBadge();
-
-                // Show order confirmation
-                this.showOrderConfirmation(order);
             }
-
-            showOrderConfirmation(order) {
-                const orderDetailsEl = document.getElementById('order-details');
-                orderDetailsEl.innerHTML = `
-                    <p><strong>Order ID:</strong> #${order.id}</p>
-                    <p><strong>Date:</strong> ${order.date}</p>
-                    <p><strong>Total:</strong> ₪${order.total.toFixed(2)}</p>
-                    <p><strong>Items:</strong></p>
-                    <ul class="list-disc list-inside ml-4">
-                        ${order.items.map(item => 
-                            `<li>${item.name} x${item.quantity || 1} - ₪${(item.price * (item.quantity || 1)).toFixed(2)}</li>`
-                        ).join('')}
-                    </ul>
-                `;
-                
-                window.location.hash = 'order-confirmation';
+            if (!localStorage.getItem('users')) {
+                localStorage.setItem('users', JSON.stringify([]));
             }
-
-            // Navigation
-            updateNavigation() {
-                const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-                const userEmail = localStorage.getItem('userEmail');
-
-                // Desktop
-                const loginTab = document.getElementById('login-tab');
-                const userInfo = document.getElementById('user-info');
-                const userEmailSpan = document.getElementById('user-email');
-
-                // Mobile
-                const mobileLogin = document.getElementById('mobile-login');
-                const mobileUserInfo = document.getElementById('mobile-user-info');
-                const mobileUserEmail = document.getElementById('mobile-user-email');
-
-                if (isLoggedIn && userEmail) {
-                    loginTab.classList.add('hidden');
-                    userInfo.classList.remove('hidden');
-                    userEmailSpan.textContent = userEmail;
-                    
-                    mobileLogin.classList.add('hidden');
-                    mobileUserInfo.classList.remove('hidden');
-                    mobileUserEmail.textContent = userEmail;
-                } else {
-                    loginTab.classList.remove('hidden');
-                    userInfo.classList.add('hidden');
-                    
-                    mobileLogin.classList.remove('hidden');
-                    mobileUserInfo.classList.add('hidden');
-                }
+            if (!localStorage.getItem('orders')) {
+                localStorage.setItem('orders', JSON.stringify([]));
             }
-
-            handleLogout() {
-                localStorage.removeItem('isLoggedIn');
-                localStorage.removeItem('userEmail');
-                localStorage.removeItem('userName');
-                this.updateNavigation();
-                alert('You have been logged out.');
+            
+            // Setup navigation and event listeners
+            setupNavigation();
+            setupAddToCartListeners();
+            setupFormHandlers();
+            updateCartBadge();
+            updateNavigation();
+            
+            // Handle initial page
+            if (!window.location.hash || window.location.hash === '#') {
                 window.location.hash = 'shop';
-                
-                if (window.location.hash === '#cart') {
-                    this.renderCart();
-                }
             }
+            handleHashChange();
+        });
 
-            // Chat functionality
-            toggleChat() {
-                const chatModal = document.getElementById('admin-chat-modal');
-                chatModal.classList.toggle('hidden');
+        // NAVIGATION FUNCTIONS
+        function setupNavigation() {
+            // Tab clicks
+            document.querySelectorAll('[id$="-tab"]').forEach(tab => {
+                tab.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const sectionId = tab.id.replace('-tab', '');
+                    window.location.hash = sectionId;
+                });
+            });
+            
+            // Mobile menu
+            document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+                document.getElementById('mobile-menu').classList.toggle('hidden');
                 feather.replace();
-            }
+            });
+            
+            // Hash changes
+            window.addEventListener('hashchange', handleHashChange);
+            
+            // Mobile menu links
+            document.querySelectorAll('#mobile-menu a').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const sectionId = link.getAttribute('href').substring(1);
+                    window.location.hash = sectionId;
+                    document.getElementById('mobile-menu').classList.add('hidden');
+                });
+            });
+        }
 
-            handleChatInput(e) {
-                if (e.key === 'Enter' && e.target.value.trim()) {
-                    const message = this.sanitizeInput(e.target.value.trim());
-                    const chatMessages = document.getElementById('chat-messages');
-                    
-                    // Add user message
-                    chatMessages.innerHTML += `
-                        <div class="chat-message user-message">
-                            ${message}
-                        </div>
-                    `;
-                    
-                    // Save to chat history
-                    const chatSessionId = localStorage.getItem('chatSessionId');
-                    const chats = JSON.parse(localStorage.getItem('chats')) || {};
-                    if (!chats[chatSessionId]) chats[chatSessionId] = [];
-                    chats[chatSessionId].push({ message, isAdmin: false });
-                    localStorage.setItem('chats', JSON.stringify(chats));
-                    
-                    e.target.value = '';
-                    chatMessages.scrollTop = chatMessages.scrollHeight;
-                    
-                    // Auto-response
-                    setTimeout(() => {
-                        const response = this.getAdminResponse(message);
-                        chatMessages.innerHTML += `
-                            <div class="chat-message admin-message">
-                                ${response}
-                            </div>
-                        `;
-                        chats[chatSessionId].push({ message: response, isAdmin: true });
-                        localStorage.setItem('chats', JSON.stringify(chats));
-                        chatMessages.scrollTop = chatMessages.scrollHeight;
-                    }, 1000);
-                }
+        function handleHashChange() {
+            const hash = window.location.hash.substring(1) || 'shop';
+            console.log('Showing section:', hash);
+            
+            // Hide all sections
+            document.querySelectorAll('.tab-section').forEach(section => {
+                section.classList.add('hidden');
+            });
+            
+            // Show target section
+            const targetSection = document.getElementById(hash);
+            if (targetSection) {
+                targetSection.classList.remove('hidden');
             }
-
-            getAdminResponse(message) {
-                const lowerMessage = message.toLowerCase();
-                
-                if (lowerMessage.includes('price') || lowerMessage.includes('cost')) {
-                    return "Our prices range from ₪100 to ₪1000. All products come with premium quality guarantee.";
-                } else if (lowerMessage.includes('delivery') || lowerMessage.includes('shipping')) {
-                    return "We offer free shipping on all orders. Delivery typically takes 3-5 business days.";
-                } else if (lowerMessage.includes('return') || lowerMessage.includes('refund')) {
-                    return "We have a 30-day return policy. If you're not satisfied, you can return it for a full refund.";
-                } else if (lowerMessage.includes('contact') || lowerMessage.includes('email')) {
-                    return "You can reach us at bezalelganam95@gmail.com or call +1 (555) 123-4567.";
-                } else if (lowerMessage.includes('product') || lowerMessage.includes('item')) {
-                    return "We offer premium shoes, luxury watches, and wireless headphones. All products are carefully selected for quality.";
-                } else {
-                    return "Thank you for your message. Our team will get back to you shortly with more information.";
-                }
+            
+            // Update active tab
+            document.querySelectorAll('[id$="-tab"]').forEach(tab => {
+                tab.classList.remove('active-tab');
+            });
+            
+            const activeTab = document.getElementById(hash + '-tab');
+            if (activeTab) activeTab.classList.add('active-tab');
+            
+            // Section-specific setup
+            if (hash === 'cart') {
+                setTimeout(renderCart, 100);
+            }
+            if (hash === 'shop') {
+                setTimeout(setupAddToCartListeners, 100);
             }
         }
 
-        // Initialize the application
-        document.addEventListener('DOMContentLoaded', () => {
-            new ECommerceApp();
+        // FORM HANDLERS
+        function setupFormHandlers() {
+            // Contact form
+            document.getElementById('contact-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                handleContactForm();
+            });
+
+            // Login form
+            document.getElementById('login-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                handleLogin();
+            });
+
+            // Signup form
+            document.getElementById('signup-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                handleSignup();
+            });
+
+            // Forgot password form
+            document.getElementById('forgot-password-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                handleForgotPassword();
+            });
+
+            // Navigation links
+            document.querySelectorAll('.forgot-password').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    window.location.hash = 'forgot-password';
+                });
+            });
+
+            document.querySelectorAll('.signup-link').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    window.location.hash = 'signup';
+                });
+            });
+
+            document.querySelectorAll('.back-to-login').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    window.location.hash = 'login';
+                });
+            });
+
+            // Checkout button
+            document.getElementById('checkout-btn').addEventListener('click', handleCheckout);
+
+            // Logout buttons
+            document.getElementById('logout-btn').addEventListener('click', handleLogout);
+            document.getElementById('mobile-logout').addEventListener('click', handleLogout);
+        }
+
+        // CONTACT FORM
+        function handleContactForm() {
+            const name = document.getElementById('contact-name').value.trim();
+            const email = document.getElementById('contact-email').value.trim();
+            const message = document.getElementById('contact-message').value.trim();
+
+            const emailData = {
+                to_email: 'bezalelganam95@gmail.com',
+                from_name: name,
+                from_email: email,
+                message: message,
+                subject: `New Contact Form Message from ${name}`
+            };
+
+            emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, emailData)
+                .then(function(response) {
+                    console.log('SUCCESS!', response.status, response.text);
+                    alert('Thank you for your message! We will get back to you soon.');
+                    document.getElementById('contact-form').reset();
+                }, function(error) {
+                    console.log('FAILED...', error);
+                    alert('There was an error sending your message. Please try again later.');
+                });
+        }
+
+        // AUTHENTICATION FUNCTIONS
+        function handleLogin() {
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            const user = users.find(user => user.email === email && user.password === password);
+
+            if (user) {
+                localStorage.setItem('isLoggedIn', 'true');
+                localStorage.setItem('userEmail', email);
+                localStorage.setItem('userName', user.name || email.split('@')[0]);
+                
+                updateNavigation();
+                alert('Login successful!');
+                window.location.hash = 'shop';
+            } else {
+                alert('Invalid email or password. Please try again or sign up.');
+            }
+        }
+
+        function handleSignup() {
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('signup-email').value.trim();
+            const password = document.getElementById('signup-password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+
+            // Validate passwords match
+            if (password !== confirmPassword) {
+                alert('Passwords do not match!');
+                return;
+            }
+
+            // Get existing users
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+
+            // Check if user already exists
+            if (users.some(user => user.email === email)) {
+                alert('This email is already registered!');
+                return;
+            }
+
+            // Add new user
+            users.push({
+                name: name,
+                email: email,
+                password: password
+            });
+
+            // Save to localStorage
+            localStorage.setItem('users', JSON.stringify(users));
+
+            // Redirect to login
+            alert('Account created successfully! Please login.');
+            window.location.hash = 'login';
+        }
+
+        function handleForgotPassword() {
+            const email = document.getElementById('reset-email').value.trim();
+            
+            // Get existing users
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            
+            // Check if user exists
+            const userExists = users.some(user => user.email === email);
+            
+            if (userExists) {
+                alert('Password reset link has been sent to your email.');
+                window.location.hash = 'login';
+            } else {
+                alert('No account found with this email address.');
+            }
+        }
+
+        function updateNavigation() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            const userEmail = localStorage.getItem('userEmail');
+
+            // Desktop
+            const loginTab = document.getElementById('login-tab');
+            const userInfo = document.getElementById('user-info');
+            const userEmailSpan = document.getElementById('user-email');
+
+            // Mobile
+            const mobileLogin = document.getElementById('mobile-login');
+            const mobileUserInfo = document.getElementById('mobile-user-info');
+            const mobileUserEmail = document.getElementById('mobile-user-email');
+
+            if (isLoggedIn && userEmail) {
+                loginTab.classList.add('hidden');
+                userInfo.classList.remove('hidden');
+                userInfo.classList.add('flex');
+                userEmailSpan.textContent = userEmail;
+                
+                mobileLogin.classList.add('hidden');
+                mobileUserInfo.classList.remove('hidden');
+                mobileUserEmail.textContent = userEmail;
+            } else {
+                loginTab.classList.remove('hidden');
+                userInfo.classList.add('hidden');
+                userInfo.classList.remove('flex');
+                
+                mobileLogin.classList.remove('hidden');
+                mobileUserInfo.classList.add('hidden');
+            }
+        }
+
+        function handleLogout() {
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('userEmail');
+            localStorage.removeItem('userName');
+            updateNavigation();
+            alert('You have been logged out.');
+            window.location.hash = 'shop';
+            
+            if (window.location.hash === '#cart') {
+                renderCart();
+            }
+        }
+
+        // CART FUNCTIONS - FIXED VERSION
+        function setupAddToCartListeners() {
+            document.querySelectorAll('.add-to-cart').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const product = {
+                        id: this.dataset.id,
+                        name: this.dataset.name,
+                        price: parseFloat(this.dataset.price),
+                        image: this.dataset.image
+                    };
+                    addToCart(product, this);
+                });
+            });
+        }
+
+        function addToCart(product, button) {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            
+            // Check if product already exists
+            const existingIndex = cart.findIndex(item => item.id === product.id);
+            
+            if (existingIndex > -1) {
+                // Increase quantity if exists
+                cart[existingIndex].quantity = (cart[existingIndex].quantity || 1) + 1;
+            } else {
+                // Add new item with quantity
+                product.quantity = 1;
+                cart.push(product);
+            }
+            
+            localStorage.setItem('cart', JSON.stringify(cart));
+            
+            // Visual feedback
+            const originalText = button.textContent;
+            button.textContent = '✓ Added';
+            button.classList.add('bg-green-500', 'hover:bg-green-600');
+            
+            setTimeout(() => {
+                button.textContent = originalText;
+                button.classList.remove('bg-green-500', 'hover:bg-green-600');
+            }, 1500);
+
+            // Update everything immediately
+            updateCartBadge();
+            
+            // If on cart page, update cart display immediately
+            if (window.location.hash === '#cart') {
+                renderCart();
+            }
+        }
+
+        function renderCart() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const cartItemsEl = document.getElementById('cart-items');
+            const emptyCartMessage = document.getElementById('empty-cart-message');
+            const subtotalEl = document.getElementById('subtotal');
+            const totalEl = document.getElementById('total');
+            const checkoutBtn = document.getElementById('checkout-btn');
+
+            // Clear current content
+            cartItemsEl.innerHTML = '';
+            
+            if (cart.length === 0) {
+                emptyCartMessage.classList.remove('hidden');
+                subtotalEl.textContent = '₪0';
+                totalEl.textContent = '₪0';
+                checkoutBtn.disabled = true;
+                checkoutBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                return;
+            }
+
+            emptyCartMessage.classList.add('hidden');
+            checkoutBtn.disabled = false;
+            checkoutBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            
+            let subtotal = 0;
+            
+            cart.forEach((item, index) => {
+                const quantity = item.quantity || 1;
+                const itemTotal = item.price * quantity;
+                subtotal += itemTotal;
+                
+                const itemHTML = `
+                    <div class="flex items-center justify-between py-4 border-b border-gray-800 cart-item">
+                        <div class="flex items-center space-x-4">
+                            <img src="${item.image}" alt="${item.name}" class="w-16 h-16 object-cover rounded">
+                            <div>
+                                <h3 class="font-medium">${item.name}</h3>
+                                <p class="text-gray-400">₪${item.price}</p>
+                                <div class="flex items-center space-x-2 mt-2">
+                                    <button class="quantity-btn text-gray-400 hover:text-white" data-index="${index}" data-action="decrease">-</button>
+                                    <span class="quantity">${quantity}</span>
+                                    <button class="quantity-btn text-gray-400 hover:text-white" data-index="${index}" data-action="increase">+</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <span class="font-medium">₪${itemTotal.toFixed(2)}</span>
+                            <button class="text-red-500 hover:text-red-400 remove-item" data-index="${index}">
+                                <i data-feather="trash-2" class="w-5 h-5"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                cartItemsEl.innerHTML += itemHTML;
+            });
+
+            subtotalEl.textContent = `₪${subtotal.toFixed(2)}`;
+            totalEl.textContent = `₪${subtotal.toFixed(2)}`;
+            
+            // Re-attach event listeners
+            setupCartEventListeners();
+            feather.replace();
+        }
+
+        function setupCartEventListeners() {
+            // Remove items
+            document.querySelectorAll('.remove-item').forEach(button => {
+                button.addEventListener('click', function() {
+                    const index = parseInt(this.dataset.index);
+                    removeFromCart(index);
+                });
+            });
+
+            // Quantity adjustments
+            document.querySelectorAll('.quantity-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const index = parseInt(this.dataset.index);
+                    const action = this.dataset.action;
+                    adjustQuantity(index, action);
+                });
+            });
+        }
+
+        function removeFromCart(index) {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            if (index >= 0 && index < cart.length) {
+                cart.splice(index, 1);
+                localStorage.setItem('cart', JSON.stringify(cart));
+                renderCart();
+                updateCartBadge();
+            }
+        }
+
+        function adjustQuantity(index, action) {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            if (index >= 0 && index < cart.length) {
+                const item = cart[index];
+                item.quantity = item.quantity || 1;
+                
+                if (action === 'increase') {
+                    item.quantity++;
+                } else if (action === 'decrease' && item.quantity > 1) {
+                    item.quantity--;
+                }
+                
+                localStorage.setItem('cart', JSON.stringify(cart));
+                renderCart();
+                updateCartBadge();
+            }
+        }
+
+        function updateCartBadge() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const cartTab = document.getElementById('cart-tab');
+            
+            if (cartTab) {
+                const totalItems = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+                cartTab.textContent = totalItems > 0 ? `Cart (${totalItems})` : 'Cart';
+            }
+        }
+
+        function handleCheckout() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+            
+            if (cart.length === 0) {
+                alert('Your cart is empty!');
+                return;
+            }
+
+            if (!isLoggedIn) {
+                alert('Please login to complete your purchase.');
+                window.location.hash = 'login';
+                return;
+            }
+
+            // Create order
+            const orders = JSON.parse(localStorage.getItem('orders')) || [];
+            const order = {
+                id: Date.now(),
+                userEmail: localStorage.getItem('userEmail'),
+                items: [...cart],
+                total: cart.reduce((sum, item) => sum + (item.price * (item.quantity || 1)), 0),
+                date: new Date().toLocaleString(),
+                status: 'confirmed'
+            };
+
+            orders.push(order);
+            localStorage.setItem('orders', JSON.stringify(orders));
+
+            // Clear cart
+            localStorage.setItem('cart', JSON.stringify([]));
+            updateCartBadge();
+
+            // Show order confirmation
+            showOrderConfirmation(order);
+        }
+
+        function showOrderConfirmation(order) {
+            const orderDetailsEl = document.getElementById('order-details');
+            orderDetailsEl.innerHTML = `
+                <p><strong>Order ID:</strong> #${order.id}</p>
+                <p><strong>Date:</strong> ${order.date}</p>
+                <p><strong>Total:</strong> ₪${order.total.toFixed(2)}</p>
+                <p><strong>Items:</strong></p>
+                <ul class="list-disc list-inside ml-4">
+                    ${order.items.map(item => 
+                        `<li>${item.name} x${item.quantity || 1} - ₪${(item.price * (item.quantity || 1)).toFixed(2)}</li>`
+                    ).join('')}
+                </ul>
+            `;
+            
+            window.location.hash = 'order-confirmation';
+        }
+
+        // CHAT FUNCTIONALITY
+        document.getElementById('admin-chat-btn').addEventListener('click', toggleChat);
+        document.getElementById('close-chat').addEventListener('click', toggleChat);
+        
+        function toggleChat() {
+            const chatModal = document.getElementById('admin-chat-modal');
+            chatModal.classList.toggle('hidden');
+            feather.replace();
+        }
+
+        document.getElementById('chat-input').addEventListener('keypress', function(e) {
+            if(e.key === 'Enter' && e.target.value.trim()) {
+                const message = e.target.value.trim();
+                const chatMessages = document.getElementById('chat-messages');
+                
+                // Add user message
+                chatMessages.innerHTML += `
+                    <div class="chat-message user-message">
+                        ${message}
+                    </div>
+                `;
+                
+                e.target.value = '';
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+                
+                // Auto-response
+                setTimeout(() => {
+                    const response = getAdminResponse(message);
+                    chatMessages.innerHTML += `
+                        <div class="chat-message admin-message">
+                            ${response}
+                        </div>
+                    `;
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                }, 1000);
+            }
         });
+
+        function getAdminResponse(message) {
+            const lowerMessage = message.toLowerCase();
+            
+            if (lowerMessage.includes('price') || lowerMessage.includes('cost')) {
+                return "Our prices range from ₪100 to ₪1000. Is there a specific product you're interested in?";
+            } else if (lowerMessage.includes('delivery') || lowerMessage.includes('shipping')) {
+                return "We offer free shipping on all orders. Delivery typically takes 3-5 business days.";
+            } else if (lowerMessage.includes('return') || lowerMessage.includes('refund')) {
+                return "We have a 30-day return policy. If you're not satisfied with your purchase, you can return it for a full refund.";
+            } else if (lowerMessage.includes('contact') || lowerMessage.includes('email')) {
+                return "You can reach us at bezalelganam95@gmail.com or through our contact form.";
+            } else {
+                return "Thank you for your message. Our team will get back to you shortly with more information.";
+            }
+        }
     </script>
 </body>
 </html>
