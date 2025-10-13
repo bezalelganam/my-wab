@@ -778,25 +778,36 @@ function handleHashChange() {
         }
 
         // CART FUNCTIONS - FULLY FIXED
-      function setupAddToCartListeners() {
-    console.log('Setting up cart listeners...');
+     function setupAddToCartListeners() {
+    console.log('=== SETTING UP CART LISTENERS ===');
     
-    // Remove all existing listeners first
+    // Get all buttons
     const buttons = document.querySelectorAll('.add-to-cart');
-    console.log('Found buttons:', buttons.length);
+    console.log('Found', buttons.length, 'add-to-cart buttons');
     
-    buttons.forEach(button => {
-        // Clone button to remove all event listeners
-        const newButton = button.cloneNode(true);
-        button.parentNode.replaceChild(newButton, button);
-    });
-    
-    // Add fresh listeners
-    document.querySelectorAll('.add-to-cart').forEach(button => {
-        button.addEventListener('click', function(e) {
+    // Remove ALL existing event listeners by completely replacing buttons
+    buttons.forEach((button, index) => {
+        console.log('Replacing button', index);
+        
+        // Create a completely new button
+        const newButton = document.createElement('button');
+        
+        // Copy all attributes
+        for (let attr of button.attributes) {
+            newButton.setAttribute(attr.name, attr.value);
+        }
+        
+        // Copy the inner HTML
+        newButton.innerHTML = button.innerHTML;
+        
+        // Add the same classes
+        newButton.className = button.className;
+        
+        // Add fresh event listener
+        newButton.addEventListener('click', function(e) {
             e.preventDefault();
-            e.stopPropagation();
-            console.log('Add to cart clicked');
+            e.stopImmediatePropagation();
+            console.log('=== BUTTON CLICKED - ADDING TO CART ===');
             
             const product = {
                 id: this.dataset.id,
@@ -804,9 +815,15 @@ function handleHashChange() {
                 price: parseFloat(this.dataset.price),
                 image: this.dataset.image
             };
+            
             addToCart(product, this);
         });
+        
+        // Replace the old button
+        button.parentNode.replaceChild(newButton, button);
     });
+    
+    console.log('=== CART LISTENERS SETUP COMPLETE ===');
 }
 
       function addToCart(product, buttonElement) {
