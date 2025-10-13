@@ -706,7 +706,7 @@ function handleHashChange() {
             window.location.hash = 'login';
         }
 
-      function handleForgotPassword() {
+     function handleForgotPassword() {
     const email = document.getElementById('reset-email').value.trim();
     
     // Get existing users
@@ -716,14 +716,21 @@ function handleHashChange() {
     const userExists = users.some(user => user.email === email);
     
     if (userExists) {
-        // Generate a simple token (in real app, use proper JWT or crypto)
+        // Generate a simple token
         const token = Date.now().toString(36) + Math.random().toString(36).substr(2);
         
-        // Store reset token temporarily (in real app, use database)
-        localStorage.setItem('resetToken_' + email, token);
+        // Store reset token temporarily
+        const resetData = {
+            token: token,
+            email: email,
+            expires: Date.now() + (60 * 60 * 1000) // 1 hour
+        };
+        localStorage.setItem('resetToken_' + email, JSON.stringify(resetData));
         
-        // Create reset link
-        const resetLink = `reset-password.html?token=${token}&email=${encodeURIComponent(email)}`;
+        // ✅ IMPORTANT: Create the EXACT link that reset-password.html expects
+        const resetLink = `https://check.wanttowin.co/reset-password.html?token=${token}&email=${encodeURIComponent(email)}`;
+        
+        console.log('Reset Link Created:', resetLink);
         
         // Create email data for password reset
         const resetEmailData = {
@@ -731,18 +738,28 @@ function handleHashChange() {
             from_name: 'WantToWin Support',
             from_email: 'bezalelganam95@gmail.com',
             subject: 'Password Reset Request - WantToWin',
-            message: `You requested a password reset. Please click the link below to reset your password:\n\nReset Link: ${window.location.origin}/${resetLink}\n\nThis link will expire in 1 hour.\n\nIf you didn't request this, please ignore this email.`
+            message_html: `
+                <h3>Password Reset Request</h3>
+                <p>You requested a password reset for your WantToWin account.</p>
+                <p>Click the link below to reset your password:</p>
+                <p><a href="${resetLink}" style="background: #ef4444; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block;">Reset Password</a></p>
+                <p>Or copy this link: ${resetLink}</p>
+                <p><strong>This link will expire in 1 hour.</strong></p>
+                <p>If you didn't request this, please ignore this email.</p>
+            `
         };
         
         // Send reset email using EmailJS
         emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, resetEmailData)
             .then(function(response) {
                 console.log('SUCCESS!', response.status, response.text);
-                alert('Password reset link has been sent to your email. Please check your inbox.');
+                alert('Password reset link has been sent to your email!');
                 window.location.hash = 'login';
             }, function(error) {
                 console.log('FAILED...', error);
-                alert('There was an error sending the reset email. Please try again later.');
+                // Show the link even if email fails (for testing)
+                alert('Email sending failed, but here is your reset link for testing: ' + resetLink);
+                window.location.hash = 'login';
             });
     } else {
         alert('No account found with this email address.');
