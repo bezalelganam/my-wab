@@ -468,6 +468,31 @@
                 window.location.hash = sectionId;
             });
         });
+                   // Checkout button
+document.getElementById('checkout-btn').addEventListener('click', function() {
+    const userEmail = localStorage.getItem('userEmail');
+    const cartKey = userEmail ? `cart_${userEmail}` : 'cart_guest';
+    const cart = JSON.parse(localStorage.getItem(cartKey)) || [];
+    
+    if (cart.length > 0) {
+        // Save order to track it
+        const orders = JSON.parse(localStorage.getItem('orders')) || [];
+        const order = {
+            id: Date.now(),
+            userEmail: userEmail || 'guest',
+            items: cart,
+            total: cart.reduce((sum, item) => sum + item.price, 0),
+            date: new Date().toLocaleString()
+        };
+        orders.push(order);
+        localStorage.setItem('orders', JSON.stringify(orders));
+        
+        alert('Thank you for your order! We will process it shortly.');
+        localStorage.setItem(cartKey, JSON.stringify([]));
+        renderCart();
+    }
+});
+        
 
         // Mobile menu toggle
         const mobileMenuBtn = document.getElementById('mobile-menu-btn');
@@ -490,6 +515,7 @@
 
         // ... ALL YOUR OTHER CODE (contact forms, login, etc.) should stay here ...
         // Make sure ALL your other functions and event listeners are inside this DOMContentLoaded
+        
  // Contact form functionality
             document.getElementById('contact-form').addEventListener('submit', function(e) {
                 e.preventDefault();
@@ -809,50 +835,10 @@ function removeFromCart(index) {
         updateCartBadge();
     }
 }
-            function updateCartBadge() {
-    // Get the current cart
-    const userEmail = localStorage.getItem('userEmail');
-    const cartKey = userEmail ? `cart_${userEmail}` : 'cart_guest';
-    const cart = JSON.parse(localStorage.getItem(cartKey)) || [];
-    
-    // Find the cart tab in navigation
-    const cartTab = document.getElementById('cart-tab');
-    if (cartTab) {
-        if (cart.length > 0) {
-            // Show count like "Cart (3)"
-            cartTab.textContent = `Cart (${cart.length})`;
-        } else {
-            // Show just "Cart" when empty
-            cartTab.textContent = 'Cart';
-        }
-    }
-}
+         
             
 
-           // Checkout button
-document.getElementById('checkout-btn').addEventListener('click', function() {
-    const userEmail = localStorage.getItem('userEmail');
-    const cartKey = userEmail ? `cart_${userEmail}` : 'cart_guest';
-    const cart = JSON.parse(localStorage.getItem(cartKey)) || [];
-    
-    if (cart.length > 0) {
-        // Save order to track it
-        const orders = JSON.parse(localStorage.getItem('orders')) || [];
-        const order = {
-            id: Date.now(),
-            userEmail: userEmail || 'guest',
-            items: cart,
-            total: cart.reduce((sum, item) => sum + item.price, 0),
-            date: new Date().toLocaleString()
-        };
-        orders.push(order);
-        localStorage.setItem('orders', JSON.stringify(orders));
-        
-        alert('Thank you for your order! We will process it shortly.');
-        localStorage.setItem(cartKey, JSON.stringify([]));
-        renderCart();
-    }
-});
+
             // Function to view all orders (for admin)
 function viewAllOrders() {
     const orders = JSON.parse(localStorage.getItem('orders')) || [];
