@@ -490,82 +490,7 @@
 
         // ... ALL YOUR OTHER CODE (contact forms, login, etc.) should stay here ...
         // Make sure ALL your other functions and event listeners are inside this DOMContentLoaded
-
-    }); // END OF DOMContentLoaded
-
-    // ONLY pure function definitions can be outside, like this:
-    function updateCartBadge() {
-        const userEmail = localStorage.getItem('userEmail');
-        const cartKey = userEmail ? `cart_${userEmail}` : 'cart_guest';
-        const cart = JSON.parse(localStorage.getItem(cartKey)) || [];
-        
-        const cartTab = document.getElementById('cart-tab');
-        if (cartTab) {
-            if (cart.length > 0) {
-                cartTab.textContent = `Cart (${cart.length})`;
-            } else {
-                cartTab.textContent = 'Cart';
-            }
-        }
-    }
-
-    
-
-        
-
-
-
-      
-
-
-
-// Add to cart functionality - SIMPLE VERSION
-function setupAddToCartListeners() {
-    document.querySelectorAll('.add-to-cart').forEach(button => {
-        // Remove any existing listeners first
-        button.replaceWith(button.cloneNode(true));
-    });
-    
-    // Re-attach listeners to new buttons
-    document.querySelectorAll('.add-to-cart').forEach(button => {
-        button.addEventListener('click', function(e) {
-            e.preventDefault();
-            const name = this.dataset.name;
-            const price = parseFloat(this.dataset.price);
-            const image = this.dataset.image;
-            
-            // Get user-specific cart
-            const userEmail = localStorage.getItem('userEmail');
-            const cartKey = userEmail ? `cart_${userEmail}` : 'cart_guest';
-            const cart = JSON.parse(localStorage.getItem(cartKey)) || [];
-            
-            // Add new item
-            cart.push({ 
-                id: Date.now() + Math.random(), // Unique ID for each item
-                name, 
-                price, 
-                image 
-            });
-            
-            localStorage.setItem(cartKey, JSON.stringify(cart));
-            
-            // Show success message
-            alert(`✅ ${name} added to cart!`);
-            
-            // Update cart badge if exists
-            updateCartBadge();
-            
-            // Update cart if we're on cart page
-            if (window.location.hash === '#cart') {
-                renderCart();
-            }
-        });
-    });
-}
-
-// Call this function initially
-setupAddToCartListeners();
-            // Contact form functionality
+ // Contact form functionality
             document.getElementById('contact-form').addEventListener('submit', function(e) {
                 e.preventDefault();
                 
@@ -783,6 +708,81 @@ function renderCart() {
     // Attach remove event listeners
     setupRemoveListeners();
 }
+    }); // END OF DOMContentLoaded
+
+    // ONLY pure function definitions can be outside, like this:
+    function updateCartBadge() {
+        const userEmail = localStorage.getItem('userEmail');
+        const cartKey = userEmail ? `cart_${userEmail}` : 'cart_guest';
+        const cart = JSON.parse(localStorage.getItem(cartKey)) || [];
+        
+        const cartTab = document.getElementById('cart-tab');
+        if (cartTab) {
+            if (cart.length > 0) {
+                cartTab.textContent = `Cart (${cart.length})`;
+            } else {
+                cartTab.textContent = 'Cart';
+            }
+        }
+    }
+
+    
+
+        
+
+
+
+      
+
+
+
+// Add to cart functionality - SIMPLE VERSION
+function setupAddToCartListeners() {
+    document.querySelectorAll('.add-to-cart').forEach(button => {
+        // Remove any existing listeners first
+        button.replaceWith(button.cloneNode(true));
+    });
+    
+    // Re-attach listeners to new buttons
+    document.querySelectorAll('.add-to-cart').forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            const name = this.dataset.name;
+            const price = parseFloat(this.dataset.price);
+            const image = this.dataset.image;
+            
+            // Get user-specific cart
+            const userEmail = localStorage.getItem('userEmail');
+            const cartKey = userEmail ? `cart_${userEmail}` : 'cart_guest';
+            const cart = JSON.parse(localStorage.getItem(cartKey)) || [];
+            
+            // Add new item
+            cart.push({ 
+                id: Date.now() + Math.random(), // Unique ID for each item
+                name, 
+                price, 
+                image 
+            });
+            
+            localStorage.setItem(cartKey, JSON.stringify(cart));
+            
+            // Show success message
+            alert(`✅ ${name} added to cart!`);
+            
+            // Update cart badge if exists
+            updateCartBadge();
+            
+            // Update cart if we're on cart page
+            if (window.location.hash === '#cart') {
+                renderCart();
+            }
+        });
+    });
+}
+
+// Call this function initially
+setupAddToCartListeners();
+           
 function setupRemoveListeners() {
     document.querySelectorAll('.remove-item').forEach(button => {
         button.addEventListener('click', function() {
