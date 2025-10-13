@@ -707,63 +707,54 @@ function handleHashChange() {
             window.location.hash = 'login';
         }
 
-     function handleForgotPassword() {
+   function handleForgotPassword() {
     const email = document.getElementById('reset-email').value.trim();
     
-    // Get existing users
     const users = JSON.parse(localStorage.getItem('users')) || [];
-    
-    // Check if user exists
     const userExists = users.some(user => user.email === email);
     
     if (userExists) {
-        // Generate a simple token
         const token = Date.now().toString(36) + Math.random().toString(36).substr(2);
+        const resetLink = `https://check.wanttowin.co/reset-password.html?token=${token}&email=${encodeURIComponent(email)}`;
         
-        // Store reset token temporarily
+        console.log('🔗 RESET LINK:', resetLink);
+        
+        // Store reset token
         const resetData = {
             token: token,
             email: email,
-            expires: Date.now() + (60 * 60 * 1000) // 1 hour
+            expires: Date.now() + (60 * 60 * 1000)
         };
         localStorage.setItem('resetToken_' + email, JSON.stringify(resetData));
         
-        // ✅ IMPORTANT: Create the EXACT link that reset-password.html expects
-        const resetLink = `https://check.wanttowin.co/reset-password.html?token=${token}&email=${encodeURIComponent(email)}`;
+        // ✅ USE THE NEW TEMPLATE ID
+        const PASSWORD_RESET_TEMPLATE_ID = 'template_51c3yio';
         
-        console.log('Reset Link Created:', resetLink);
-        
-        // Create email data for password reset
+        // Email data for the new template
         const resetEmailData = {
             to_email: email,
             from_name: 'WantToWin Support',
-            from_email: 'bezalelganam95@gmail.com',
+            message: `Click here to reset your password: ${resetLink}`,
             subject: 'Password Reset Request - WantToWin',
-            message_html: `
-                <h3>Password Reset Request</h3>
-                <p>You requested a password reset for your WantToWin account.</p>
-                <p>Click the link below to reset your password:</p>
-                <p><a href="${resetLink}" style="background: #ef4444; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block;">Reset Password</a></p>
-                <p>Or copy this link: ${resetLink}</p>
-                <p><strong>This link will expire in 1 hour.</strong></p>
-                <p>If you didn't request this, please ignore this email.</p>
-            `
+            reply_to: 'bezalelganam95@gmail.com'
         };
         
-        // Send reset email using EmailJS
-        emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID_Rest, resetEmailData)
+        console.log('📧 Sending to template:', PASSWORD_RESET_TEMPLATE_ID);
+        console.log('📧 Email data:', resetEmailData);
+        
+        // Send using the NEW template
+        emailjs.send(EMAILJS_SERVICE_ID, PASSWORD_RESET_TEMPLATE_ID, resetEmailData)
             .then(function(response) {
-                console.log('SUCCESS!', response.status, response.text);
-                alert('Password reset link has been sent to your email!');
+                console.log('✅ Email sent successfully!', response);
+                alert('✅ Password reset link has been sent to your email!');
                 window.location.hash = 'login';
             }, function(error) {
-                console.log('FAILED...', error);
-                // Show the link even if email fails (for testing)
-                alert('Email sending failed, but here is your reset link for testing: ' + resetLink);
+                console.log('❌ Email failed:', error);
+                alert('❌ Email failed. Here is your reset link: ' + resetLink);
                 window.location.hash = 'login';
             });
     } else {
-        alert('No account found with this email address.');
+        alert('❌ No account found with this email address.');
     }
 }
 
