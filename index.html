@@ -477,18 +477,20 @@
                 localStorage.setItem('orders', JSON.stringify([]));
             }
             
-            // Setup navigation and event listeners
+            // Setup everything
             setupNavigation();
             setupAddToCartListeners();
             setupFormHandlers();
+            setupChat();
             updateCartBadge();
             updateNavigation();
             
             // Handle initial page
             if (!window.location.hash || window.location.hash === '#') {
                 window.location.hash = 'shop';
+            } else {
+                handleHashChange();
             }
-            handleHashChange();
         });
 
         // NAVIGATION FUNCTIONS
@@ -510,16 +512,6 @@
             
             // Hash changes
             window.addEventListener('hashchange', handleHashChange);
-            
-            // Mobile menu links
-            document.querySelectorAll('#mobile-menu a').forEach(link => {
-                link.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    const sectionId = link.getAttribute('href').substring(1);
-                    window.location.hash = sectionId;
-                    document.getElementById('mobile-menu').classList.add('hidden');
-                });
-            });
         }
 
         function handleHashChange() {
@@ -545,6 +537,9 @@
             const activeTab = document.getElementById(hash + '-tab');
             if (activeTab) activeTab.classList.add('active-tab');
             
+            // Close mobile menu after navigation
+            document.getElementById('mobile-menu').classList.add('hidden');
+            
             // Section-specific setup
             if (hash === 'cart') {
                 setTimeout(renderCart, 100);
@@ -568,8 +563,9 @@
                 handleLogin();
             });
 
-            // Signup form
-            document.getElementById('signup-form').addEventListener('submit', function(e) {
+            // Signup form - FIXED: Proper event listener
+            const signupForm = document.getElementById('signup-form');
+            signupForm.addEventListener('submit', function(e) {
                 e.preventDefault();
                 handleSignup();
             });
@@ -687,6 +683,9 @@
             // Save to localStorage
             localStorage.setItem('users', JSON.stringify(users));
 
+            // Clear form
+            document.getElementById('signup-form').reset();
+
             // Redirect to login
             alert('Account created successfully! Please login.');
             window.location.hash = 'login';
@@ -749,13 +748,9 @@
             updateNavigation();
             alert('You have been logged out.');
             window.location.hash = 'shop';
-            
-            if (window.location.hash === '#cart') {
-                renderCart();
-            }
         }
 
-        // CART FUNCTIONS - FIXED VERSION
+        // CART FUNCTIONS - FULLY FIXED
         function setupAddToCartListeners() {
             document.querySelectorAll('.add-to-cart').forEach(button => {
                 button.addEventListener('click', function(e) {
@@ -983,42 +978,44 @@
         }
 
         // CHAT FUNCTIONALITY
-        document.getElementById('admin-chat-btn').addEventListener('click', toggleChat);
-        document.getElementById('close-chat').addEventListener('click', toggleChat);
-        
+        function setupChat() {
+            document.getElementById('admin-chat-btn').addEventListener('click', toggleChat);
+            document.getElementById('close-chat').addEventListener('click', toggleChat);
+            
+            document.getElementById('chat-input').addEventListener('keypress', function(e) {
+                if(e.key === 'Enter' && e.target.value.trim()) {
+                    const message = e.target.value.trim();
+                    const chatMessages = document.getElementById('chat-messages');
+                    
+                    // Add user message
+                    chatMessages.innerHTML += `
+                        <div class="chat-message user-message">
+                            ${message}
+                        </div>
+                    `;
+                    
+                    e.target.value = '';
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                    
+                    // Auto-response
+                    setTimeout(() => {
+                        const response = getAdminResponse(message);
+                        chatMessages.innerHTML += `
+                            <div class="chat-message admin-message">
+                                ${response}
+                            </div>
+                        `;
+                        chatMessages.scrollTop = chatMessages.scrollHeight;
+                    }, 1000);
+                }
+            });
+        }
+
         function toggleChat() {
             const chatModal = document.getElementById('admin-chat-modal');
             chatModal.classList.toggle('hidden');
             feather.replace();
         }
-
-        document.getElementById('chat-input').addEventListener('keypress', function(e) {
-            if(e.key === 'Enter' && e.target.value.trim()) {
-                const message = e.target.value.trim();
-                const chatMessages = document.getElementById('chat-messages');
-                
-                // Add user message
-                chatMessages.innerHTML += `
-                    <div class="chat-message user-message">
-                        ${message}
-                    </div>
-                `;
-                
-                e.target.value = '';
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-                
-                // Auto-response
-                setTimeout(() => {
-                    const response = getAdminResponse(message);
-                    chatMessages.innerHTML += `
-                        <div class="chat-message admin-message">
-                            ${response}
-                        </div>
-                    `;
-                    chatMessages.scrollTop = chatMessages.scrollHeight;
-                }, 1000);
-            }
-        });
 
         function getAdminResponse(message) {
             const lowerMessage = message.toLowerCase();
