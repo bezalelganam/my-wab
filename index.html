@@ -734,6 +734,96 @@ function renderCart() {
     // Attach remove event listeners
     setupRemoveListeners();
 }
+              // Chat functionality
+            const chatBtn = document.getElementById('admin-chat-btn');
+            const chatModal = document.getElementById('admin-chat-modal');
+            const chatInput = document.getElementById('chat-input');
+            const chatMessages = document.getElementById('chat-messages');
+            const closeChat = document.getElementById('close-chat');
+            
+            // Load chat history
+            const chatSessionId = localStorage.getItem('chatSessionId');
+            const chats = JSON.parse(localStorage.getItem('chats')) || {};
+            if (chats[chatSessionId]) {
+                chats[chatSessionId].forEach(msg => {
+                    const messageClass = msg.isAdmin ? 'admin-message' : 'user-message';
+                    chatMessages.innerHTML += `
+                        <div class="chat-message ${messageClass}">
+                            ${msg.message}
+                        </div>
+                    `;
+                });
+            } else {
+                // Initialize with welcome message
+                chatMessages.innerHTML = `
+                    <div class="chat-message admin-message">
+                        Welcome! How can we help you today?
+                    </div>
+                `;
+                chats[chatSessionId] = [{ message: "Welcome! How can we help you today?", isAdmin: true }];
+                localStorage.setItem('chats', JSON.stringify(chats));
+            }
+
+            // Toggle chat visibility
+            chatBtn.addEventListener('click', () => {
+                chatModal.classList.toggle('hidden');
+                feather.replace();
+            });
+
+            closeChat.addEventListener('click', () => {
+                chatModal.classList.add('hidden');
+            });
+
+            // Handle chat input
+            chatInput.addEventListener('keypress', (e) => {
+                if(e.key === 'Enter' && e.target.value.trim()) {
+                    const message = e.target.value;
+                    
+                    // Add user message
+                    chatMessages.innerHTML += `
+                        <div class="chat-message user-message">
+                            ${message}
+                        </div>
+                    `;
+                    
+                    // Save to chat history
+                    chats[chatSessionId].push({ message: message, isAdmin: false });
+                    localStorage.setItem('chats', JSON.stringify(chats));
+                    
+                    e.target.value = '';
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                    
+                    // Auto-response
+                    setTimeout(() => {
+                        const response = getAdminResponse(message);
+                        chatMessages.innerHTML += `
+                            <div class="chat-message admin-message">
+                                ${response}
+                            </div>
+                        `;
+                        chats[chatSessionId].push({ message: response, isAdmin: true });
+                        localStorage.setItem('chats', JSON.stringify(chats));
+                        chatMessages.scrollTop = chatMessages.scrollHeight;
+                    }, 1000);
+                }
+            });
+
+            // Admin response function
+            function getAdminResponse(message) {
+                const lowerMessage = message.toLowerCase();
+                
+                if (lowerMessage.includes('price') || lowerMessage.includes('cost')) {
+                    return "Our prices range from ₪100 to ₪1000. Is there a specific product you're interested in?";
+                } else if (lowerMessage.includes('delivery') || lowerMessage.includes('shipping')) {
+                    return "We offer free shipping on all orders. Delivery typically takes 3-5 business days.";
+                } else if (lowerMessage.includes('return') || lowerMessage.includes('refund')) {
+                    return "We have a 30-day return policy. If you're not satisfied with your purchase, you can return it for a full refund.";
+                } else if (lowerMessage.includes('contact') || lowerMessage.includes('email')) {
+                    return "You can reach us at bezalelganam95@gmail.com or through our contact form.";
+                } else {
+                    return "Thank you for your message. Our team will get back to you shortly with more information.";
+                }
+            }
     }); // END OF DOMContentLoaded
 
     // ONLY pure function definitions can be outside, like this:
@@ -849,96 +939,7 @@ function viewAllOrders() {
 // Call this function to see all orders in console
 // viewAllOrders();
 
-            // Chat functionality
-            const chatBtn = document.getElementById('admin-chat-btn');
-            const chatModal = document.getElementById('admin-chat-modal');
-            const chatInput = document.getElementById('chat-input');
-            const chatMessages = document.getElementById('chat-messages');
-            const closeChat = document.getElementById('close-chat');
-            
-            // Load chat history
-            const chatSessionId = localStorage.getItem('chatSessionId');
-            const chats = JSON.parse(localStorage.getItem('chats')) || {};
-            if (chats[chatSessionId]) {
-                chats[chatSessionId].forEach(msg => {
-                    const messageClass = msg.isAdmin ? 'admin-message' : 'user-message';
-                    chatMessages.innerHTML += `
-                        <div class="chat-message ${messageClass}">
-                            ${msg.message}
-                        </div>
-                    `;
-                });
-            } else {
-                // Initialize with welcome message
-                chatMessages.innerHTML = `
-                    <div class="chat-message admin-message">
-                        Welcome! How can we help you today?
-                    </div>
-                `;
-                chats[chatSessionId] = [{ message: "Welcome! How can we help you today?", isAdmin: true }];
-                localStorage.setItem('chats', JSON.stringify(chats));
-            }
-
-            // Toggle chat visibility
-            chatBtn.addEventListener('click', () => {
-                chatModal.classList.toggle('hidden');
-                feather.replace();
-            });
-
-            closeChat.addEventListener('click', () => {
-                chatModal.classList.add('hidden');
-            });
-
-            // Handle chat input
-            chatInput.addEventListener('keypress', (e) => {
-                if(e.key === 'Enter' && e.target.value.trim()) {
-                    const message = e.target.value;
-                    
-                    // Add user message
-                    chatMessages.innerHTML += `
-                        <div class="chat-message user-message">
-                            ${message}
-                        </div>
-                    `;
-                    
-                    // Save to chat history
-                    chats[chatSessionId].push({ message: message, isAdmin: false });
-                    localStorage.setItem('chats', JSON.stringify(chats));
-                    
-                    e.target.value = '';
-                    chatMessages.scrollTop = chatMessages.scrollHeight;
-                    
-                    // Auto-response
-                    setTimeout(() => {
-                        const response = getAdminResponse(message);
-                        chatMessages.innerHTML += `
-                            <div class="chat-message admin-message">
-                                ${response}
-                            </div>
-                        `;
-                        chats[chatSessionId].push({ message: response, isAdmin: true });
-                        localStorage.setItem('chats', JSON.stringify(chats));
-                        chatMessages.scrollTop = chatMessages.scrollHeight;
-                    }, 1000);
-                }
-            });
-
-            // Admin response function
-            function getAdminResponse(message) {
-                const lowerMessage = message.toLowerCase();
-                
-                if (lowerMessage.includes('price') || lowerMessage.includes('cost')) {
-                    return "Our prices range from ₪100 to ₪1000. Is there a specific product you're interested in?";
-                } else if (lowerMessage.includes('delivery') || lowerMessage.includes('shipping')) {
-                    return "We offer free shipping on all orders. Delivery typically takes 3-5 business days.";
-                } else if (lowerMessage.includes('return') || lowerMessage.includes('refund')) {
-                    return "We have a 30-day return policy. If you're not satisfied with your purchase, you can return it for a full refund.";
-                } else if (lowerMessage.includes('contact') || lowerMessage.includes('email')) {
-                    return "You can reach us at bezalelganam95@gmail.com or through our contact form.";
-                } else {
-                    return "Thank you for your message. Our team will get back to you shortly with more information.";
-                }
-            }
+      
 
             // Initialize first load
             if (!window.location.hash) {
