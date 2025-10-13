@@ -397,6 +397,8 @@
             if (!localStorage.getItem('chatSessionId')) {
                 localStorage.setItem('chatSessionId', Date.now().toString());
             }
+        
+        
 
             // Tab functionality
           
@@ -450,6 +452,18 @@
         window.location.hash = 'shop';
     }
 }
+        // Update cart badge when page loads
+updateCartBadge();
+
+// If we're on the shop page, make sure add-to-cart buttons work
+if (window.location.hash === '#shop') {
+    // Wait a bit for page to load completely
+    setTimeout(() => {
+        setupAddToCartListeners();
+    }, 500);
+}
+        });
+        
             // Add these lines after the handleHashChange function:
 window.addEventListener('hashchange', handleHashChange);
 
@@ -491,7 +505,14 @@ mobileMenuBtn.addEventListener('click', () => {
 // Add to cart functionality - SIMPLE VERSION
 function setupAddToCartListeners() {
     document.querySelectorAll('.add-to-cart').forEach(button => {
-        button.onclick = function() {
+        // Remove any existing listeners first
+        button.replaceWith(button.cloneNode(true));
+    });
+    
+    // Re-attach listeners to new buttons
+    document.querySelectorAll('.add-to-cart').forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
             const name = this.dataset.name;
             const price = parseFloat(this.dataset.price);
             const image = this.dataset.image;
@@ -502,17 +523,26 @@ function setupAddToCartListeners() {
             const cart = JSON.parse(localStorage.getItem(cartKey)) || [];
             
             // Add new item
-            cart.push({ name, price, image });
+            cart.push({ 
+                id: Date.now() + Math.random(), // Unique ID for each item
+                name, 
+                price, 
+                image 
+            });
+            
             localStorage.setItem(cartKey, JSON.stringify(cart));
             
             // Show success message
-            alert(`${name} added to cart!`);
+            alert(`✅ ${name} added to cart!`);
+            
+            // Update cart badge if exists
+            updateCartBadge();
             
             // Update cart if we're on cart page
             if (window.location.hash === '#cart') {
                 renderCart();
             }
-        };
+        });
     });
 }
 
@@ -683,17 +713,26 @@ function renderCart() {
     const emptyCartMessage = document.getElementById('empty-cart-message');
     const subtotalEl = document.getElementById('subtotal');
     const totalEl = document.getElementById('total');
+    const checkoutBtn = document.getElementById('checkout-btn');
+
+    // Clear current content but keep empty message structure
+    if (!emptyCartMessage.parentNode) {
+        cartItemsEl.innerHTML = '';
+        cartItemsEl.appendChild(emptyCartMessage);
+    }
 
     if (cart.length === 0) {
         emptyCartMessage.classList.remove('hidden');
-        cartItemsEl.innerHTML = '';
-        cartItemsEl.appendChild(emptyCartMessage);
         subtotalEl.textContent = '₪0';
         totalEl.textContent = '₪0';
+        checkoutBtn.disabled = true;
+        checkoutBtn.classList.add('opacity-50', 'cursor-not-allowed');
         return;
     }
 
     emptyCartMessage.classList.add('hidden');
+    checkoutBtn.disabled = false;
+    checkoutBtn.classList.remove('opacity-50', 'cursor-not-allowed');
     
     let html = '';
     let subtotal = 0;
@@ -701,7 +740,7 @@ function renderCart() {
     cart.forEach((item, index) => {
         subtotal += parseFloat(item.price);
         html += `
-            <div class="flex items-center justify-between py-4 border-b border-gray-800">
+            <div class="flex items-center justify-between py-4 border-b border-gray-800 cart-item">
                 <div class="flex items-center">
                     <img src="${item.image}" alt="${item.name}" class="w-16 h-16 object-cover rounded">
                     <div class="ml-4">
@@ -709,28 +748,67 @@ function renderCart() {
                         <p class="text-gray-400">₪${item.price}</p>
                     </div>
                 </div>
-                <button class="text-red-500 hover:text-red-400 remove-item" data-index="${index}" onclick="removeFromCart(${index})">
-                    <i data-feather="trash-2"></i>
+                <button class="text-red-500 hover:text-red-400 remove-item" data-index="${index}">
+                    <i data-feather="trash-2" class="w-5 h-5"></i>
                 </button>
             </div>
         `;
     });
 
+    // Replace the empty message with cart items
     cartItemsEl.innerHTML = html;
     subtotalEl.textContent = `₪${subtotal.toFixed(2)}`;
     totalEl.textContent = `₪${subtotal.toFixed(2)}`;
+    
+    // Re-initialize Feather icons
     feather.replace();
+    
+    // Attach remove event listeners
+    setupRemoveListeners();
 }
-
+function setupRemoveListeners() {
+    document.querySelectorAll('.remove-item').forEach(button => {
+        button.addEventListener('click', function() {
+            const index = parseInt(this.dataset.index);
+            removeFromCart(index);
+        });
+    });
+}
 // ADD THIS SIMPLE FUNCTION OUTSIDE renderCart():
 function removeFromCart(index) {
     const userEmail = localStorage.getItem('userEmail');
     const cartKey = userEmail ? `cart_${userEmail}` : 'cart_guest';
     const cart = JSON.parse(localStorage.getItem(cartKey)) || [];
     
-    cart.splice(index, 1);
-    localStorage.setItem(cartKey, JSON.stringify(cart));
-    renderCart();
+    if (index >= 0 && index < cart.length) {
+        const removedItem = cart[index];
+        cart.splice(index, 1);
+        localStorage.setItem(cartKey, JSON.stringify(cart));
+        
+        // Show removal message
+        alert(`🗑️ ${removedItem.name} removed from cart`);
+        
+        renderCart();
+        updateCartBadge();
+    }
+}
+            function updateCartBadge() {
+    // Get the current cart
+    const userEmail = localStorage.getItem('userEmail');
+    const cartKey = userEmail ? `cart_${userEmail}` : 'cart_guest';
+    const cart = JSON.parse(localStorage.getItem(cartKey)) || [];
+    
+    // Find the cart tab in navigation
+    const cartTab = document.getElementById('cart-tab');
+    if (cartTab) {
+        if (cart.length > 0) {
+            // Show count like "Cart (3)"
+            cartTab.textContent = `Cart (${cart.length})`;
+        } else {
+            // Show just "Cart" when empty
+            cartTab.textContent = 'Cart';
+        }
+    }
 }
             
 
