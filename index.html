@@ -871,98 +871,108 @@
                     });
                 });
             }
+  function addToCart(product) {
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    
+    // Check if product already exists
+    const existingIndex = cart.findIndex(item => item.id === product.id);
+    
+    if (existingIndex > -1) {
+        // Increase quantity if exists
+        cart[existingIndex].quantity = (cart[existingIndex].quantity || 1) + 1;
+    } else {
+        // Add new item with quantity
+        product.quantity = 1;
+        cart.push(product);
+    }
+    
+    localStorage.setItem('cart', JSON.stringify(cart));
+    
+    // IMMEDIATE VISUAL FEEDBACK
+    const button = event.target;
+    const originalText = button.textContent;
+    button.textContent = '✓ Added';
+    button.classList.add('bg-green-500', 'hover:bg-green-600');
+    
+    setTimeout(() => {
+        button.textContent = originalText;
+        button.classList.remove('bg-green-500', 'hover:bg-green-600');
+    }, 1500);
 
-            addToCart(product) {
-                const cart = JSON.parse(localStorage.getItem('cart')) || [];
-                
-                // Check if product already in cart
-                const existingItem = cart.find(item => item.id === product.id);
-                
-                if (existingItem) {
-                    existingItem.quantity = (existingItem.quantity || 1) + 1;
-                } else {
-                    product.quantity = 1;
-                    cart.push(product);
-                }
+    // UPDATE EVERYTHING IMMEDIATELY
+    updateCartBadge();
+    
+    // If on cart page, update cart display immediately
+    if (window.location.hash === '#cart') {
+        renderCart();
+    }
+}
 
-                localStorage.setItem('cart', JSON.stringify(cart));
-                
-                // Visual feedback
-                const button = event.target;
-                const originalText = button.textContent;
-                button.textContent = 'Added!';
-                button.classList.add('bg-green-500');
-                
-                setTimeout(() => {
-                    button.textContent = originalText;
-                    button.classList.remove('bg-green-500');
-                }, 2000);
+           function renderCart() {
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const cartItemsEl = document.getElementById('cart-items');
+    const emptyCartMessage = document.getElementById('empty-cart-message');
+    const subtotalEl = document.getElementById('subtotal');
+    const totalEl = document.getElementById('total');
+    const checkoutBtn = document.getElementById('checkout-btn');
 
-                this.updateCartBadge();
-                
-                if (window.location.hash === '#cart') {
-                    this.renderCart();
-                }
-            }
+    // Clear current content
+    cartItemsEl.innerHTML = '';
+    
+    if (cart.length === 0) {
+        emptyCartMessage.classList.remove('hidden');
+        subtotalEl.textContent = '₪0';
+        totalEl.textContent = '₪0';
+        checkoutBtn.disabled = true;
+        checkoutBtn.classList.add('opacity-50', 'cursor-not-allowed');
+        return;
+    }
 
-            renderCart() {
-                const cart = JSON.parse(localStorage.getItem('cart')) || [];
-                const cartItemsEl = document.getElementById('cart-items');
-                const emptyCartMessage = document.getElementById('empty-cart-message');
-                const subtotalEl = document.getElementById('subtotal');
-                const totalEl = document.getElementById('total');
-                const checkoutBtn = document.getElementById('checkout-btn');
-
-                if (cart.length === 0) {
-                    emptyCartMessage.classList.remove('hidden');
-                    subtotalEl.textContent = '₪0';
-                    totalEl.textContent = '₪0';
-                    checkoutBtn.disabled = true;
-                    return;
-                }
-
-                emptyCartMessage.classList.add('hidden');
-                checkoutBtn.disabled = false;
-
-                let html = '';
-                let subtotal = 0;
-
-                cart.forEach((item, index) => {
-                    const itemTotal = item.price * (item.quantity || 1);
-                    subtotal += itemTotal;
-                    
-                    html += `
-                        <div class="flex items-center justify-between py-4 border-b border-gray-800">
-                            <div class="flex items-center space-x-4">
-                                <img src="${item.image}" alt="${item.name}" class="w-16 h-16 object-cover rounded">
-                                <div>
-                                    <h3 class="font-medium">${item.name}</h3>
-                                    <p class="text-gray-400">₪${item.price}</p>
-                                    <div class="flex items-center space-x-2 mt-2">
-                                        <button class="quantity-btn text-gray-400 hover:text-white" data-index="${index}" data-action="decrease">-</button>
-                                        <span class="quantity">${item.quantity || 1}</span>
-                                        <button class="quantity-btn text-gray-400 hover:text-white" data-index="${index}" data-action="increase">+</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="flex items-center space-x-4">
-                                <span class="font-medium">₪${itemTotal.toFixed(2)}</span>
-                                <button class="text-red-500 hover:text-red-400 remove-item" data-index="${index}">
-                                    <i data-feather="trash-2" class="w-5 h-5"></i>
-                                </button>
-                            </div>
+    emptyCartMessage.classList.add('hidden');
+    checkoutBtn.disabled = false;
+    checkoutBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+    
+    let subtotal = 0;
+    
+    cart.forEach((item, index) => {
+        const quantity = item.quantity || 1;
+        const itemTotal = item.price * quantity;
+        subtotal += itemTotal;
+        
+        const itemHTML = `
+            <div class="flex items-center justify-between py-4 border-b border-gray-800 cart-item">
+                <div class="flex items-center space-x-4">
+                    <img src="${item.image}" alt="${item.name}" class="w-16 h-16 object-cover rounded">
+                    <div>
+                        <h3 class="font-medium">${item.name}</h3>
+                        <p class="text-gray-400">₪${item.price}</p>
+                        <div class="flex items-center space-x-2 mt-2">
+                            <button class="quantity-btn text-gray-400 hover:text-white" data-index="${index}" data-action="decrease">-</button>
+                            <span class="quantity">${quantity}</span>
+                            <button class="quantity-btn text-gray-400 hover:text-white" data-index="${index}" data-action="increase">+</button>
                         </div>
-                    `;
-                });
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span class="font-medium">₪${itemTotal.toFixed(2)}</span>
+                    <button class="text-red-500 hover:text-red-400 remove-item" data-index="${index}">
+                        <i data-feather="trash-2" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+        `;
+        cartItemsEl.innerHTML += itemHTML;
+    });
 
-                cartItemsEl.innerHTML = html;
-                subtotalEl.textContent = `₪${subtotal.toFixed(2)}`;
-                totalEl.textContent = `₪${subtotal.toFixed(2)}`;
+    subtotalEl.textContent = `₪${subtotal.toFixed(2)}`;
+    totalEl.textContent = `₪${subtotal.toFixed(2)}`;
+    
+    // RE-ATTACH EVENT LISTENERS AFTER RENDERING
+    setupCartEventListeners();
+    feather.replace();
+           }
 
-                feather.replace();
-                this.setupCartEventListeners();
-            }
-
+            
             setupCartEventListeners() {
                 // Remove items
                 document.querySelectorAll('.remove-item').forEach(button => {
@@ -1010,15 +1020,15 @@
                 }
             }
 
-            updateCartBadge() {
-                const cart = JSON.parse(localStorage.getItem('cart')) || [];
-                const cartTab = document.getElementById('cart-tab');
-                
-                if (cartTab) {
-                    const totalItems = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
-                    cartTab.textContent = totalItems > 0 ? `Cart (${totalItems})` : 'Cart';
-                }
-            }
+          function updateCartBadge() {
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const cartTab = document.getElementById('cart-tab');
+    
+    if (cartTab) {
+        const totalItems = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+        cartTab.textContent = totalItems > 0 ? `Cart (${totalItems})` : 'Cart';
+    }
+}
 
             handleCheckout() {
                 const cart = JSON.parse(localStorage.getItem('cart')) || [];
