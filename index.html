@@ -691,22 +691,48 @@
             window.location.hash = 'login';
         }
 
-        function handleForgotPassword() {
-            const email = document.getElementById('reset-email').value.trim();
-            
-            // Get existing users
-            const users = JSON.parse(localStorage.getItem('users')) || [];
-            
-            // Check if user exists
-            const userExists = users.some(user => user.email === email);
-            
-            if (userExists) {
-                alert('Password reset link has been sent to your email.');
+      function handleForgotPassword() {
+    const email = document.getElementById('reset-email').value.trim();
+    
+    // Get existing users
+    const users = JSON.parse(localStorage.getItem('users')) || [];
+    
+    // Check if user exists
+    const userExists = users.some(user => user.email === email);
+    
+    if (userExists) {
+        // Generate a simple token (in real app, use proper JWT or crypto)
+        const token = Date.now().toString(36) + Math.random().toString(36).substr(2);
+        
+        // Store reset token temporarily (in real app, use database)
+        localStorage.setItem('resetToken_' + email, token);
+        
+        // Create reset link
+        const resetLink = `reset-password.html?token=${token}&email=${encodeURIComponent(email)}`;
+        
+        // Create email data for password reset
+        const resetEmailData = {
+            to_email: email,
+            from_name: 'WantToWin Support',
+            from_email: 'bezalelganam95@gmail.com',
+            subject: 'Password Reset Request - WantToWin',
+            message: `You requested a password reset. Please click the link below to reset your password:\n\nReset Link: ${window.location.origin}/${resetLink}\n\nThis link will expire in 1 hour.\n\nIf you didn't request this, please ignore this email.`
+        };
+        
+        // Send reset email using EmailJS
+        emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, resetEmailData)
+            .then(function(response) {
+                console.log('SUCCESS!', response.status, response.text);
+                alert('Password reset link has been sent to your email. Please check your inbox.');
                 window.location.hash = 'login';
-            } else {
-                alert('No account found with this email address.');
-            }
-        }
+            }, function(error) {
+                console.log('FAILED...', error);
+                alert('There was an error sending the reset email. Please try again later.');
+            });
+    } else {
+        alert('No account found with this email address.');
+    }
+}
 
         function updateNavigation() {
             const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
