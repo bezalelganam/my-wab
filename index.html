@@ -517,39 +517,53 @@ function handleHashChange() {
     const hash = window.location.hash.substring(1) || 'shop';
     console.log('Hash changed to:', hash);
     
-    // Hide all sections
+    // Hide all sections safely
     document.querySelectorAll('.tab-section').forEach(section => {
-        section.classList.add('hidden');
+        if (section) {
+            section.classList.add('hidden');
+        }
     });
     
-    // Show target section
+    // Show target section safely
     const targetSection = document.getElementById(hash);
     if (targetSection) {
         targetSection.classList.remove('hidden');
     }
     
-    // Update active tab
+    // Update active tab safely
     document.querySelectorAll('[id$="-tab"]').forEach(tab => {
-        tab.classList.remove('active-tab');
+        if (tab) {
+            tab.classList.remove('active-tab');
+        }
     });
     
     const activeTab = document.getElementById(hash + '-tab');
-    if (activeTab) activeTab.classList.add('active-tab');
+    if (activeTab) {
+        activeTab.classList.add('active-tab');
+    }
     
-    // Close mobile menu after navigation
-    document.getElementById('mobile-menu').classList.add('hidden');
+    // Close mobile menu safely
+    const mobileMenu = document.getElementById('mobile-menu');
+    if (mobileMenu) {
+        mobileMenu.classList.add('hidden');
+    }
     
-    // Section-specific setup - FIXED: No setTimeout
+    // Section-specific setup
     if (hash === 'cart') {
         console.log('Loading cart page...');
-        renderCart();
+        // Small delay to ensure DOM is ready
+        setTimeout(() => {
+            renderCart();
+        }, 50);
     }
     if (hash === 'shop') {
         console.log('Loading shop page...');
-        setupAddToCartListeners();
+        // Small delay to ensure DOM is ready
+        setTimeout(() => {
+            setupAddToCartListeners();
+        }, 50);
     }
 }
-
         // FORM HANDLERS
         function setupFormHandlers() {
             // Contact form
@@ -867,69 +881,106 @@ function handleHashChange() {
     }
 }
 
-        function renderCart() {
-            const cart = JSON.parse(localStorage.getItem('cart')) || [];
-            const cartItemsEl = document.getElementById('cart-items');
-            const emptyCartMessage = document.getElementById('empty-cart-message');
-            const subtotalEl = document.getElementById('subtotal');
-            const totalEl = document.getElementById('total');
-            const checkoutBtn = document.getElementById('checkout-btn');
+       function renderCart() {
+    console.log('=== RENDERING CART ===');
+    
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const cartItemsEl = document.getElementById('cart-items');
+    const emptyCartMessage = document.getElementById('empty-cart-message');
+    
+    console.log('Cart items:', cart);
+    console.log('Cart element:', cartItemsEl);
+    console.log('Empty message element:', emptyCartMessage);
 
-            // Clear current content
-            cartItemsEl.innerHTML = '';
-            
-            if (cart.length === 0) {
-                emptyCartMessage.classList.remove('hidden');
-                subtotalEl.textContent = '₪0';
-                totalEl.textContent = '₪0';
-                checkoutBtn.disabled = true;
-                checkoutBtn.classList.add('opacity-50', 'cursor-not-allowed');
-                return;
-            }
+    // Check if elements exist before using them
+    if (!cartItemsEl) {
+        console.error('Cart items element not found!');
+        return;
+    }
 
-            emptyCartMessage.classList.add('hidden');
-            checkoutBtn.disabled = false;
-            checkoutBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-            
-            let subtotal = 0;
-            
-            cart.forEach((item, index) => {
-                const quantity = item.quantity || 1;
-                const itemTotal = item.price * quantity;
-                subtotal += itemTotal;
-                
-                const itemHTML = `
-                    <div class="flex items-center justify-between py-4 border-b border-gray-800 cart-item">
-                        <div class="flex items-center space-x-4">
-                            <img src="${item.image}" alt="${item.name}" class="w-16 h-16 object-cover rounded">
-                            <div>
-                                <h3 class="font-medium">${item.name}</h3>
-                                <p class="text-gray-400">₪${item.price}</p>
-                                <div class="flex items-center space-x-2 mt-2">
-                                    <button class="quantity-btn text-gray-400 hover:text-white" data-index="${index}" data-action="decrease">-</button>
-                                    <span class="quantity">${quantity}</span>
-                                    <button class="quantity-btn text-gray-400 hover:text-white" data-index="${index}" data-action="increase">+</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex items-center space-x-4">
-                            <span class="font-medium">₪${itemTotal.toFixed(2)}</span>
-                            <button class="text-red-500 hover:text-red-400 remove-item" data-index="${index}">
-                                <i data-feather="trash-2" class="w-5 h-5"></i>
-                            </button>
+    // Clear current content
+    cartItemsEl.innerHTML = '';
+
+    if (cart.length === 0) {
+        console.log('Cart is empty');
+        if (emptyCartMessage) {
+            emptyCartMessage.classList.remove('hidden');
+            cartItemsEl.appendChild(emptyCartMessage);
+        }
+        
+        // Safely update totals if elements exist
+        const subtotalEl = document.getElementById('subtotal');
+        const totalEl = document.getElementById('total');
+        const checkoutBtn = document.getElementById('checkout-btn');
+        
+        if (subtotalEl) subtotalEl.textContent = '₪0';
+        if (totalEl) totalEl.textContent = '₪0';
+        if (checkoutBtn) {
+            checkoutBtn.disabled = true;
+            checkoutBtn.classList.add('opacity-50', 'cursor-not-allowed');
+        }
+        return;
+    }
+
+    console.log('Cart has items, rendering...');
+    
+    // Hide empty message if it exists
+    if (emptyCartMessage) {
+        emptyCartMessage.classList.add('hidden');
+    }
+
+    let subtotal = 0;
+    let html = '';
+
+    cart.forEach((item, index) => {
+        const quantity = item.quantity || 1;
+        const itemTotal = item.price * quantity;
+        subtotal += itemTotal;
+        
+        html += `
+            <div class="flex items-center justify-between py-4 border-b border-gray-800 cart-item">
+                <div class="flex items-center space-x-4">
+                    <img src="${item.image}" alt="${item.name}" class="w-16 h-16 object-cover rounded">
+                    <div>
+                        <h3 class="font-medium">${item.name}</h3>
+                        <p class="text-gray-400">₪${item.price}</p>
+                        <div class="flex items-center space-x-2 mt-2">
+                            <button class="quantity-btn text-gray-400 hover:text-white" data-index="${index}" data-action="decrease">-</button>
+                            <span class="quantity">${quantity}</span>
+                            <button class="quantity-btn text-gray-400 hover:text-white" data-index="${index}" data-action="increase">+</button>
                         </div>
                     </div>
-                `;
-                cartItemsEl.innerHTML += itemHTML;
-            });
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span class="font-medium">₪${itemTotal.toFixed(2)}</span>
+                    <button class="text-red-500 hover:text-red-400 remove-item" data-index="${index}">
+                        <i data-feather="trash-2" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+        `;
+    });
 
-            subtotalEl.textContent = `₪${subtotal.toFixed(2)}`;
-            totalEl.textContent = `₪${subtotal.toFixed(2)}`;
-            
-            // Re-attach event listeners
-            setupCartEventListeners();
-            feather.replace();
-        }
+    cartItemsEl.innerHTML = html;
+    
+    // Safely update totals
+    const subtotalEl = document.getElementById('subtotal');
+    const totalEl = document.getElementById('total');
+    const checkoutBtn = document.getElementById('checkout-btn');
+    
+    if (subtotalEl) subtotalEl.textContent = `₪${subtotal.toFixed(2)}`;
+    if (totalEl) totalEl.textContent = `₪${subtotal.toFixed(2)}`;
+    if (checkoutBtn) {
+        checkoutBtn.disabled = false;
+        checkoutBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+    }
+    
+    // Re-attach event listeners
+    setupCartEventListeners();
+    feather.replace();
+    
+    console.log('=== CART RENDER COMPLETE ===');
+}
 
         function setupCartEventListeners() {
             // Remove items
