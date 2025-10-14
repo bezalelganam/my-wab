@@ -1206,29 +1206,7 @@ async function updateCartBadge() {
 }
 
 
-    function adjustQuantity(index, action) {
-        console.log('Adjusting quantity:', index, action);
-        const cart = JSON.parse(localStorage.getItem('cart')) || [];
-        
-        if (index >= 0 && index < cart.length) {
-            const item = cart[index];
-            item.quantity = item.quantity || 1;
-            
-            if (action === 'increase') {
-                item.quantity++;
-            } else if (action === 'decrease') {
-                if (item.quantity > 1) {
-                    item.quantity--;
-                } else {
-                    cart.splice(index, 1);
-                }
-            }
-            
-            localStorage.setItem('cart', JSON.stringify(cart));
-            renderCart();
-            updateCartBadge();
-        }
-    }
+ 
 
    async function updateCartBadge() {
     const user = auth.currentUser;
