@@ -988,7 +988,6 @@ async function addToCart(product, buttonElement) {
         buttonElement.disabled = false;
     }
 }
-       // 🔥 CACHE USER CART FOR PERFORMANCE
 async function getUserCart(userId) {
     if (userCartCache) {
         return userCartCache;
@@ -999,6 +998,7 @@ async function getUserCart(userId) {
     userCartCache = userData.cart || [];
     return userCartCache;
 }
+
 // 🔥 CLEAR CACHE ON USER CHANGE
 auth.onAuthStateChanged((user) => {
     userCartCache = null; // Clear cache on auth state change
@@ -1013,6 +1013,7 @@ auth.onAuthStateChanged((user) => {
         updateCartBadge(); // Clear badge when logged out
     }
 });
+
 async function renderCart() {
     const user = auth.currentUser;
     
@@ -1022,9 +1023,7 @@ async function renderCart() {
     }
 
     try {
-        const userDoc = await db.collection('users').doc(user.uid).get();
-        const userData = userDoc.data();
-        const cart = userData.cart || [];
+        const cart = await getUserCart(user.uid);
         
         const cartItemsEl = document.getElementById('cart-items');
         const emptyCartMessage = document.getElementById('empty-cart-message');
@@ -1092,22 +1091,23 @@ async function renderCart() {
 }
 
 
-    function setupCartEventListeners() {
-        document.querySelectorAll('.remove-item').forEach(button => {
-            button.addEventListener('click', function() {
-                const index = parseInt(this.dataset.index);
-                removeFromCart(index);
-            });
-        });
-
-        document.querySelectorAll('.quantity-btn').forEach(button => {
-            button.addEventListener('click', function() {
-                const index = parseInt(this.dataset.index);
-                const action = this.dataset.action;
-                adjustQuantity(index, action);
-            });
-        });
-    }
+function setupCartEventListeners() {
+    // Remove items - use event delegation for better performance
+    document.getElementById('cart-items').addEventListener('click', function(e) {
+        if (e.target.closest('.remove-item')) {
+            const button = e.target.closest('.remove-item');
+            const index = parseInt(button.dataset.index);
+            removeFromCart(index);
+        }
+        
+        if (e.target.closest('.quantity-btn')) {
+            const button = e.target.closest('.quantity-btn');
+            const index = parseInt(button.dataset.index);
+            const action = button.dataset.action;
+            adjustQuantity(index, action);
+        }
+    });
+}
 
 async function removeFromCart(index) {
     const user = auth.currentUser;
@@ -1133,6 +1133,7 @@ async function removeFromCart(index) {
         console.error('Error removing from cart:', error);
     }
 }
+
 
 async function adjustQuantity(index, action) {
     const user = auth.currentUser;
@@ -1173,25 +1174,27 @@ async function adjustQuantity(index, action) {
 async function updateCartBadge() {
     const user = auth.currentUser;
     const cartTab = document.getElementById('cart-tab');
+    const mobileCartTab = document.querySelector('#mobile-menu a[href="#cart"]');
     
-    if (!cartTab) return;
-
     if (!user) {
-        cartTab.textContent = 'Cart';
-        userCartCache = null; // Clear cache when logged out
+        if (cartTab) cartTab.textContent = 'Cart';
+        if (mobileCartTab) mobileCartTab.textContent = 'Cart';
+        userCartCache = null;
         return;
     }
 
     try {
         const cart = await getUserCart(user.uid);
         const totalItems = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
-        cartTab.textContent = totalItems > 0 ? `Cart (${totalItems})` : 'Cart';
+        
+        if (cartTab) cartTab.textContent = totalItems > 0 ? `Cart (${totalItems})` : 'Cart';
+        if (mobileCartTab) mobileCartTab.textContent = totalItems > 0 ? `Cart (${totalItems})` : 'Cart';
     } catch (error) {
         console.error('Error updating cart badge:', error);
-        cartTab.textContent = 'Cart';
+        if (cartTab) cartTab.textContent = 'Cart';
+        if (mobileCartTab) mobileCartTab.textContent = 'Cart';
     }
 }
-
 
  
 
