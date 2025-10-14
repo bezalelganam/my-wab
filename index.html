@@ -923,25 +923,38 @@ async function handleForgotPassword() {
         console.log('=== CART LISTENERS SETUP COMPLETE ===');
     }
 
-    function addToCart(product, buttonElement) {
-        console.log('Adding to cart:', product.name);
-        
-        const cart = JSON.parse(localStorage.getItem('cart')) || [];
-        
+ async function addToCart(product, buttonElement) {
+    const user = auth.currentUser;
+    
+    if (!user) {
+        alert('Please login to add items to cart');
+        window.location.hash = 'login';
+        return;
+    }
+
+    try {
+        // Get user's current cart from Firestore
+        const userDoc = await db.collection('users').doc(user.uid).get();
+        const userData = userDoc.data();
+        let cart = userData.cart || [];
+
+        // Check if product already exists
         const existingIndex = cart.findIndex(item => item.id === product.id);
         
         if (existingIndex > -1) {
+            // Increase quantity
             cart[existingIndex].quantity = (cart[existingIndex].quantity || 1) + 1;
-            console.log('Increased quantity to:', cart[existingIndex].quantity);
         } else {
+            // Add new item
             product.quantity = 1;
             cart.push(product);
-            console.log('Added new item');
         }
-        
-        localStorage.setItem('cart', JSON.stringify(cart));
-        console.log('Cart after add:', cart);
-        
+
+        // Update cart in Firestore
+        await db.collection('users').doc(user.uid).update({
+            cart: cart
+        });
+
         // Visual feedback
         const originalText = buttonElement.innerHTML;
         buttonElement.innerHTML = '✓ Added';
@@ -957,46 +970,43 @@ async function handleForgotPassword() {
         if (window.location.hash === '#cart') {
             renderCart();
         }
+
+    } catch (error) {
+        console.error('Error adding to cart:', error);
+        alert('Error adding item to cart');
+    }
+}
+
+  async function renderCart() {
+    const user = auth.currentUser;
+    
+    if (!user) {
+        window.location.hash = 'login';
+        return;
     }
 
-    function renderCart() {
-        console.log('=== RENDERING CART ===');
+    try {
+        const userDoc = await db.collection('users').doc(user.uid).get();
+        const userData = userDoc.data();
+        const cart = userData.cart || [];
         
-        const cart = JSON.parse(localStorage.getItem('cart')) || [];
         const cartItemsEl = document.getElementById('cart-items');
         const emptyCartMessage = document.getElementById('empty-cart-message');
-        
-        console.log('Cart items:', cart);
 
-        if (!cartItemsEl) {
-            console.error('Cart items element not found!');
-            return;
-        }
+        if (!cartItemsEl) return;
 
         cartItemsEl.innerHTML = '';
 
         if (cart.length === 0) {
-            console.log('Cart is empty');
             if (emptyCartMessage) {
                 emptyCartMessage.classList.remove('hidden');
                 cartItemsEl.appendChild(emptyCartMessage);
             }
             
-            const subtotalEl = document.getElementById('subtotal');
-            const totalEl = document.getElementById('total');
-            const checkoutBtn = document.getElementById('checkout-btn');
-            
-            if (subtotalEl) subtotalEl.textContent = '₪0';
-            if (totalEl) totalEl.textContent = '₪0';
-            if (checkoutBtn) {
-                checkoutBtn.disabled = true;
-                checkoutBtn.classList.add('opacity-50', 'cursor-not-allowed');
-            }
+            updateCartUI(0);
             return;
         }
 
-        console.log('Cart has items, rendering...');
-        
         if (emptyCartMessage) {
             emptyCartMessage.classList.add('hidden');
         }
@@ -1034,23 +1044,15 @@ async function handleForgotPassword() {
         });
 
         cartItemsEl.innerHTML = html;
-        
-        const subtotalEl = document.getElementById('subtotal');
-        const totalEl = document.getElementById('total');
-        const checkoutBtn = document.getElementById('checkout-btn');
-        
-        if (subtotalEl) subtotalEl.textContent = `₪${subtotal.toFixed(2)}`;
-        if (totalEl) totalEl.textContent = `₪${subtotal.toFixed(2)}`;
-        if (checkoutBtn) {
-            checkoutBtn.disabled = false;
-            checkoutBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-        }
-        
+        updateCartUI(subtotal);
         setupCartEventListeners();
         feather.replace();
-        
-        console.log('=== CART RENDER COMPLETE ===');
+
+    } catch (error) {
+        console.error('Error rendering cart:', error);
     }
+}
+
 
     function setupCartEventListeners() {
         document.querySelectorAll('.remove-item').forEach(button => {
@@ -1069,17 +1071,65 @@ async function handleForgotPassword() {
         });
     }
 
-    function removeFromCart(index) {
-        console.log('Removing from cart:', index);
-        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+   async function removeFromCart(index) {
+    const user = auth.currentUser;
+    if (!user) return;
+
+    try {
+        const userDoc = await db.collection('users').doc(user.uid).get();
+        const userData = userDoc.data();
+        let cart = userData.cart || [];
         
         if (index >= 0 && index < cart.length) {
             cart.splice(index, 1);
-            localStorage.setItem('cart', JSON.stringify(cart));
+            
+            await db.collection('users').doc(user.uid).update({
+                cart: cart
+            });
+            
             renderCart();
             updateCartBadge();
         }
+    } catch (error) {
+        console.error('Error removing from cart:', error);
     }
+}
+
+async function adjustQuantity(index, action) {
+    const user = auth.currentUser;
+    if (!user) return;
+
+    try {
+        const userDoc = await db.collection('users').doc(user.uid).get();
+        const userData = userDoc.data();
+        let cart = userData.cart || [];
+        
+        if (index >= 0 && index < cart.length) {
+            const item = cart[index];
+            item.quantity = item.quantity || 1;
+            
+            if (action === 'increase') {
+                item.quantity++;
+            } else if (action === 'decrease') {
+                if (item.quantity > 1) {
+                    item.quantity--;
+                } else {
+                    cart.splice(index, 1);
+                }
+            }
+            
+            await db.collection('users').doc(user.uid).update({
+                cart: cart
+            });
+            
+            renderCart();
+            updateCartBadge();
+        }
+    } catch (error) {
+        console.error('Error adjusting quantity:', error);
+    }
+}
+
 
     function adjustQuantity(index, action) {
         console.log('Adjusting quantity:', index, action);
@@ -1105,15 +1155,39 @@ async function handleForgotPassword() {
         }
     }
 
-    function updateCartBadge() {
-        const cart = JSON.parse(localStorage.getItem('cart')) || [];
-        const cartTab = document.getElementById('cart-tab');
-        
-        if (cartTab) {
-            const totalItems = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
-            cartTab.textContent = totalItems > 0 ? `Cart (${totalItems})` : 'Cart';
-        }
+   async function updateCartBadge() {
+    const user = auth.currentUser;
+    const cartTab = document.getElementById('cart-tab');
+    
+    if (!user || !cartTab) {
+        cartTab.textContent = 'Cart';
+        return;
     }
+
+    try {
+        const userDoc = await db.collection('users').doc(user.uid).get();
+        const userData = userDoc.data();
+        const cart = userData.cart || [];
+        
+        const totalItems = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+        cartTab.textContent = totalItems > 0 ? `Cart (${totalItems})` : 'Cart';
+    } catch (error) {
+        console.error('Error updating cart badge:', error);
+        cartTab.textContent = 'Cart';
+    }
+}
+       function updateCartUI(subtotal) {
+    const subtotalEl = document.getElementById('subtotal');
+    const totalEl = document.getElementById('total');
+    const checkoutBtn = document.getElementById('checkout-btn');
+    
+    if (subtotalEl) subtotalEl.textContent = `₪${subtotal.toFixed(2)}`;
+    if (totalEl) totalEl.textContent = `₪${subtotal.toFixed(2)}`;
+    if (checkoutBtn) {
+        checkoutBtn.disabled = false;
+        checkoutBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+    }
+}
 
     function showOrderConfirmation(order) {
         const orderDetailsEl = document.getElementById('order-details');
