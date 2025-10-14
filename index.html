@@ -1286,17 +1286,21 @@ async function handleAdminLogin() {
     const password = document.getElementById('admin-password').value;
 
     try {
-        // For demo - in production, use proper admin auth
-        if (email === 'admin@wanttowin.com' && password === 'admin123') {
-            alert('Admin login successful!');
-            // Here you would load the admin dashboard
-            // For now, just show a success message
+        const userCredential = await auth.signInWithEmailAndPassword(email, password);
+        const user = userCredential.user;
+        
+        // Check if user is admin
+        const userDoc = await db.collection('users').doc(user.uid).get();
+        if (userDoc.exists && userDoc.data().role === 'admin') {
+            // Redirect to admin panel
+            window.location.href = 'admin.html';
         } else {
-            alert('Invalid admin credentials');
+            alert('Access denied. Admin privileges required.');
+            await auth.signOut();
         }
     } catch (error) {
         console.error('Admin login error:', error);
-        alert('Admin login failed');
+        alert('Admin login failed: ' + error.message);
     }
 }
 
