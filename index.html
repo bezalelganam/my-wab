@@ -94,7 +94,7 @@
             <a href="#information" id="information-tab" class="nav-link text-white font-medium">Information</a>
             <a href="#login" id="login-tab" class="nav-link text-white font-medium">Login</a>
             <a href="#cart" id="cart-tab" class="nav-link text-white font-medium">Cart</a>
-  
+        
         </div>
 
         <div id="user-info" class="hidden items-center space-x-4">
@@ -1431,6 +1431,24 @@ function setupChat() {
             setupLiveChat();
         }
     });
+}
+       function openChatPopup() {
+    const user = firebase.auth().currentUser;
+    if (!user) {
+        window.location.hash = 'login';
+        return;
+    }
+    
+    // Open chat as popup
+    const popup = window.open('chatManager.html', 'chatPopup', 
+        'width=400,height=600,resizable=yes,scrollbars=yes');
+    
+    if (popup) {
+        popup.focus();
+    } else {
+        // Fallback to new tab if popup blocked
+        window.open('chatManager.html', '_blank');
+    }
 }
 </script>
 </body>
