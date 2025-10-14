@@ -1367,6 +1367,31 @@ async function handleAdminLogin() {
             return "Thank you for your message. Our team will get back to you shortly with more information.";
         }
     }
+       // Add to your existing Firebase setup
+function setupCustomerChat() {
+    const user = auth.currentUser;
+    if (!user) return;
+
+    // Initialize chat for this user
+    db.collection('chats').doc(user.uid).set({
+        userId: user.uid,
+        userEmail: user.email,
+        userName: user.displayName || 'Customer',
+        messages: [{
+            text: "Hello! I need help with my order.",
+            sender: 'user',
+            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        }],
+        lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
+    }, { merge: true });
+}
+
+// Call this when user logs in
+auth.onAuthStateChanged((user) => {
+    if (user) {
+        setupCustomerChat();
+    }
+});
 </script>
 </body>
 </html>
