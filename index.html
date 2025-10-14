@@ -718,35 +718,62 @@ const firebaseConfig = {
         }
     }
 
-    async function handleLogin() {
-        const email = document.getElementById('email').value.trim();
-        const password = document.getElementById('password').value;
+ async function handleLogin() {
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
 
-        try {
-            const userCredential = await auth.signInWithEmailAndPassword(email, password);
-            const user = userCredential.user;
-            
-            alert('Login successful!');
-            window.location.hash = 'shop';
+    try {
+        const userCredential = await auth.signInWithEmailAndPassword(email, password);
+        const user = userCredential.user;
+        
+        alert('Login successful!');
+        window.location.hash = 'shop';
 
-        } catch (error) {
-            console.error('Login error:', error);
-            alert('Login failed: ' + error.message);
+    } catch (error) {
+        console.error('Login error:', error);
+        
+        // User-friendly error messages
+        if (error.code === 'auth/user-not-found') {
+            alert('❌ No account found with this email.');
+        } else if (error.code === 'auth/wrong-password') {
+            alert('❌ Incorrect password. Please try again.');
+        } else if (error.code === 'auth/invalid-email') {
+            alert('❌ Please enter a valid email address.');
+        } else {
+            alert('❌ Login failed: ' + error.message);
         }
     }
+}
 
-    async function handleForgotPassword() {
-        const email = document.getElementById('reset-email').value.trim();
+  // 🔥 REPLACE THIS FUNCTION - Remove EmailJS, use Firebase
+async function handleForgotPassword() {
+    const email = document.getElementById('reset-email').value.trim();
 
-        try {
-            await auth.sendPasswordResetEmail(email);
-            alert('Password reset email sent! Check your inbox.');
-            window.location.hash = 'login';
-        } catch (error) {
-            console.error('Password reset error:', error);
-            alert('Error sending reset email: ' + error.message);
+    // Simple validation
+    if (!email) {
+        alert('Please enter your email address');
+        return;
+    }
+
+    try {
+        // Use Firebase password reset
+        await auth.sendPasswordResetEmail(email);
+        alert('✅ Password reset email sent! Check your inbox and spam folder.');
+        document.getElementById('forgot-password-form').reset();
+        window.location.hash = 'login';
+    } catch (error) {
+        console.error('Password reset error:', error);
+        
+        // User-friendly error messages
+        if (error.code === 'auth/user-not-found') {
+            alert('❌ No account found with this email address.');
+        } else if (error.code === 'auth/invalid-email') {
+            alert('❌ Please enter a valid email address.');
+        } else {
+            alert('❌ Error sending reset email: ' + error.message);
         }
     }
+}
 
     async function handleLogout() {
         try {
