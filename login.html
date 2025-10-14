@@ -77,75 +77,71 @@
             </div>
 </div>
     </section>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            feather.replace();
-        // Admin credentials
-        const ADMIN_PASSWORD = "admin123";
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        feather.replace();
         
-        // Initialize chats storage if not exists
-        if (!localStorage.getItem('chats')) {
-            localStorage.setItem('chats', JSON.stringify({}));
-        }
-// Login form handling
-            document.getElementById('login-form').addEventListener('submit', function(e) {
-                e.preventDefault();
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // Login form handling
+        document.getElementById('login-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            handleLogin();
+        });
+
+        async function handleLogin() {
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+
+            try {
+                const userCredential = await auth.signInWithEmailAndPassword(email, password);
+                const user = userCredential.user;
                 
-                const email = document.getElementById('email').value;
-                const password = document.getElementById('password').value;
-                // Check if admin login
-                if (email === "bezalelganam59@gmail.com" && password === ADMIN_PASSWORD) {
-                    localStorage.setItem('isAdmin', 'true');
-                    localStorage.setItem('userEmail', email);
-                    window.location.href = 'admin.html';
-                    return;
-                }
-// Check if regular user login (in a real app, this would check against a database)
-                // Get existing users
-                const users = JSON.parse(localStorage.getItem('users')) || [];
-                
-                // Find user
-                const user = users.find(user => user.email === email && user.password === password);
-                
-                if (user) {
-                    localStorage.setItem('isAdmin', email === "bezalelganam59@gmail.com" ? 'true' : 'false');
-                    localStorage.setItem('userEmail', email);
-                    localStorage.setItem('userName', user.name || email.split('@')[0]);
-                    
-                    if (email === "bezalelganam59@gmail.com") {
+                // Check if admin
+                if (email === "admin@wanttowin.com") {
+                    // Make sure user has admin role
+                    const userDoc = await db.collection('users').doc(user.uid).get();
+                    if (userDoc.exists && userDoc.data().role === 'admin') {
                         window.location.href = 'admin.html';
                     } else {
-                        window.location.href = 'index.html';
+                        alert('Admin access required');
+                        await auth.signOut();
                     }
-                } else {
-                    alert('Invalid email or password. Please try again or sign up.');
-                }
-});
-            // Handle Google login callback
-            function handleCredentialResponse(response) {
-                // Decode JWT response
-                const responsePayload = JSON.parse(atob(response.credential.split('.')[1]));
-                
-                localStorage.setItem('isAdmin', responsePayload.email === "bezalelganam59@gmail.com" ? 'true' : 'false');
-                localStorage.setItem('userEmail', responsePayload.email);
-                localStorage.setItem('userName', responsePayload.name);
-                localStorage.setItem('userPicture', responsePayload.picture);
-                
-                if (responsePayload.email === "bezalelganam59@gmail.com") {
-                    window.location.href = 'admin.html';
                 } else {
                     window.location.href = 'index.html';
                 }
+
+            } catch (error) {
+                console.error('Login error:', error);
+                
+                // User-friendly error messages
+                if (error.code === 'auth/user-not-found') {
+                    alert('❌ No account found with this email.');
+                } else if (error.code === 'auth/wrong-password') {
+                    alert('❌ Incorrect password. Please try again.');
+                } else if (error.code === 'auth/invalid-email') {
+                    alert('❌ Please enter a valid email address.');
+                } else {
+                    alert('❌ Login failed: ' + error.message);
+                }
             }
-            // Initialize cart if not exists
-            if (!localStorage.getItem('cart')) {
-                localStorage.setItem('cart', JSON.stringify([]));
-            }
+        }
+
+        // Handle Google login callback
+        function handleCredentialResponse(response) {
+            // Decode JWT response
+            const responsePayload = JSON.parse(atob(response.credential.split('.')[1]));
             
-            // Add Google callback to window
-            window.handleCredentialResponse = handleCredentialResponse;
-});
-    </script>
+            // For demo purposes, redirect to main site
+            window.location.href = 'index.html';
+        }
+        
+        // Add Google callback to window
+        window.handleCredentialResponse = handleCredentialResponse;
+    });
+</script>
 </body>
 </html>
