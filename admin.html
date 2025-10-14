@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -101,10 +100,16 @@
         <!-- Header -->
         <header class="bg-gray-800 border-b border-gray-700 sticky top-0 z-40">
             <div class="flex items-center justify-between p-4">
-                <div class="flex items-center">
+                <div class="flex items-center space-x-6">
                     <h1 class="text-xl font-bold">
                         <span class="text-red-500">WantToWin</span> Admin
                     </h1>
+                    <div class="flex space-x-4">
+                        <button data-tab="dashboard-tab" class="text-white hover:text-red-500 font-medium">Dashboard</button>
+                        <button data-tab="chat-tab" class="text-white hover:text-red-500 font-medium">Live Chat</button>
+                        <button data-tab="orders-tab" class="text-white hover:text-red-500 font-medium">Orders</button>
+                        <button data-tab="users-tab" class="text-white hover:text-red-500 font-medium">Users</button>
+                    </div>
                 </div>
                 <div class="flex items-center space-x-4">
                     <span id="admin-email-display" class="text-sm text-gray-300">admin@wanttowin.com</span>
@@ -308,7 +313,7 @@
     </div>
 
     <script>
-        // Firebase Configuration (Same as your main site)
+        // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyBxzYFV5N2Mxl5K-OdKv-mXS8eCaDd8EGc",
             authDomain: "website-9f7c2.firebaseapp.com",
@@ -349,10 +354,43 @@
                 }
             });
             document.getElementById('close-chat').addEventListener('click', closeChat);
+            
+            // Navigation
+            document.querySelectorAll('[data-tab]').forEach(button => {
+                button.addEventListener('click', function() {
+                    const tabName = this.dataset.tab;
+                    switchTab(tabName);
+                });
+            });
+        }
+
+        function switchTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.add('hidden');
+                tab.classList.remove('active');
+            });
+            
+            // Show selected tab
+            const targetTab = document.getElementById(tabName);
+            if (targetTab) {
+                targetTab.classList.remove('hidden');
+                targetTab.classList.add('active');
+            }
+            
+            // Load tab-specific data
+            if (tabName === 'dashboard-tab') {
+                loadDashboardData();
+            } else if (tabName === 'chat-tab') {
+                loadChatList();
+            } else if (tabName === 'orders-tab') {
+                loadOrders();
+            } else if (tabName === 'users-tab') {
+                loadUsers();
+            }
         }
 
         async function checkAdminAuth() {
-            // Check if admin is already logged in
             const user = auth.currentUser;
             if (user && user.email === 'admin@wanttowin.com') {
                 const userDoc = await db.collection('users').doc(user.uid).get();
@@ -362,13 +400,13 @@
                 }
             }
             
-            // Try to auto-login with stored credentials
+            // Try to auto-login
             try {
                 const userCredential = await auth.signInWithEmailAndPassword('admin@wanttowin.com', 'admin123');
                 const user = userCredential.user;
                 showAdminDashboard();
             } catch (error) {
-                console.log('Auto-login failed, showing login screen');
+                console.log('Auto-login failed');
             }
         }
 
@@ -408,51 +446,11 @@
         function showAdminDashboard() {
             document.getElementById('login-screen').classList.add('hidden');
             document.getElementById('admin-dashboard').classList.remove('hidden');
+            document.getElementById('admin-email-display').textContent = auth.currentUser.email;
             
             // Load dashboard data
             loadDashboardData();
             loadChatList();
-            setupNavigation();
-        }
-
-        function setupNavigation() {
-            // Simple tab navigation
-            const tabs = {
-                'dashboard-tab': document.getElementById('dashboard-tab'),
-                'chat-tab': document.getElementById('chat-tab'),
-                'orders-tab': document.getElementById('orders-tab'),
-                'users-tab': document.getElementById('users-tab')
-            };
-            
-            // Add click handlers to header buttons (you can add these to your header)
-            document.addEventListener('click', function(e) {
-                if (e.target.matches('[data-tab]')) {
-                    const tabName = e.target.dataset.tab;
-                    
-                    // Hide all tabs
-                    Object.values(tabs).forEach(tab => {
-                        tab.classList.add('hidden');
-                        tab.classList.remove('active');
-                    });
-                    
-                    // Show selected tab
-                    if (tabs[tabName]) {
-                        tabs[tabName].classList.remove('hidden');
-                        tabs[tabName].classList.add('active');
-                    }
-                    
-                    // Load tab-specific data
-                    if (tabName === 'dashboard-tab') {
-                        loadDashboardData();
-                    } else if (tabName === 'chat-tab') {
-                        loadChatList();
-                    } else if (tabName === 'orders-tab') {
-                        loadOrders();
-                    } else if (tabName === 'users-tab') {
-                        loadUsers();
-                    }
-                }
-            });
         }
 
         async function loadDashboardData() {
@@ -518,56 +516,55 @@
             feather.replace();
         }
 
-       // In admin.html - Replace the loadChatList function
-async function loadChatList() {
-    try {
-        const chatsSnapshot = await db.collection('chats')
-            .orderBy('lastUpdated', 'desc')
-            .get();
-            
-        const chatList = document.getElementById('chat-list');
-        chatList.innerHTML = '';
-        
-        if (chatsSnapshot.empty) {
-            chatList.innerHTML = `
-                <div class="text-center py-8">
-                    <i data-feather="message-circle" class="w-8 h-8 mx-auto text-gray-500 mb-2"></i>
-                    <p class="text-gray-400">No active conversations</p>
-                </div>
-            `;
-            feather.replace();
-            return;
+        async function loadChatList() {
+            try {
+                const chatsSnapshot = await db.collection('chats')
+                    .orderBy('lastUpdated', 'desc')
+                    .get();
+                    
+                const chatList = document.getElementById('chat-list');
+                chatList.innerHTML = '';
+                
+                if (chatsSnapshot.empty) {
+                    chatList.innerHTML = `
+                        <div class="text-center py-8">
+                            <i data-feather="message-circle" class="w-8 h-8 mx-auto text-gray-500 mb-2"></i>
+                            <p class="text-gray-400">No active conversations</p>
+                        </div>
+                    `;
+                    feather.replace();
+                    return;
+                }
+                
+                chatsSnapshot.forEach(doc => {
+                    const chat = { id: doc.id, ...doc.data() };
+                    const lastMessage = chat.messages && chat.messages.length > 0 
+                        ? chat.messages[chat.messages.length - 1] 
+                        : { text: "No messages yet", timestamp: new Date() };
+                    
+                    const chatItem = document.createElement('div');
+                    chatItem.className = `p-3 rounded cursor-pointer hover:bg-gray-700 transition ${currentChatUserId === chat.userId ? 'bg-gray-700' : 'bg-gray-750'}`;
+                    chatItem.innerHTML = `
+                        <div class="flex justify-between items-start">
+                            <div class="flex-1 min-w-0">
+                                <h4 class="font-medium text-white truncate">${chat.userName || 'Unknown User'}</h4>
+                                <p class="text-gray-400 text-sm truncate">${chat.userEmail}</p>
+                                <p class="text-gray-500 text-sm mt-1 truncate">${lastMessage.text}</p>
+                            </div>
+                            <span class="text-gray-500 text-xs whitespace-nowrap ml-2">${formatTime(lastMessage.timestamp)}</span>
+                        </div>
+                    `;
+                    
+                    chatItem.addEventListener('click', () => openChat(chat.userId, chat.userName, chat.userEmail));
+                    chatList.appendChild(chatItem);
+                });
+                
+                feather.replace();
+                
+            } catch (error) {
+                console.error('Error loading chat list:', error);
+            }
         }
-        
-        chatsSnapshot.forEach(doc => {
-            const chat = { id: doc.id, ...doc.data() };
-            const lastMessage = chat.messages && chat.messages.length > 0 
-                ? chat.messages[chat.messages.length - 1] 
-                : { text: "No messages yet", timestamp: new Date() };
-            
-            const chatItem = document.createElement('div');
-            chatItem.className = `p-3 rounded cursor-pointer hover:bg-gray-700 transition ${currentChatUserId === chat.userId ? 'bg-gray-700' : 'bg-gray-750'}`;
-            chatItem.innerHTML = `
-                <div class="flex justify-between items-start">
-                    <div class="flex-1 min-w-0">
-                        <h4 class="font-medium text-white truncate">${chat.userName || 'Unknown User'}</h4>
-                        <p class="text-gray-400 text-sm truncate">${chat.userEmail}</p>
-                        <p class="text-gray-500 text-sm mt-1 truncate">${lastMessage.text}</p>
-                    </div>
-                    <span class="text-gray-500 text-xs whitespace-nowrap ml-2">${formatTime(lastMessage.timestamp)}</span>
-                </div>
-            `;
-            
-            chatItem.addEventListener('click', () => openChat(chat.userId, chat.userName, chat.userEmail));
-            chatList.appendChild(chatItem);
-        });
-        
-        feather.replace();
-        
-    } catch (error) {
-        console.error('Error loading chat list:', error);
-    }
-}
 
         function openChat(userId, userName, userEmail) {
             currentChatUserId = userId;
@@ -664,12 +661,16 @@ async function loadChatList() {
                 const message = {
                     text: messageText,
                     sender: 'admin',
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                    timestamp: new Date()
                 };
                 
-                // Add message to chat
+                // Get current messages and add new one
+                const chatDoc = await db.collection('chats').doc(currentChatUserId).get();
+                const currentMessages = chatDoc.data().messages || [];
+                const updatedMessages = [...currentMessages, message];
+                
                 await db.collection('chats').doc(currentChatUserId).update({
-                    messages: firebase.firestore.FieldValue.arrayUnion(message),
+                    messages: updatedMessages,
                     lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
                 });
                 
@@ -746,7 +747,7 @@ async function loadChatList() {
                 
                 // Reload orders to reflect the change
                 loadOrders();
-                loadDashboardData(); // Also update dashboard
+                loadDashboardData();
             } catch (error) {
                 console.error('Error updating order status:', error);
                 alert('Error updating order status');
@@ -803,7 +804,7 @@ async function loadChatList() {
 
         function formatTime(timestamp) {
             if (!timestamp) return '';
-            const date = timestamp.toDate();
+            const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
             const now = new Date();
             const diff = now - date;
             
@@ -812,26 +813,6 @@ async function loadChatList() {
             if (diff < 86400000) return `${Math.floor(diff / 3600000)}h ago`;
             return date.toLocaleDateString();
         }
-    </script>
-
-    <!-- Add navigation buttons to your header -->
-    <script>
-        // Add this to your header after the admin panel loads
-        function addNavigationButtons() {
-            const header = document.querySelector('header');
-            const nav = document.createElement('div');
-            nav.className = 'flex space-x-4';
-            nav.innerHTML = `
-                <button data-tab="dashboard-tab" class="text-white hover:text-red-500 font-medium">Dashboard</button>
-                <button data-tab="chat-tab" class="text-white hover:text-red-500 font-medium">Live Chat</button>
-                <button data-tab="orders-tab" class="text-white hover:text-red-500 font-medium">Orders</button>
-                <button data-tab="users-tab" class="text-white hover:text-red-500 font-medium">Users</button>
-            `;
-            header.insertBefore(nav, header.querySelector('#logout-btn').parentNode);
-        }
-        
-        // Call this after showAdminDashboard()
-        setTimeout(addNavigationButtons, 100);
     </script>
 </body>
 </html>
