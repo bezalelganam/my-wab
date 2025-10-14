@@ -1016,7 +1016,10 @@ async function renderCart() {
     }
 
     try {
-        const cart = await getUserCart(user.uid);
+        const userDoc = await db.collection('users').doc(user.uid).get();
+        const userData = userDoc.data();
+        const cart = userData.cart || [];
+        
         const cartItemsEl = document.getElementById('cart-items');
         const emptyCartMessage = document.getElementById('empty-cart-message');
 
@@ -1344,6 +1347,91 @@ auth.onAuthStateChanged((user) => {
         setupCustomerChat();
     }
 });
+       // Live Chat Functions
+function setupLiveChat() {
+    const user = auth.currentUser;
+    if (!user) return;
+
+    // Initialize or get user chat
+    db.collection('chats').doc(user.uid).set({
+        userId: user.uid,
+        userEmail: user.email,
+        userName: user.displayName || 'Customer',
+        messages: [],
+        lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
+    }, { merge: true });
+
+    // Listen for new messages
+    db.collection('chats').doc(user.uid)
+        .onSnapshot((doc) => {
+            if (doc.exists) {
+                const chat = doc.data();
+                displayChatMessages(chat.messages || []);
+            }
+        });
+}
+
+function displayChatMessages(messages) {
+    const chatMessages = document.getElementById('chat-messages');
+    if (!chatMessages) return;
+
+    chatMessages.innerHTML = '';
+    
+    messages.forEach(message => {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `chat-message ${message.sender === 'admin' ? 'admin-message' : 'user-message'}`;
+        messageDiv.innerHTML = `
+            <div class="text-sm">${message.text}</div>
+            <div class="text-xs mt-1 opacity-70">${formatTime(message.timestamp)}</div>
+        `;
+        chatMessages.appendChild(messageDiv);
+    });
+    
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+async function sendChatMessage(messageText) {
+    const user = auth.currentUser;
+    if (!user) return;
+
+    const message = {
+        text: messageText,
+        sender: 'user',
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+    };
+
+    await db.collection('chats').doc(user.uid).update({
+        messages: firebase.firestore.FieldValue.arrayUnion(message),
+        lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
+    });
+}
+
+function formatTime(timestamp) {
+    if (!timestamp) return '';
+    const date = timestamp.toDate();
+    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+}
+
+// Update the existing chat setup
+function setupChat() {
+    document.getElementById('admin-chat-btn').addEventListener('click', toggleChat);
+    document.getElementById('close-chat').addEventListener('click', toggleChat);
+    
+    document.getElementById('chat-input').addEventListener('keypress', function(e) {
+        if(e.key === 'Enter' && e.target.value.trim()) {
+            const message = e.target.value.trim();
+            sendChatMessage(message);
+            e.target.value = '';
+        }
+    });
+
+    // Setup live chat when user is authenticated
+    auth.onAuthStateChanged((user) => {
+        if (user) {
+            setupLiveChat();
+        }
+    });
+}
 </script>
 </body>
 </html>
