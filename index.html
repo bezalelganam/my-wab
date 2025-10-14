@@ -482,8 +482,12 @@ const firebaseConfig = {
         setupAddToCartListeners();
         setupFormHandlers();
         setupChat();
-        setupChatButton();
+    
         updateCartBadge();
+          // Setup chat button with a small delay to ensure DOM is fully rendered
+    setTimeout(() => {
+        setupChatButton();
+    }, 100);
         
         // Firebase Auth State Listener
         auth.onAuthStateChanged((user) => {
