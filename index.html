@@ -1440,24 +1440,33 @@ function setupChat() {
         }
     });
 }
-       function openChatPopup() {
-    const user = firebase.auth().currentUser;
+  function setupChatButton() {
+    document.getElementById('floating-chat-btn').addEventListener('click', openChatPopup);
+}
+
+function openChatPopup() {
+    const user = auth.currentUser;
     if (!user) {
+        alert('Please login to use live chat');
         window.location.hash = 'login';
         return;
     }
     
-    // Open chat as popup
+    // Open chatManager.html as a popup window (like your contact popup)
     const popup = window.open('chatManager.html', 'chatPopup', 
-        'width=400,height=600,resizable=yes,scrollbars=yes');
+        'width=400,height=600,resizable=yes,scrollbars=yes,location=no,menubar=no,toolbar=no');
     
     if (popup) {
         popup.focus();
     } else {
         // Fallback to new tab if popup blocked
+        alert('Popup blocked! Opening chat in new tab.');
         window.open('chatManager.html', '_blank');
     }
 }
+
+// Call this in your DOMContentLoaded or auth state change
+setupChatButton();
 </script>
 </body>
 </html>
