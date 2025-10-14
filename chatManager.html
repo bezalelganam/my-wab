@@ -227,56 +227,79 @@
             feather.replace();
         }
 
-        async function sendMessage() {
-            const input = document.getElementById('chat-input');
-            const messageText = input.value.trim();
+ async function sendMessage() {
+    const input = document.getElementById('chat-input');
+    const messageText = input.value.trim();
 
-            if (!messageText) return;
+    if (!messageText) return;
 
-            const user = auth.currentUser;
-            if (!user) return;
+    const user = auth.currentUser;
+    if (!user) return;
 
-            try {
-                const userMessage = {
-                    text: messageText,
-                    sender: 'user',
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                };
+    try {
+        const userMessage = {
+            text: messageText,
+            sender: 'user',
+            timestamp: new Date() // FIX: Use regular Date instead of serverTimestamp in array
+        };
 
-                await db.collection('chats').doc(user.uid).update({
-                    messages: firebase.firestore.FieldValue.arrayUnion(userMessage),
-                    lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
-                });
+        // Get current messages and add new one
+        const chatDoc = await db.collection('chats').doc(user.uid).get();
+        const currentMessages = chatDoc.data().messages || [];
+        const updatedMessages = [...currentMessages, userMessage];
 
-                input.value = '';
+        await db.collection('chats').doc(user.uid).update({
+            messages: updatedMessages,
+            lastUpdated: firebase.firestore.FieldValue.serverTimestamp() // This is fine here
+        });
 
-                // Auto-response after delay
-                setTimeout(() => {
-                    sendAutoResponse(messageText);
-                }, 2000 + Math.random() * 3000);
+        input.value = '';
 
-            } catch (error) {
-                console.error('Error sending message:', error);
-                alert('Error sending message. Please try again.');
-            }
-        }
+        // Auto-response after delay
+        setTimeout(() => {
+            sendAutoResponse(messageText);
+        }, 2000 + Math.random() * 3000);
 
-        async function sendAutoResponse(userMessage) {
-            const user = auth.currentUser;
-            if (!user) return;
+    } catch (error) {
+        console.error('Error sending message:', error);
+        alert('Error sending message. Please try again.');
+    }
+}
 
-            const lowerMessage = userMessage.toLowerCase();
-            let response = "Thank you for your message. Our support team will get back to you shortly.";
+// Also fix the sendAutoResponse function:
+async function sendAutoResponse(userMessage) {
+    const user = auth.currentUser;
+    if (!user) return;
 
-            if (lowerMessage.includes('shipping') || lowerMessage.includes('delivery')) {
-                response = "We offer free shipping on all orders. Delivery takes 3-5 business days.";
-            } else if (lowerMessage.includes('track')) {
-                response = "Check your email for tracking info. Contact us with your order number if needed.";
-            } else if (lowerMessage.includes('return')) {
-                response = "30-day return policy. Items must be unused in original packaging.";
-            } else if (lowerMessage.includes('price')) {
-                response = "Products range from ₪100 to ₪1000. All prices include VAT.";
-            }
+    const lowerMessage = userMessage.toLowerCase();
+    let response = "Thank you for your message. Our support team will get back to you shortly.";
+
+    if (lowerMessage.includes('shipping') || lowerMessage.includes('delivery')) {
+        response = "We offer free shipping on all orders. Delivery takes 3-5 business days.";
+    } else if (lowerMessage.includes('track')) {
+        response = "Check your email for tracking info. Contact us with your order number if needed.";
+    } else if (lowerMessage.includes('return')) {
+        response = "30-day return policy. Items must be unused in original packaging.";
+    } else if (lowerMessage.includes('price')) {
+        response = "Products range from ₪100 to ₪1000. All prices include VAT.";
+    }
+
+    const adminMessage = {
+        text: response,
+        sender: 'admin',
+        timestamp: new Date() // FIX: Use regular Date here too
+    };
+
+    // Get current messages and add admin response
+    const chatDoc = await db.collection('chats').doc(user.uid).get();
+    const currentMessages = chatDoc.data().messages || [];
+    const updatedMessages = [...currentMessages, adminMessage];
+
+    await db.collection('chats').doc(user.uid).update({
+        messages: updatedMessages,
+        lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
+    });
+}
 
             const adminMessage = {
                 text: response,
