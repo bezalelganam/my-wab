@@ -882,7 +882,24 @@ async function handleForgotPassword() {
             alert('Error processing order: ' + error.message);
         }
     }
-
+// 🔥 FIXED CART EVENT LISTENERS
+function setupCartEventListeners() {
+    // Remove items - use event delegation for better performance
+    document.getElementById('cart-items').addEventListener('click', function(e) {
+        if (e.target.closest('.remove-item')) {
+            const button = e.target.closest('.remove-item');
+            const index = parseInt(button.dataset.index);
+            removeFromCart(index);
+        }
+        
+        if (e.target.closest('.quantity-btn')) {
+            const button = e.target.closest('.quantity-btn');
+            const index = parseInt(button.dataset.index);
+            const action = button.dataset.action;
+            adjustQuantity(index, action);
+        }
+    });
+}
     // CART FUNCTIONS (unchanged - they use localStorage)
     function setupAddToCartListeners() {
         console.log('=== SETTING UP CART LISTENERS ===');
@@ -923,7 +940,9 @@ async function handleForgotPassword() {
         console.log('=== CART LISTENERS SETUP COMPLETE ===');
     }
 
- async function addToCart(product, buttonElement) {
+let userCartCache = null; // Cache for better performance
+
+async function addToCart(product, buttonElement) {
     const user = auth.currentUser;
     
     if (!user) {
@@ -933,11 +952,15 @@ async function handleForgotPassword() {
     }
 
     try {
-        // Get user's current cart from Firestore
-        const userDoc = await db.collection('users').doc(user.uid).get();
-        const userData = userDoc.data();
-        let cart = userData.cart || [];
+        // Quick visual feedback first
+        const originalText = buttonElement.innerHTML;
+        buttonElement.innerHTML = '✓ Added';
+        buttonElement.classList.add('bg-green-500', 'hover:bg-green-600');
+        buttonElement.disabled = true;
 
+        // Get user's current cart
+        let cart = await getUserCart(user.uid);
+        
         // Check if product already exists
         const existingIndex = cart.findIndex(item => item.id === product.id);
         
@@ -955,29 +978,58 @@ async function handleForgotPassword() {
             cart: cart
         });
 
-        // Visual feedback
-        const originalText = buttonElement.innerHTML;
-        buttonElement.innerHTML = '✓ Added';
-        buttonElement.classList.add('bg-green-500', 'hover:bg-green-600');
-        
-        setTimeout(() => {
-            buttonElement.innerHTML = 'Add to Cart';
-            buttonElement.classList.remove('bg-green-500', 'hover:bg-green-600');
-        }, 1500);
+        // Update cache
+        userCartCache = cart;
 
+        // Update UI
         updateCartBadge();
         
         if (window.location.hash === '#cart') {
-            renderCart();
+            await renderCart();
         }
+
+        // Reset button after delay
+        setTimeout(() => {
+            buttonElement.innerHTML = 'Add to Cart';
+            buttonElement.classList.remove('bg-green-500', 'hover:bg-green-600');
+            buttonElement.disabled = false;
+        }, 1500);
 
     } catch (error) {
         console.error('Error adding to cart:', error);
         alert('Error adding item to cart');
+        // Reset button on error
+        buttonElement.innerHTML = 'Add to Cart';
+        buttonElement.classList.remove('bg-green-500', 'hover:bg-green-600');
+        buttonElement.disabled = false;
     }
 }
-
-  async function renderCart() {
+       // 🔥 CACHE USER CART FOR PERFORMANCE
+async function getUserCart(userId) {
+    if (userCartCache) {
+        return userCartCache;
+    }
+    
+    const userDoc = await db.collection('users').doc(userId).get();
+    const userData = userDoc.data();
+    userCartCache = userData.cart || [];
+    return userCartCache;
+}
+// 🔥 CLEAR CACHE ON USER CHANGE
+auth.onAuthStateChanged((user) => {
+    userCartCache = null; // Clear cache on auth state change
+    if (user) {
+        console.log('User is signed in:', user.email);
+        updateNavigation(user);
+        loadUserData(user.uid);
+        updateCartBadge(); // Update badge for correct user
+    } else {
+        console.log('User is signed out');
+        updateNavigation(null);
+        updateCartBadge(); // Clear badge when logged out
+    }
+});
+async function renderCart() {
     const user = auth.currentUser;
     
     if (!user) {
@@ -986,10 +1038,7 @@ async function handleForgotPassword() {
     }
 
     try {
-        const userDoc = await db.collection('users').doc(user.uid).get();
-        const userData = userDoc.data();
-        const cart = userData.cart || [];
-        
+        const cart = await getUserCart(user.uid);
         const cartItemsEl = document.getElementById('cart-items');
         const emptyCartMessage = document.getElementById('empty-cart-message');
 
@@ -1027,9 +1076,11 @@ async function handleForgotPassword() {
                             <h3 class="font-medium">${item.name}</h3>
                             <p class="text-gray-400">₪${item.price}</p>
                             <div class="flex items-center space-x-2 mt-2">
-                                <button class="quantity-btn text-gray-400 hover:text-white" data-index="${index}" data-action="decrease">-</button>
-                                <span class="quantity">${quantity}</span>
-                                <button class="quantity-btn text-gray-400 hover:text-white" data-index="${index}" data-action="increase">+</button>
+                                <button class="quantity-btn bg-gray-700 hover:bg-gray-600 text-white w-8 h-8 rounded flex items-center justify-center" 
+                                        data-index="${index}" data-action="decrease">-</button>
+                                <span class="quantity mx-2 font-medium">${quantity}</span>
+                                <button class="quantity-btn bg-gray-700 hover:bg-gray-600 text-white w-8 h-8 rounded flex items-center justify-center" 
+                                        data-index="${index}" data-action="increase">+</button>
                             </div>
                         </div>
                     </div>
@@ -1071,14 +1122,12 @@ async function handleForgotPassword() {
         });
     }
 
-   async function removeFromCart(index) {
+async function removeFromCart(index) {
     const user = auth.currentUser;
     if (!user) return;
 
     try {
-        const userDoc = await db.collection('users').doc(user.uid).get();
-        const userData = userDoc.data();
-        let cart = userData.cart || [];
+        let cart = await getUserCart(user.uid);
         
         if (index >= 0 && index < cart.length) {
             cart.splice(index, 1);
@@ -1087,7 +1136,10 @@ async function handleForgotPassword() {
                 cart: cart
             });
             
-            renderCart();
+            // Update cache
+            userCartCache = cart;
+            
+            await renderCart();
             updateCartBadge();
         }
     } catch (error) {
@@ -1100,9 +1152,7 @@ async function adjustQuantity(index, action) {
     if (!user) return;
 
     try {
-        const userDoc = await db.collection('users').doc(user.uid).get();
-        const userData = userDoc.data();
-        let cart = userData.cart || [];
+        let cart = await getUserCart(user.uid);
         
         if (index >= 0 && index < cart.length) {
             const item = cart[index];
@@ -1122,11 +1172,36 @@ async function adjustQuantity(index, action) {
                 cart: cart
             });
             
-            renderCart();
+            // Update cache
+            userCartCache = cart;
+            
+            await renderCart();
             updateCartBadge();
         }
     } catch (error) {
         console.error('Error adjusting quantity:', error);
+    }
+}
+
+async function updateCartBadge() {
+    const user = auth.currentUser;
+    const cartTab = document.getElementById('cart-tab');
+    
+    if (!cartTab) return;
+
+    if (!user) {
+        cartTab.textContent = 'Cart';
+        userCartCache = null; // Clear cache when logged out
+        return;
+    }
+
+    try {
+        const cart = await getUserCart(user.uid);
+        const totalItems = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+        cartTab.textContent = totalItems > 0 ? `Cart (${totalItems})` : 'Cart';
+    } catch (error) {
+        console.error('Error updating cart badge:', error);
+        cartTab.textContent = 'Cart';
     }
 }
 
