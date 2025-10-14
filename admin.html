@@ -518,52 +518,56 @@
             feather.replace();
         }
 
-        async function loadChatList() {
-            try {
-                const chatsSnapshot = await db.collection('chats').get();
-                const chatList = document.getElementById('chat-list');
-                chatList.innerHTML = '';
-                
-                if (chatsSnapshot.empty) {
-                    chatList.innerHTML = `
-                        <div class="text-center py-8">
-                            <i data-feather="message-circle" class="w-8 h-8 mx-auto text-gray-500 mb-2"></i>
-                            <p class="text-gray-400">No active conversations</p>
-                        </div>
-                    `;
-                    feather.replace();
-                    return;
-                }
-                
-                chatsSnapshot.forEach(doc => {
-                    const chat = { id: doc.id, ...doc.data() };
-                    const lastMessage = chat.messages && chat.messages.length > 0 
-                        ? chat.messages[chat.messages.length - 1] 
-                        : null;
-                    
-                    const chatItem = document.createElement('div');
-                    chatItem.className = `p-3 rounded cursor-pointer hover:bg-gray-700 transition ${currentChatUserId === chat.userId ? 'bg-gray-700' : 'bg-gray-750'}`;
-                    chatItem.innerHTML = `
-                        <div class="flex justify-between items-start">
-                            <div>
-                                <h4 class="font-medium">${chat.userName || 'Unknown User'}</h4>
-                                <p class="text-gray-400 text-sm">${chat.userEmail}</p>
-                                ${lastMessage ? `<p class="text-gray-500 text-sm mt-1 truncate">${lastMessage.text}</p>` : ''}
-                            </div>
-                            ${lastMessage ? `<span class="text-gray-500 text-xs">${formatTime(lastMessage.timestamp)}</span>` : ''}
-                        </div>
-                    `;
-                    
-                    chatItem.addEventListener('click', () => openChat(chat.userId, chat.userName, chat.userEmail));
-                    chatList.appendChild(chatItem);
-                });
-                
-                feather.replace();
-                
-            } catch (error) {
-                console.error('Error loading chat list:', error);
-            }
+       // In admin.html - Replace the loadChatList function
+async function loadChatList() {
+    try {
+        const chatsSnapshot = await db.collection('chats')
+            .orderBy('lastUpdated', 'desc')
+            .get();
+            
+        const chatList = document.getElementById('chat-list');
+        chatList.innerHTML = '';
+        
+        if (chatsSnapshot.empty) {
+            chatList.innerHTML = `
+                <div class="text-center py-8">
+                    <i data-feather="message-circle" class="w-8 h-8 mx-auto text-gray-500 mb-2"></i>
+                    <p class="text-gray-400">No active conversations</p>
+                </div>
+            `;
+            feather.replace();
+            return;
         }
+        
+        chatsSnapshot.forEach(doc => {
+            const chat = { id: doc.id, ...doc.data() };
+            const lastMessage = chat.messages && chat.messages.length > 0 
+                ? chat.messages[chat.messages.length - 1] 
+                : { text: "No messages yet", timestamp: new Date() };
+            
+            const chatItem = document.createElement('div');
+            chatItem.className = `p-3 rounded cursor-pointer hover:bg-gray-700 transition ${currentChatUserId === chat.userId ? 'bg-gray-700' : 'bg-gray-750'}`;
+            chatItem.innerHTML = `
+                <div class="flex justify-between items-start">
+                    <div class="flex-1 min-w-0">
+                        <h4 class="font-medium text-white truncate">${chat.userName || 'Unknown User'}</h4>
+                        <p class="text-gray-400 text-sm truncate">${chat.userEmail}</p>
+                        <p class="text-gray-500 text-sm mt-1 truncate">${lastMessage.text}</p>
+                    </div>
+                    <span class="text-gray-500 text-xs whitespace-nowrap ml-2">${formatTime(lastMessage.timestamp)}</span>
+                </div>
+            `;
+            
+            chatItem.addEventListener('click', () => openChat(chat.userId, chat.userName, chat.userEmail));
+            chatList.appendChild(chatItem);
+        });
+        
+        feather.replace();
+        
+    } catch (error) {
+        console.error('Error loading chat list:', error);
+    }
+}
 
         function openChat(userId, userName, userEmail) {
             currentChatUserId = userId;
