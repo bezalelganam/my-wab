@@ -436,59 +436,7 @@
             </div>
         </div>
     </section>
-<!-- Admin Panel Section -->
-<section id="admin-panel" class="tab-section hidden py-16 px-4 md:px-12 bg-gray-900 fade-in">
-    <div class="max-w-7xl mx-auto">
-        <h1 class="text-3xl md:text-4xl font-bold mb-8 text-center">Admin Panel</h1>
-        
-        <!-- Admin Login -->
-        <div id="admin-login" class="max-w-md mx-auto bg-black rounded-lg p-8 shadow-lg">
-            <h2 class="text-2xl font-bold mb-6 text-center">Admin Login</h2>
-            <form id="admin-login-form" class="space-y-6">
-                <div>
-                    <label for="admin-email" class="block text-gray-400 mb-2">Admin Email</label>
-                    <input type="email" id="admin-email" value="admin@wanttowin.com"
-                           class="w-full bg-gray-800 text-white p-3 rounded focus:outline-none focus:ring-2 focus:ring-red-500"
-                           required>
-                </div>
-                <div>
-                    <label for="admin-password" class="block text-gray-400 mb-2">Password</label>
-                    <input type="password" id="admin-password" value="admin123"
-                           class="w-full bg-gray-800 text-white p-3 rounded focus:outline-none focus:ring-2 focus:ring-red-500"
-                           required>
-                </div>
-                <button type="submit" class="w-full bg-red-500 hover:bg-red-600 text-white py-3 rounded font-medium transition">
-                    Admin Login
-                </button>
-            </form>
-        </div>
-    </div>
-</section>
-    <!-- Admin Chat Button -->
-    <button id="admin-chat-btn" class="fixed bottom-6 right-6 bg-red-500 text-white p-4 rounded-full shadow-lg hover:bg-red-600 transition z-30">
-        <i data-feather="message-circle"></i>
-    </button>
 
-    <!-- Admin Chat Modal -->
-    <div id="admin-chat-modal" class="fixed bottom-24 right-6 w-80 bg-gray-900 rounded-lg shadow-xl border border-gray-700 hidden z-40">
-        <div class="p-4 border-b border-gray-700 flex justify-between items-center">
-            <h3 class="font-bold">Chat Support</h3>
-            <button id="close-chat" class="text-gray-400 hover:text-white">
-                <i data-feather="x"></i>
-            </button>
-        </div>
-        <div id="chat-messages" class="p-4 h-64 overflow-y-auto">
-            <div class="chat-message admin-message">
-                Welcome! How can we help you today?
-            </div>
-        </div>
-        <div class="p-4 border-t border-gray-700">
-            <input type="text" id="chat-input" 
-                   class="w-full bg-gray-800 text-white p-2 rounded focus:outline-none focus:ring-2 focus:ring-red-500" 
-                   placeholder="Type a message..." maxlength="200">
-        </div>
-    </div>
-    
 
 
    <script>
