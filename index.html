@@ -8,7 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/feather-icons"></script>
     <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
-      <!-- 🔥 ADD FIREBASE SCRIPTS RIGHT HERE 🔥 -->
+    <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
@@ -94,13 +94,6 @@
             <a href="#information" id="information-tab" class="nav-link text-white font-medium">Information</a>
             <a href="#login" id="login-tab" class="nav-link text-white font-medium">Login</a>
             <a href="#cart" id="cart-tab" class="nav-link text-white font-medium">Cart</a>
-      <!-- Floating Chat Button -->
-<button id="floating-chat-btn" class="fixed bottom-6 right-6 bg-red-500 text-white p-4 rounded-full shadow-lg hover:bg-red-600 transition z-50">
-    <i data-feather="message-circle"></i>
-</button>
-   
-    
-        
         </div>
 
         <div id="user-info" class="hidden items-center space-x-4">
@@ -116,19 +109,24 @@
     </nav>
 
     <!-- Mobile Menu -->
-<div id="mobile-menu" class="hidden md:hidden bg-gray-900 py-2 px-4 border-b border-gray-800">
-    <a href="#shop" class="block py-2 text-white">Shop</a>
-    <a href="#contact" class="block py-2 text-white">Contact</a>
-    <a href="#information" class="block py-2 text-white">Information</a>
-    <a href="#cart" class="block py-2 text-white">Cart</a>
-    <a href="#login" id="mobile-login" class="block py-2 text-white">Login</a>
-    
-    <div id="mobile-user-info" class="hidden">
-        <span id="mobile-user-email" class="block py-2 text-white"></span>
-        <button id="mobile-logout" class="block py-2 text-red-500 w-full text-left">Logout</button>
-        
+    <div id="mobile-menu" class="hidden md:hidden bg-gray-900 py-2 px-4 border-b border-gray-800">
+        <a href="#shop" class="block py-2 text-white">Shop</a>
+        <a href="#contact" class="block py-2 text-white">Contact</a>
+        <a href="#information" class="block py-2 text-white">Information</a>
+        <a href="#cart" class="block py-2 text-white">Cart</a>
+        <div id="mobile-user-info" class="hidden border-t border-gray-700 mt-2 pt-2">
+            <span id="mobile-user-email" class="block py-1 text-white text-sm truncate"></span>
+            <button id="mobile-logout" class="block py-1 text-red-500 w-full text-left text-sm">Logout</button>
+        </div>
+        <div id="mobile-login-section" class="border-t border-gray-700 mt-2 pt-2">
+            <a href="#login" id="mobile-login" class="block py-2 text-white">Login</a>
+        </div>
     </div>
-</div>
+
+    <!-- Floating Chat Button -->
+    <button id="floating-chat-btn" class="fixed bottom-6 right-6 bg-red-500 text-white p-4 rounded-full shadow-lg hover:bg-red-600 transition z-50">
+        <i data-feather="message-circle"></i>
+    </button>
 
     <!-- Shop Section -->
     <section id="shop" class="tab-section py-16 px-4 md:px-12 fade-in">
@@ -444,1096 +442,798 @@
         </div>
     </section>
 
-
-
-   <script>
-    // 🔥 FIREBASE CONFIGURATION
- // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyBxzYFV5N2Mxl5K-OdKv-mXS8eCaDd8EGc",
-  authDomain: "website-9f7c2.firebaseapp.com",
-  projectId: "website-9f7c2",
-  storageBucket: "website-9f7c2.firebasestorage.app",
-  messagingSenderId: "857090113341",
-  appId: "1:857090113341:web:6ae0b6ccd074482b35cf54",
-  measurementId: "G-PRLNDCHKS0"
-};
-
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    const db = firebase.firestore();
-
-    // EmailJS Configuration
-    emailjs.init('AefX1sL9Wjlv6CXnz');
-    const EMAILJS_SERVICE_ID = 'service_76p23kb';
-    const EMAILJS_TEMPLATE_ID = 'template_l3l7so9';
-    const EMAILJS_TEMPLATE_ID_Rest = 'template_51c3yio';
-
-    document.addEventListener('DOMContentLoaded', function() {
-        console.log('DOM loaded - initializing app with Firebase');
-        feather.replace();
-        
-        // Initialize local storage for cart only
-        if (!localStorage.getItem('cart')) {
-            localStorage.setItem('cart', JSON.stringify([]));
-        }
-        
-        // Setup everything
-        setupNavigation();
-        setupAddToCartListeners();
-        setupFormHandlers();
-        setupChat();
-    
-        updateCartBadge();
-          // Setup chat button with a small delay to ensure DOM is fully rendered
-    setTimeout(() => {
-        setupChatButton();
-    }, 100);
-        
-        // Firebase Auth State Listener
-        auth.onAuthStateChanged((user) => {
-            if (user) {
-                console.log('User is signed in:', user.email);
-                updateNavigation(user);
-                loadUserData(user.uid);
-            } else {
-                console.log('User is signed out');
-                updateNavigation(null);
-            }
-        });
-        
-        // Handle initial page
-        if (!window.location.hash || window.location.hash === '#') {
-            window.location.hash = 'shop';
-        } else {
-            handleHashChange();
-        }
-    });
-
-    // NAVIGATION FUNCTIONS
-    function setupNavigation() {
-        // Tab clicks
-        document.querySelectorAll('[id$="-tab"]').forEach(tab => {
-            tab.addEventListener('click', (e) => {
-                e.preventDefault();
-                const sectionId = tab.id.replace('-tab', '');
-                window.location.hash = sectionId;
-            });
-        });
-        
-        // Mobile menu
-        document.getElementById('mobile-menu-btn').addEventListener('click', () => {
-            document.getElementById('mobile-menu').classList.toggle('hidden');
-            feather.replace();
-        });
-        
-        // Hash changes
-        window.addEventListener('hashchange', handleHashChange);
-    }
-
-    function handleHashChange() {
-        const hash = window.location.hash.substring(1) || 'shop';
-        console.log('Hash changed to:', hash);
-        
-        // Hide all sections safely
-        document.querySelectorAll('.tab-section').forEach(section => {
-            if (section) {
-                section.classList.add('hidden');
-            }
-        });
-        
-        // Show target section safely
-        const targetSection = document.getElementById(hash);
-        if (targetSection) {
-            targetSection.classList.remove('hidden');
-        }
-        
-        // Update active tab safely
-        document.querySelectorAll('[id$="-tab"]').forEach(tab => {
-            if (tab) {
-                tab.classList.remove('active-tab');
-            }
-        });
-        
-        const activeTab = document.getElementById(hash + '-tab');
-        if (activeTab) {
-            activeTab.classList.add('active-tab');
-        }
-        
-        // Close mobile menu safely
-        const mobileMenu = document.getElementById('mobile-menu');
-        if (mobileMenu) {
-            mobileMenu.classList.add('hidden');
-        }
-        
-        // Section-specific setup
-        if (hash === 'cart') {
-            console.log('Loading cart page...');
-            setTimeout(() => {
-                renderCart();
-            }, 50);
-        }
-        if (hash === 'shop') {
-            console.log('Loading shop page...');
-            setTimeout(() => {
-                setupAddToCartListeners();
-            }, 50);
-        }
-    }
-
-    // FORM HANDLERS
-    function setupFormHandlers() {
-        // Contact form
-        document.getElementById('contact-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            handleContactForm();
-        });
-
-        // Login form
-        document.getElementById('login-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            handleLogin();
-        });
-
-        // Signup form
-        const signupForm = document.getElementById('signup-form');
-        signupForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            handleSignup();
-        });
-
-        // Forgot password form
-        document.getElementById('forgot-password-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            handleForgotPassword();
-        });
-
-        // Navigation links
-        document.querySelectorAll('.forgot-password').forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                window.location.hash = 'forgot-password';
-            });
-        });
-
-        document.querySelectorAll('.signup-link').forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                window.location.hash = 'signup';
-            });
-        });
-
-        document.querySelectorAll('.back-to-login').forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                window.location.hash = 'login';
-            });
-        });
-
-        // Checkout button
-        document.getElementById('checkout-btn').addEventListener('click', handleCheckout);
-
-        // Logout buttons
-        document.getElementById('logout-btn').addEventListener('click', handleLogout);
-        document.getElementById('mobile-logout').addEventListener('click', handleLogout);
-    }
-
-    // CONTACT FORM (unchanged)
-    function handleContactForm() {
-        const name = document.getElementById('contact-name').value.trim();
-        const email = document.getElementById('contact-email').value.trim();
-        const message = document.getElementById('contact-message').value.trim();
-
-        const emailData = {
-            to_email: 'bezalelganam95@gmail.com',
-            from_name: name,
-            from_email: email,
-            message: message,
-            subject: `New Contact Form Message from ${name}`
+    <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBxzYFV5N2Mxl5K-OdKv-mXS8eCaDd8EGc",
+            authDomain: "website-9f7c2.firebaseapp.com",
+            projectId: "website-9f7c2",
+            storageBucket: "website-9f7c2.firebasestorage.app",
+            messagingSenderId: "857090113341",
+            appId: "1:857090113341:web:6ae0b6ccd074482b35cf54",
+            measurementId: "G-PRLNDCHKS0"
         };
 
-        emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, emailData)
-            .then(function(response) {
-                console.log('SUCCESS!', response.status, response.text);
-                alert('Thank you for your message! We will get back to you soon.');
-                document.getElementById('contact-form').reset();
-            }, function(error) {
-                console.log('FAILED...', error);
-                alert('There was an error sending your message. Please try again later.');
-            });
-    }
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
 
-    // 🔥 FIREBASE AUTHENTICATION FUNCTIONS
-    async function handleSignup() {
-        const name = document.getElementById('name').value.trim();
-        const email = document.getElementById('signup-email').value.trim();
-        const password = document.getElementById('signup-password').value;
-        const confirmPassword = document.getElementById('confirm-password').value;
+        // EmailJS Configuration
+        emailjs.init('AefX1sL9Wjlv6CXnz');
+        const EMAILJS_SERVICE_ID = 'service_76p23kb';
+        const EMAILJS_TEMPLATE_ID = 'template_l3l7so9';
+        const EMAILJS_TEMPLATE_ID_Rest = 'template_51c3yio';
 
-        // Validation
-        if (password !== confirmPassword) {
-            alert('Passwords do not match!');
-            return;
-        }
+        let userCartCache = null;
 
-        if (password.length < 6) {
-            alert('Password must be at least 6 characters');
-            return;
-        }
-
-        try {
-            // Create user in Firebase Auth
-            const userCredential = await auth.createUserWithEmailAndPassword(email, password);
-            const user = userCredential.user;
-
-            // Create user profile in Firestore
-            await db.collection('users').doc(user.uid).set({
-                name: name,
-                email: email,
-                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                phone: "",
-                address: "",
-                orders: [],
-                wishlist: []
-            });
-
-            alert('Account created successfully!');
-            document.getElementById('signup-form').reset();
-            window.location.hash = 'shop';
-
-        } catch (error) {
-            console.error('Signup error:', error);
-            alert('Error creating account: ' + error.message);
-        }
-    }
-
- async function handleLogin() {
-    const email = document.getElementById('email').value.trim();
-    const password = document.getElementById('password').value;
-
-    try {
-        const userCredential = await auth.signInWithEmailAndPassword(email, password);
-        const user = userCredential.user;
-        
-        alert('Login successful!');
-        window.location.hash = 'shop';
-
-    } catch (error) {
-        console.error('Login error:', error);
-        
-        // User-friendly error messages
-        if (error.code === 'auth/user-not-found') {
-            alert('❌ No account found with this email.');
-        } else if (error.code === 'auth/wrong-password') {
-            alert('❌ Incorrect password. Please try again.');
-        } else if (error.code === 'auth/invalid-email') {
-            alert('❌ Please enter a valid email address.');
-        } else {
-            alert('❌ Login failed: ' + error.message);
-        }
-    }
-}
-
-  // 🔥 REPLACE THIS FUNCTION - Remove EmailJS, use Firebase
-async function handleForgotPassword() {
-    const email = document.getElementById('reset-email').value.trim();
-
-    // Simple validation
-    if (!email) {
-        alert('Please enter your email address');
-        return;
-    }
-
-    try {
-        // Use Firebase password reset
-        await auth.sendPasswordResetEmail(email);
-        alert('✅ Password reset email sent! Check your inbox and spam folder.');
-        document.getElementById('forgot-password-form').reset();
-        window.location.hash = 'login';
-    } catch (error) {
-        console.error('Password reset error:', error);
-        
-        // User-friendly error messages
-        if (error.code === 'auth/user-not-found') {
-            alert('❌ No account found with this email address.');
-        } else if (error.code === 'auth/invalid-email') {
-            alert('❌ Please enter a valid email address.');
-        } else {
-            alert('❌ Error sending reset email: ' + error.message);
-        }
-    }
-}
-
-    async function handleLogout() {
-        try {
-            await auth.signOut();
-            alert('You have been logged out.');
-            window.location.hash = 'shop';
-        } catch (error) {
-            console.error('Logout error:', error);
-            alert('Error logging out: ' + error.message);
-        }
-    }
-
-    function updateNavigation(user) {
-        // Desktop
-        const loginTab = document.getElementById('login-tab');
-        const userInfo = document.getElementById('user-info');
-        const userEmailSpan = document.getElementById('user-email');
-
-        // Mobile
-        const mobileLogin = document.getElementById('mobile-login');
-        const mobileUserInfo = document.getElementById('mobile-user-info');
-        const mobileUserEmail = document.getElementById('mobile-user-email');
-
-        if (user) {
-            // User is logged in
-            loginTab.classList.add('hidden');
-            userInfo.classList.remove('hidden');
-            userInfo.classList.add('flex');
-            userEmailSpan.textContent = user.email;
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded - initializing app with Firebase');
+            feather.replace();
             
-            mobileLogin.classList.add('hidden');
-            mobileUserInfo.classList.remove('hidden');
-            mobileUserEmail.textContent = user.email;
-        } else {
-            // User is logged out
-            loginTab.classList.remove('hidden');
-            userInfo.classList.add('hidden');
-            userInfo.classList.remove('flex');
+            // Setup everything
+            setupNavigation();
+            setupAddToCartListeners();
+            setupFormHandlers();
+            updateCartBadge();
             
-            mobileLogin.classList.remove('hidden');
-            mobileUserInfo.classList.add('hidden');
-        }
-    }
-
-    async function loadUserData(userId) {
-        try {
-            const userDoc = await db.collection('users').doc(userId).get();
-            if (userDoc.exists) {
-                const userData = userDoc.data();
-                console.log('User data loaded:', userData);
-                // You can use this data to personalize the UI
+            // Setup chat button
+            setTimeout(() => {
+                setupChatButton();
+            }, 100);
+            
+            // Firebase Auth State Listener
+            auth.onAuthStateChanged((user) => {
+                if (user) {
+                    console.log('User is signed in:', user.email);
+                    updateNavigation(user);
+                    loadUserData(user.uid);
+                } else {
+                    console.log('User is signed out');
+                    updateNavigation(null);
+                }
+                userCartCache = null; // Clear cache on auth state change
+                updateCartBadge();
+            });
+            
+            // Handle initial page
+            if (!window.location.hash || window.location.hash === '#') {
+                window.location.hash = 'shop';
+            } else {
+                handleHashChange();
             }
-        } catch (error) {
-            console.error('Error loading user data:', error);
-        }
-    }
+        });
 
-    // 🔥 FIREBASE ORDERS FUNCTIONS
-    async function handleCheckout() {
-        const user = auth.currentUser;
-        const cart = JSON.parse(localStorage.getItem('cart')) || [];
-        
-        if (cart.length === 0) {
-            alert('Your cart is empty!');
-            return;
+        // NAVIGATION FUNCTIONS
+        function setupNavigation() {
+            // Tab clicks
+            document.querySelectorAll('[id$="-tab"]').forEach(tab => {
+                tab.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const sectionId = tab.id.replace('-tab', '');
+                    window.location.hash = sectionId;
+                });
+            });
+            
+            // Mobile menu
+            document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+                document.getElementById('mobile-menu').classList.toggle('hidden');
+                feather.replace();
+            });
+            
+            // Hash changes
+            window.addEventListener('hashchange', handleHashChange);
         }
 
-        if (!user) {
-            alert('Please login to complete your purchase.');
-            window.location.hash = 'login';
-            return;
+        function handleHashChange() {
+            const hash = window.location.hash.substring(1) || 'shop';
+            console.log('Hash changed to:', hash);
+            
+            // Hide all sections safely
+            document.querySelectorAll('.tab-section').forEach(section => {
+                if (section) {
+                    section.classList.add('hidden');
+                }
+            });
+            
+            // Show target section safely
+            const targetSection = document.getElementById(hash);
+            if (targetSection) {
+                targetSection.classList.remove('hidden');
+            }
+            
+            // Update active tab safely
+            document.querySelectorAll('[id$="-tab"]').forEach(tab => {
+                if (tab) {
+                    tab.classList.remove('active-tab');
+                }
+            });
+            
+            const activeTab = document.getElementById(hash + '-tab');
+            if (activeTab) {
+                activeTab.classList.add('active-tab');
+            }
+            
+            // Close mobile menu safely
+            const mobileMenu = document.getElementById('mobile-menu');
+            if (mobileMenu) {
+                mobileMenu.classList.add('hidden');
+            }
+            
+            // Section-specific setup
+            if (hash === 'cart') {
+                console.log('Loading cart page...');
+                setTimeout(() => {
+                    renderCart();
+                }, 50);
+            }
+            if (hash === 'shop') {
+                console.log('Loading shop page...');
+                setTimeout(() => {
+                    setupAddToCartListeners();
+                }, 50);
+            }
         }
 
-        try {
-            // Create order in Firestore
-            const order = {
-                userId: user.uid,
-                userEmail: user.email,
-                items: [...cart],
-                total: cart.reduce((sum, item) => sum + (item.price * (item.quantity || 1)), 0),
-                status: 'confirmed',
-                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        // FORM HANDLERS
+        function setupFormHandlers() {
+            // Contact form
+            document.getElementById('contact-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                handleContactForm();
+            });
+
+            // Login form
+            document.getElementById('login-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                handleLogin();
+            });
+
+            // Signup form
+            const signupForm = document.getElementById('signup-form');
+            signupForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                handleSignup();
+            });
+
+            // Forgot password form
+            document.getElementById('forgot-password-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                handleForgotPassword();
+            });
+
+            // Navigation links
+            document.querySelectorAll('.forgot-password').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    window.location.hash = 'forgot-password';
+                });
+            });
+
+            document.querySelectorAll('.signup-link').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    window.location.hash = 'signup';
+                });
+            });
+
+            document.querySelectorAll('.back-to-login').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    window.location.hash = 'login';
+                });
+            });
+
+            // Checkout button
+            document.getElementById('checkout-btn').addEventListener('click', handleCheckout);
+
+            // Logout buttons
+            document.getElementById('logout-btn').addEventListener('click', handleLogout);
+            document.getElementById('mobile-logout').addEventListener('click', handleLogout);
+        }
+
+        // CONTACT FORM
+        function handleContactForm() {
+            const name = document.getElementById('contact-name').value.trim();
+            const email = document.getElementById('contact-email').value.trim();
+            const message = document.getElementById('contact-message').value.trim();
+
+            const emailData = {
+                to_email: 'bezalelganam95@gmail.com',
+                from_name: name,
+                from_email: email,
+                message: message,
+                subject: `New Contact Form Message from ${name}`
             };
 
-            // Save order to Firestore
-            const orderRef = await db.collection('orders').add(order);
-            
-            // Update user's orders array
-            await db.collection('users').doc(user.uid).update({
-                orders: firebase.firestore.FieldValue.arrayUnion(orderRef.id)
-            });
-
-            // Clear cart
-            localStorage.setItem('cart', JSON.stringify([]));
-            updateCartBadge();
-
-            // Show order confirmation
-            showOrderConfirmation({
-                id: orderRef.id,
-                ...order,
-                date: new Date().toLocaleString()
-            });
-
-        } catch (error) {
-            console.error('Checkout error:', error);
-            alert('Error processing order: ' + error.message);
+            emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, emailData)
+                .then(function(response) {
+                    console.log('SUCCESS!', response.status, response.text);
+                    alert('Thank you for your message! We will get back to you soon.');
+                    document.getElementById('contact-form').reset();
+                }, function(error) {
+                    console.log('FAILED...', error);
+                    alert('There was an error sending your message. Please try again later.');
+                });
         }
-    }
-// 🔥 FIXED CART EVENT LISTENERS
-function setupCartEventListeners() {
-    // Remove items - use event delegation for better performance
-    document.getElementById('cart-items').addEventListener('click', function(e) {
-        if (e.target.closest('.remove-item')) {
-            const button = e.target.closest('.remove-item');
-            const index = parseInt(button.dataset.index);
-            removeFromCart(index);
-        }
-        
-        if (e.target.closest('.quantity-btn')) {
-            const button = e.target.closest('.quantity-btn');
-            const index = parseInt(button.dataset.index);
-            const action = button.dataset.action;
-            adjustQuantity(index, action);
-        }
-    });
-}
-    // CART FUNCTIONS (unchanged - they use localStorage)
-    function setupAddToCartListeners() {
-        console.log('=== SETTING UP CART LISTENERS ===');
-        
-        const buttons = document.querySelectorAll('.add-to-cart');
-        console.log('Found', buttons.length, 'add-to-cart buttons');
-        
-        buttons.forEach((button, index) => {
-            console.log('Replacing button', index);
-            
-            const newButton = document.createElement('button');
-            
-            for (let attr of button.attributes) {
-                newButton.setAttribute(attr.name, attr.value);
+
+        // FIREBASE AUTHENTICATION FUNCTIONS
+        async function handleSignup() {
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('signup-email').value.trim();
+            const password = document.getElementById('signup-password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+
+            // Validation
+            if (password !== confirmPassword) {
+                alert('Passwords do not match!');
+                return;
             }
-            
-            newButton.innerHTML = button.innerHTML;
-            newButton.className = button.className;
-            
-            newButton.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopImmediatePropagation();
-                console.log('=== BUTTON CLICKED - ADDING TO CART ===');
-                
-                const product = {
-                    id: this.dataset.id,
-                    name: this.dataset.name,
-                    price: parseFloat(this.dataset.price),
-                    image: this.dataset.image
-                };
-                
-                addToCart(product, this);
-            });
-            
-            button.parentNode.replaceChild(newButton, button);
-        });
-        
-        console.log('=== CART LISTENERS SETUP COMPLETE ===');
-    }
 
-let userCartCache = null; // Cache for better performance
-
-async function addToCart(product, buttonElement) {
-    const user = auth.currentUser;
-    
-    if (!user) {
-        alert('Please login to add items to cart');
-        window.location.hash = 'login';
-        return;
-    }
-
-    try {
-        // Quick visual feedback first
-        const originalText = buttonElement.innerHTML;
-        buttonElement.innerHTML = '✓ Added';
-        buttonElement.classList.add('bg-green-500', 'hover:bg-green-600');
-        buttonElement.disabled = true;
-
-        // Get user's current cart
-        let cart = await getUserCart(user.uid);
-        
-        // Check if product already exists
-        const existingIndex = cart.findIndex(item => item.id === product.id);
-        
-        if (existingIndex > -1) {
-            // Increase quantity
-            cart[existingIndex].quantity = (cart[existingIndex].quantity || 1) + 1;
-        } else {
-            // Add new item
-            product.quantity = 1;
-            cart.push(product);
-        }
-
-        // Update cart in Firestore
-        await db.collection('users').doc(user.uid).update({
-            cart: cart
-        });
-
-        // Update cache
-        userCartCache = cart;
-
-        // Update UI
-        updateCartBadge();
-        
-        if (window.location.hash === '#cart') {
-            await renderCart();
-        }
-
-        // Reset button after delay
-        setTimeout(() => {
-            buttonElement.innerHTML = 'Add to Cart';
-            buttonElement.classList.remove('bg-green-500', 'hover:bg-green-600');
-            buttonElement.disabled = false;
-        }, 1500);
-
-    } catch (error) {
-        console.error('Error adding to cart:', error);
-        alert('Error adding item to cart');
-        // Reset button on error
-        buttonElement.innerHTML = 'Add to Cart';
-        buttonElement.classList.remove('bg-green-500', 'hover:bg-green-600');
-        buttonElement.disabled = false;
-    }
-}
-async function getUserCart(userId) {
-    if (userCartCache) {
-        return userCartCache;
-    }
-    
-    const userDoc = await db.collection('users').doc(userId).get();
-    const userData = userDoc.data();
-    userCartCache = userData.cart || [];
-    return userCartCache;
-}
-
-// 🔥 CLEAR CACHE ON USER CHANGE
-auth.onAuthStateChanged((user) => {
-    userCartCache = null; // Clear cache on auth state change
-    if (user) {
-        console.log('User is signed in:', user.email);
-        updateNavigation(user);
-        loadUserData(user.uid);
-        updateCartBadge(); // Update badge for correct user
-    } else {
-        console.log('User is signed out');
-        updateNavigation(null);
-        updateCartBadge(); // Clear badge when logged out
-    }
-});
-
-async function renderCart() {
-    const user = auth.currentUser;
-    
-    if (!user) {
-        window.location.hash = 'login';
-        return;
-    }
-
-    try {
-        const cart = await getUserCart(user.uid);
-        
-        const cartItemsEl = document.getElementById('cart-items');
-        const emptyCartMessage = document.getElementById('empty-cart-message');
-
-        if (!cartItemsEl) return;
-
-        cartItemsEl.innerHTML = '';
-
-        if (cart.length === 0) {
-            if (emptyCartMessage) {
-                emptyCartMessage.classList.remove('hidden');
-                cartItemsEl.appendChild(emptyCartMessage);
+            if (password.length < 6) {
+                alert('Password must be at least 6 characters');
+                return;
             }
-            
-            updateCartUI(0);
-            return;
+
+            try {
+                // Create user in Firebase Auth
+                const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                const user = userCredential.user;
+
+                // Create user profile in Firestore
+                await db.collection('users').doc(user.uid).set({
+                    name: name,
+                    email: email,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    phone: "",
+                    address: "",
+                    orders: [],
+                    wishlist: [],
+                    cart: []
+                });
+
+                alert('Account created successfully!');
+                document.getElementById('signup-form').reset();
+                window.location.hash = 'shop';
+
+            } catch (error) {
+                console.error('Signup error:', error);
+                alert('Error creating account: ' + error.message);
+            }
         }
 
-        if (emptyCartMessage) {
-            emptyCartMessage.classList.add('hidden');
-        }
+        async function handleLogin() {
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
 
-        let subtotal = 0;
-        let html = '';
+            try {
+                const userCredential = await auth.signInWithEmailAndPassword(email, password);
+                const user = userCredential.user;
+                
+                alert('Login successful!');
+                window.location.hash = 'shop';
 
-        cart.forEach((item, index) => {
-            const quantity = item.quantity || 1;
-            const itemTotal = item.price * quantity;
-            subtotal += itemTotal;
-            
-            html += `
-                <div class="flex items-center justify-between py-4 border-b border-gray-800 cart-item">
-                    <div class="flex items-center space-x-4">
-                        <img src="${item.image}" alt="${item.name}" class="w-16 h-16 object-cover rounded">
-                        <div>
-                            <h3 class="font-medium">${item.name}</h3>
-                            <p class="text-gray-400">₪${item.price}</p>
-                            <div class="flex items-center space-x-2 mt-2">
-                                <button class="quantity-btn bg-gray-700 hover:bg-gray-600 text-white w-8 h-8 rounded flex items-center justify-center" 
-                                        data-index="${index}" data-action="decrease">-</button>
-                                <span class="quantity mx-2 font-medium">${quantity}</span>
-                                <button class="quantity-btn bg-gray-700 hover:bg-gray-600 text-white w-8 h-8 rounded flex items-center justify-center" 
-                                        data-index="${index}" data-action="increase">+</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="flex items-center space-x-4">
-                        <span class="font-medium">₪${itemTotal.toFixed(2)}</span>
-                        <button class="text-red-500 hover:text-red-400 remove-item" data-index="${index}">
-                            <i data-feather="trash-2" class="w-5 h-5"></i>
-                        </button>
-                    </div>
-                </div>
-            `;
-        });
-
-        cartItemsEl.innerHTML = html;
-        updateCartUI(subtotal);
-        setupCartEventListeners();
-        feather.replace();
-
-    } catch (error) {
-        console.error('Error rendering cart:', error);
-    }
-}
-
-
-function setupCartEventListeners() {
-    // Remove items - use event delegation for better performance
-    document.getElementById('cart-items').addEventListener('click', function(e) {
-        if (e.target.closest('.remove-item')) {
-            const button = e.target.closest('.remove-item');
-            const index = parseInt(button.dataset.index);
-            removeFromCart(index);
-        }
-        
-        if (e.target.closest('.quantity-btn')) {
-            const button = e.target.closest('.quantity-btn');
-            const index = parseInt(button.dataset.index);
-            const action = button.dataset.action;
-            adjustQuantity(index, action);
-        }
-    });
-}
-
-async function removeFromCart(index) {
-    const user = auth.currentUser;
-    if (!user) return;
-
-    try {
-        let cart = await getUserCart(user.uid);
-        
-        if (index >= 0 && index < cart.length) {
-            cart.splice(index, 1);
-            
-            await db.collection('users').doc(user.uid).update({
-                cart: cart
-            });
-            
-            // Update cache
-            userCartCache = cart;
-            
-            await renderCart();
-            updateCartBadge();
-        }
-    } catch (error) {
-        console.error('Error removing from cart:', error);
-    }
-}
-
-
-async function adjustQuantity(index, action) {
-    const user = auth.currentUser;
-    if (!user) return;
-
-    try {
-        let cart = await getUserCart(user.uid);
-        
-        if (index >= 0 && index < cart.length) {
-            const item = cart[index];
-            item.quantity = item.quantity || 1;
-            
-            if (action === 'increase') {
-                item.quantity++;
-            } else if (action === 'decrease') {
-                if (item.quantity > 1) {
-                    item.quantity--;
+            } catch (error) {
+                console.error('Login error:', error);
+                
+                // User-friendly error messages
+                if (error.code === 'auth/user-not-found') {
+                    alert('❌ No account found with this email.');
+                } else if (error.code === 'auth/wrong-password') {
+                    alert('❌ Incorrect password. Please try again.');
+                } else if (error.code === 'auth/invalid-email') {
+                    alert('❌ Please enter a valid email address.');
                 } else {
-                    cart.splice(index, 1);
+                    alert('❌ Login failed: ' + error.message);
                 }
             }
+        }
+
+        async function handleForgotPassword() {
+            const email = document.getElementById('reset-email').value.trim();
+
+            // Simple validation
+            if (!email) {
+                alert('Please enter your email address');
+                return;
+            }
+
+            try {
+                // Use Firebase password reset
+                await auth.sendPasswordResetEmail(email);
+                alert('✅ Password reset email sent! Check your inbox and spam folder.');
+                document.getElementById('forgot-password-form').reset();
+                window.location.hash = 'login';
+            } catch (error) {
+                console.error('Password reset error:', error);
+                
+                // User-friendly error messages
+                if (error.code === 'auth/user-not-found') {
+                    alert('❌ No account found with this email address.');
+                } else if (error.code === 'auth/invalid-email') {
+                    alert('❌ Please enter a valid email address.');
+                } else {
+                    alert('❌ Error sending reset email: ' + error.message);
+                }
+            }
+        }
+
+        async function handleLogout() {
+            try {
+                await auth.signOut();
+                alert('You have been logged out.');
+                window.location.hash = 'shop';
+            } catch (error) {
+                console.error('Logout error:', error);
+                alert('Error logging out: ' + error.message);
+            }
+        }
+
+        function updateNavigation(user) {
+            // Desktop
+            const loginTab = document.getElementById('login-tab');
+            const userInfo = document.getElementById('user-info');
+            const userEmailSpan = document.getElementById('user-email');
+
+            // Mobile
+            const mobileLoginSection = document.getElementById('mobile-login-section');
+            const mobileUserInfo = document.getElementById('mobile-user-info');
+            const mobileUserEmail = document.getElementById('mobile-user-email');
+
+            if (user) {
+                // User is logged in - Desktop
+                loginTab.classList.add('hidden');
+                userInfo.classList.remove('hidden');
+                userInfo.classList.add('flex');
+                userEmailSpan.textContent = user.email;
+                
+                // User is logged in - Mobile
+                mobileLoginSection.classList.add('hidden');
+                mobileUserInfo.classList.remove('hidden');
+                mobileUserEmail.textContent = user.email;
+            } else {
+                // User is logged out - Desktop
+                loginTab.classList.remove('hidden');
+                userInfo.classList.add('hidden');
+                userInfo.classList.remove('flex');
+                
+                // User is logged out - Mobile
+                mobileLoginSection.classList.remove('hidden');
+                mobileUserInfo.classList.add('hidden');
+            }
+        }
+
+        async function loadUserData(userId) {
+            try {
+                const userDoc = await db.collection('users').doc(userId).get();
+                if (userDoc.exists) {
+                    const userData = userDoc.data();
+                    console.log('User data loaded:', userData);
+                }
+            } catch (error) {
+                console.error('Error loading user data:', error);
+            }
+        }
+
+        // FIREBASE ORDERS FUNCTIONS
+        async function handleCheckout() {
+            const user = auth.currentUser;
             
-            await db.collection('users').doc(user.uid).update({
-                cart: cart
+            if (!user) {
+                alert('Please login to complete your purchase.');
+                window.location.hash = 'login';
+                return;
+            }
+
+            try {
+                const cart = await getUserCart(user.uid);
+                
+                if (cart.length === 0) {
+                    alert('Your cart is empty!');
+                    return;
+                }
+
+                // Create order in Firestore
+                const order = {
+                    userId: user.uid,
+                    userEmail: user.email,
+                    items: [...cart],
+                    total: cart.reduce((sum, item) => sum + (item.price * (item.quantity || 1)), 0),
+                    status: 'confirmed',
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                };
+
+                // Save order to Firestore
+                const orderRef = await db.collection('orders').add(order);
+                
+                // Update user's orders array and clear cart
+                await db.collection('users').doc(user.uid).update({
+                    orders: firebase.firestore.FieldValue.arrayUnion(orderRef.id),
+                    cart: [] // Clear cart after successful order
+                });
+
+                // Clear local cache
+                userCartCache = [];
+
+                // Update UI
+                updateCartBadge();
+
+                // Show order confirmation
+                showOrderConfirmation({
+                    id: orderRef.id,
+                    ...order,
+                    date: new Date().toLocaleString()
+                });
+
+            } catch (error) {
+                console.error('Checkout error:', error);
+                alert('Error processing order: ' + error.message);
+            }
+        }
+
+        // CART FUNCTIONS
+        function setupAddToCartListeners() {
+            console.log('=== SETTING UP CART LISTENERS ===');
+            
+            const buttons = document.querySelectorAll('.add-to-cart');
+            console.log('Found', buttons.length, 'add-to-cart buttons');
+            
+            buttons.forEach((button, index) => {
+                console.log('Replacing button', index);
+                
+                const newButton = document.createElement('button');
+                
+                for (let attr of button.attributes) {
+                    newButton.setAttribute(attr.name, attr.value);
+                }
+                
+                newButton.innerHTML = button.innerHTML;
+                newButton.className = button.className;
+                
+                newButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopImmediatePropagation();
+                    console.log('=== BUTTON CLICKED - ADDING TO CART ===');
+                    
+                    const product = {
+                        id: this.dataset.id,
+                        name: this.dataset.name,
+                        price: parseFloat(this.dataset.price),
+                        image: this.dataset.image
+                    };
+                    
+                    addToCart(product, this);
+                });
+                
+                button.parentNode.replaceChild(newButton, button);
             });
             
-            // Update cache
-            userCartCache = cart;
-            
-            await renderCart();
-            updateCartBadge();
+            console.log('=== CART LISTENERS SETUP COMPLETE ===');
         }
-    } catch (error) {
-        console.error('Error adjusting quantity:', error);
-    }
-}
 
-async function updateCartBadge() {
-    const user = auth.currentUser;
-    const cartTab = document.getElementById('cart-tab');
-    const mobileCartTab = document.querySelector('#mobile-menu a[href="#cart"]');
-    
-    if (!user) {
-        if (cartTab) cartTab.textContent = 'Cart';
-        if (mobileCartTab) mobileCartTab.textContent = 'Cart';
-        userCartCache = null;
-        return;
-    }
+        async function addToCart(product, buttonElement) {
+            const user = auth.currentUser;
+            
+            if (!user) {
+                alert('Please login to add items to cart');
+                window.location.hash = 'login';
+                return;
+            }
 
-    try {
-        const cart = await getUserCart(user.uid);
-        const totalItems = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
-        
-        if (cartTab) cartTab.textContent = totalItems > 0 ? `Cart (${totalItems})` : 'Cart';
-        if (mobileCartTab) mobileCartTab.textContent = totalItems > 0 ? `Cart (${totalItems})` : 'Cart';
-    } catch (error) {
-        console.error('Error updating cart badge:', error);
-        if (cartTab) cartTab.textContent = 'Cart';
-        if (mobileCartTab) mobileCartTab.textContent = 'Cart';
-    }
-}
+            try {
+                // Quick visual feedback first
+                const originalText = buttonElement.innerHTML;
+                buttonElement.innerHTML = '✓ Added';
+                buttonElement.classList.add('bg-green-500', 'hover:bg-green-600');
+                buttonElement.disabled = true;
 
- 
-
-   async function updateCartBadge() {
-    const user = auth.currentUser;
-    const cartTab = document.getElementById('cart-tab');
-    
-    if (!user || !cartTab) {
-        cartTab.textContent = 'Cart';
-        return;
-    }
-
-    try {
-        const userDoc = await db.collection('users').doc(user.uid).get();
-        const userData = userDoc.data();
-        const cart = userData.cart || [];
-        
-        const totalItems = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
-        cartTab.textContent = totalItems > 0 ? `Cart (${totalItems})` : 'Cart';
-    } catch (error) {
-        console.error('Error updating cart badge:', error);
-        cartTab.textContent = 'Cart';
-    }
-}
-       function updateCartUI(subtotal) {
-    const subtotalEl = document.getElementById('subtotal');
-    const totalEl = document.getElementById('total');
-    const checkoutBtn = document.getElementById('checkout-btn');
-    
-    if (subtotalEl) subtotalEl.textContent = `₪${subtotal.toFixed(2)}`;
-    if (totalEl) totalEl.textContent = `₪${subtotal.toFixed(2)}`;
-    if (checkoutBtn) {
-        checkoutBtn.disabled = false;
-        checkoutBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-    }
-}
-
-    function showOrderConfirmation(order) {
-        const orderDetailsEl = document.getElementById('order-details');
-        orderDetailsEl.innerHTML = `
-            <p><strong>Order ID:</strong> ${order.id}</p>
-            <p><strong>Date:</strong> ${order.date}</p>
-            <p><strong>Total:</strong> ₪${order.total.toFixed(2)}</p>
-            <p><strong>Items:</strong></p>
-            <ul class="list-disc list-inside ml-4">
-                ${order.items.map(item => 
-                    `<li>${item.name} x${item.quantity || 1} - ₪${(item.price * (item.quantity || 1)).toFixed(2)}</li>`
-                ).join('')}
-            </ul>
-        `;
-        
-        window.location.hash = 'order-confirmation';
-    }
-
-    // CHAT FUNCTIONALITY (unchanged)
-    function setupChat() {
-        document.getElementById('admin-chat-btn').addEventListener('click', toggleChat);
-        document.getElementById('close-chat').addEventListener('click', toggleChat);
-        
-        document.getElementById('chat-input').addEventListener('keypress', function(e) {
-            if(e.key === 'Enter' && e.target.value.trim()) {
-                const message = e.target.value.trim();
-                const chatMessages = document.getElementById('chat-messages');
+                // Get user's current cart
+                let cart = await getUserCart(user.uid);
                 
-                chatMessages.innerHTML += `
-                    <div class="chat-message user-message">
-                        ${message}
-                    </div>
-                `;
+                // Check if product already exists
+                const existingIndex = cart.findIndex(item => item.id === product.id);
                 
-                e.target.value = '';
-                chatMessages.scrollTop = chatMessages.scrollHeight;
+                if (existingIndex > -1) {
+                    // Increase quantity
+                    cart[existingIndex].quantity = (cart[existingIndex].quantity || 1) + 1;
+                } else {
+                    // Add new item
+                    product.quantity = 1;
+                    cart.push(product);
+                }
+
+                // Update cart in Firestore
+                await db.collection('users').doc(user.uid).update({
+                    cart: cart
+                });
+
+                // Update cache
+                userCartCache = cart;
+
+                // Update UI
+                updateCartBadge();
                 
+                if (window.location.hash === '#cart') {
+                    await renderCart();
+                }
+
+                // Reset button after delay
                 setTimeout(() => {
-                    const response = getAdminResponse(message);
-                    chatMessages.innerHTML += `
-                        <div class="chat-message admin-message">
-                            ${response}
+                    buttonElement.innerHTML = 'Add to Cart';
+                    buttonElement.classList.remove('bg-green-500', 'hover:bg-green-600');
+                    buttonElement.disabled = false;
+                }, 1500);
+
+            } catch (error) {
+                console.error('Error adding to cart:', error);
+                alert('Error adding item to cart');
+                // Reset button on error
+                buttonElement.innerHTML = 'Add to Cart';
+                buttonElement.classList.remove('bg-green-500', 'hover:bg-green-600');
+                buttonElement.disabled = false;
+            }
+        }
+
+        async function getUserCart(userId) {
+            if (userCartCache) {
+                return userCartCache;
+            }
+            
+            try {
+                const userDoc = await db.collection('users').doc(userId).get();
+                if (userDoc.exists) {
+                    const userData = userDoc.data();
+                    userCartCache = userData.cart || [];
+                    return userCartCache;
+                }
+                return [];
+            } catch (error) {
+                console.error('Error getting user cart:', error);
+                return [];
+            }
+        }
+
+        async function renderCart() {
+            const user = auth.currentUser;
+            
+            if (!user) {
+                window.location.hash = 'login';
+                return;
+            }
+
+            try {
+                const cart = await getUserCart(user.uid);
+                
+                const cartItemsEl = document.getElementById('cart-items');
+                const emptyCartMessage = document.getElementById('empty-cart-message');
+
+                if (!cartItemsEl) return;
+
+                cartItemsEl.innerHTML = '';
+
+                if (cart.length === 0) {
+                    if (emptyCartMessage) {
+                        emptyCartMessage.classList.remove('hidden');
+                        cartItemsEl.appendChild(emptyCartMessage);
+                    }
+                    
+                    updateCartUI(0);
+                    return;
+                }
+
+                if (emptyCartMessage) {
+                    emptyCartMessage.classList.add('hidden');
+                }
+
+                let subtotal = 0;
+                let html = '';
+
+                cart.forEach((item, index) => {
+                    const quantity = item.quantity || 1;
+                    const itemTotal = item.price * quantity;
+                    subtotal += itemTotal;
+                    
+                    html += `
+                        <div class="flex items-center justify-between py-4 border-b border-gray-800 cart-item">
+                            <div class="flex items-center space-x-4">
+                                <img src="${item.image}" alt="${item.name}" class="w-16 h-16 object-cover rounded">
+                                <div>
+                                    <h3 class="font-medium">${item.name}</h3>
+                                    <p class="text-gray-400">₪${item.price}</p>
+                                    <div class="flex items-center space-x-2 mt-2">
+                                        <button class="quantity-btn bg-gray-700 hover:bg-gray-600 text-white w-8 h-8 rounded flex items-center justify-center" 
+                                                data-index="${index}" data-action="decrease">-</button>
+                                        <span class="quantity mx-2 font-medium">${quantity}</span>
+                                        <button class="quantity-btn bg-gray-700 hover:bg-gray-600 text-white w-8 h-8 rounded flex items-center justify-center" 
+                                                data-index="${index}" data-action="increase">+</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-4">
+                                <span class="font-medium">₪${itemTotal.toFixed(2)}</span>
+                                <button class="text-red-500 hover:text-red-400 remove-item" data-index="${index}">
+                                    <i data-feather="trash-2" class="w-5 h-5"></i>
+                                </button>
+                            </div>
                         </div>
                     `;
-                    chatMessages.scrollTop = chatMessages.scrollHeight;
-                }, 1000);
+                });
+
+                cartItemsEl.innerHTML = html;
+                updateCartUI(subtotal);
+                setupCartEventListeners();
+                feather.replace();
+
+            } catch (error) {
+                console.error('Error rendering cart:', error);
             }
-        });
-    }
-
-    function toggleChat() {
-        const chatModal = document.getElementById('admin-chat-modal');
-        chatModal.classList.toggle('hidden');
-        feather.replace();
-    }
-       // Add to setupFormHandlers()
-document.getElementById('admin-login-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    handleAdminLogin();
-});
-
-// 🔥 ADMIN LOGIN FUNCTION
-async function handleAdminLogin() {
-    const email = document.getElementById('admin-email').value.trim();
-    const password = document.getElementById('admin-password').value;
-
-    try {
-        const userCredential = await auth.signInWithEmailAndPassword(email, password);
-        const user = userCredential.user;
-        
-        // Check if user is admin
-        const userDoc = await db.collection('users').doc(user.uid).get();
-        if (userDoc.exists && userDoc.data().role === 'admin') {
-            // Redirect to admin panel
-            window.location.href = 'admin.html';
-        } else {
-            alert('Access denied. Admin privileges required.');
-            await auth.signOut();
         }
-    } catch (error) {
-        console.error('Admin login error:', error);
-        alert('Admin login failed: ' + error.message);
-    }
-}
 
-    function getAdminResponse(message) {
-        const lowerMessage = message.toLowerCase();
-        
-        if (lowerMessage.includes('price') || lowerMessage.includes('cost')) {
-            return "Our prices range from ₪100 to ₪1000. Is there a specific product you're interested in?";
-        } else if (lowerMessage.includes('delivery') || lowerMessage.includes('shipping')) {
-            return "We offer free shipping on all orders. Delivery typically takes 3-5 business days.";
-        } else if (lowerMessage.includes('return') || lowerMessage.includes('refund')) {
-            return "We have a 30-day return policy. If you're not satisfied with your purchase, you can return it for a full refund.";
-        } else if (lowerMessage.includes('contact') || lowerMessage.includes('email')) {
-            return "You can reach us at bezalelganam95@gmail.com or through our contact form.";
-        } else {
-            return "Thank you for your message. Our team will get back to you shortly with more information.";
+        function setupCartEventListeners() {
+            // Remove items - use event delegation for better performance
+            document.getElementById('cart-items').addEventListener('click', function(e) {
+                if (e.target.closest('.remove-item')) {
+                    const button = e.target.closest('.remove-item');
+                    const index = parseInt(button.dataset.index);
+                    removeFromCart(index);
+                }
+                
+                if (e.target.closest('.quantity-btn')) {
+                    const button = e.target.closest('.quantity-btn');
+                    const index = parseInt(button.dataset.index);
+                    const action = button.dataset.action;
+                    adjustQuantity(index, action);
+                }
+            });
         }
-    }
-       // Add to your existing Firebase setup
-function setupCustomerChat() {
-    const user = auth.currentUser;
-    if (!user) return;
 
-    // Initialize chat for this user
-    db.collection('chats').doc(user.uid).set({
-        userId: user.uid,
-        userEmail: user.email,
-        userName: user.displayName || 'Customer',
-        messages: [{
-            text: "Hello! I need help with my order.",
-            sender: 'user',
-            timestamp: firebase.firestore.FieldValue.serverTimestamp()
-        }],
-        lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
-    }, { merge: true });
-}
+        async function removeFromCart(index) {
+            const user = auth.currentUser;
+            if (!user) return;
 
-// Call this when user logs in
-auth.onAuthStateChanged((user) => {
-    if (user) {
-        setupCustomerChat();
-    }
-});
-       // Live Chat Functions
-function setupLiveChat() {
-    const user = auth.currentUser;
-    if (!user) return;
-
-    // Initialize or get user chat
-    db.collection('chats').doc(user.uid).set({
-        userId: user.uid,
-        userEmail: user.email,
-        userName: user.displayName || 'Customer',
-        messages: [],
-        lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
-    }, { merge: true });
-
-    // Listen for new messages
-    db.collection('chats').doc(user.uid)
-        .onSnapshot((doc) => {
-            if (doc.exists) {
-                const chat = doc.data();
-                displayChatMessages(chat.messages || []);
+            try {
+                let cart = await getUserCart(user.uid);
+                
+                if (index >= 0 && index < cart.length) {
+                    cart.splice(index, 1);
+                    
+                    await db.collection('users').doc(user.uid).update({
+                        cart: cart
+                    });
+                    
+                    // Update cache
+                    userCartCache = cart;
+                    
+                    await renderCart();
+                    updateCartBadge();
+                }
+            } catch (error) {
+                console.error('Error removing from cart:', error);
             }
-        });
-}
-
-function displayChatMessages(messages) {
-    const chatMessages = document.getElementById('chat-messages');
-    if (!chatMessages) return;
-
-    chatMessages.innerHTML = '';
-    
-    messages.forEach(message => {
-        const messageDiv = document.createElement('div');
-        messageDiv.className = `chat-message ${message.sender === 'admin' ? 'admin-message' : 'user-message'}`;
-        messageDiv.innerHTML = `
-            <div class="text-sm">${message.text}</div>
-            <div class="text-xs mt-1 opacity-70">${formatTime(message.timestamp)}</div>
-        `;
-        chatMessages.appendChild(messageDiv);
-    });
-    
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-}
-
-async function sendChatMessage(messageText) {
-    const user = auth.currentUser;
-    if (!user) return;
-
-    const message = {
-        text: messageText,
-        sender: 'user',
-        timestamp: firebase.firestore.FieldValue.serverTimestamp()
-    };
-
-    await db.collection('chats').doc(user.uid).update({
-        messages: firebase.firestore.FieldValue.arrayUnion(message),
-        lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
-    });
-}
-
-function formatTime(timestamp) {
-    if (!timestamp) return '';
-    const date = timestamp.toDate();
-    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-}
-
-// Update the existing chat setup
-function setupChat() {
-    document.getElementById('admin-chat-btn').addEventListener('click', toggleChat);
-    document.getElementById('close-chat').addEventListener('click', toggleChat);
-    
-    document.getElementById('chat-input').addEventListener('keypress', function(e) {
-        if(e.key === 'Enter' && e.target.value.trim()) {
-            const message = e.target.value.trim();
-            sendChatMessage(message);
-            e.target.value = '';
         }
-    });
 
-    // Setup live chat when user is authenticated
-    auth.onAuthStateChanged((user) => {
-        if (user) {
-            setupLiveChat();
+        async function adjustQuantity(index, action) {
+            const user = auth.currentUser;
+            if (!user) return;
+
+            try {
+                let cart = await getUserCart(user.uid);
+                
+                if (index >= 0 && index < cart.length) {
+                    const item = cart[index];
+                    item.quantity = item.quantity || 1;
+                    
+                    if (action === 'increase') {
+                        item.quantity++;
+                    } else if (action === 'decrease') {
+                        if (item.quantity > 1) {
+                            item.quantity--;
+                        } else {
+                            cart.splice(index, 1);
+                        }
+                    }
+                    
+                    await db.collection('users').doc(user.uid).update({
+                        cart: cart
+                    });
+                    
+                    // Update cache
+                    userCartCache = cart;
+                    
+                    await renderCart();
+                    updateCartBadge();
+                }
+            } catch (error) {
+                console.error('Error adjusting quantity:', error);
+            }
         }
-    });
-}
-function setupChatButton() {
-    const chatBtn = document.getElementById('floating-chat-btn');
-    if (chatBtn) {
-        chatBtn.addEventListener('click', openChatPopup);
-        console.log('Chat button setup successful');
-    } else {
-        console.error('Chat button not found!');
-    }
-}
 
-function openChatPopup() {
-    const user = auth.currentUser;
-    if (!user) {
-        alert('Please login to use live chat');
-        window.location.hash = 'login';
-        return;
-    }
-    
-    // Open chatManager.html as a popup window (like your contact popup)
-    const popup = window.open('chatManager.html', 'chatPopup', 
-        'width=400,height=600,resizable=yes,scrollbars=yes,location=no,menubar=no,toolbar=no');
-    
-    if (popup) {
-        popup.focus();
-    } else {
-        // Fallback to new tab if popup blocked
-        alert('Popup blocked! Opening chat in new tab.');
-        window.open('chatManager.html', '_blank');
-    }
-}
+        async function updateCartBadge() {
+            const user = auth.currentUser;
+            const cartTab = document.getElementById('cart-tab');
+            const mobileCartTab = document.querySelector('#mobile-menu a[href="#cart"]');
+            
+            if (!user) {
+                if (cartTab) cartTab.textContent = 'Cart';
+                if (mobileCartTab) mobileCartTab.textContent = 'Cart';
+                userCartCache = null;
+                return;
+            }
 
-// Call this in your DOMContentLoaded or auth state change
-setupChatButton();
-       function setupMobileChat() {
-    const mobileChatBtn = document.getElementById('mobile-chat-btn');
-    if (mobileChatBtn) {
-        mobileChatBtn.addEventListener('click', function() {
-            document.getElementById('mobile-menu').classList.add('hidden');
-            openChatPopup();
-        });
-    }
-}
-</script>
-
-<!-- Mobile fixed cart button (added by assistant) -->
-<div id="mobile-cart-btn" class="mobile-cart hidden fixed bottom-4 right-4 z-50">
-  <a href="cart.html" class="inline-flex items-center px-4 py-3 rounded-full bg-red-600 text-white shadow-lg">
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor"><path d="M16 11V3a1 1 0 00-1-1H5a1 1 0 00-1 1v8H2v2h1.2l1.6 6h8.4l1.6-6H18v-2h-2zM6 4h8v7H6V4z"/></svg>
-    <span id="mobile-cart-count" class="font-medium">0</span>
-  </a>
-</div>
-
-<script>
-  (function(){
-    function updateCartBadge(){
-      try {
-        const cart = JSON.parse(localStorage.getItem('cart')) || [];
-        const count = cart.reduce((s,i)=>s+(i.quantity||1),0);
-        const el = document.getElementById('mobile-cart-count');
-        if(el) el.textContent = count;
-        const btn = document.getElementById('mobile-cart-btn');
-        if(btn){
-          if(count>0) btn.classList.remove('hidden');
-          else btn.classList.add('hidden');
+            try {
+                const cart = await getUserCart(user.uid);
+                const totalItems = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+                
+                if (cartTab) cartTab.textContent = totalItems > 0 ? `Cart (${totalItems})` : 'Cart';
+                if (mobileCartTab) mobileCartTab.textContent = totalItems > 0 ? `Cart (${totalItems})` : 'Cart';
+            } catch (error) {
+                console.error('Error updating cart badge:', error);
+                if (cartTab) cartTab.textContent = 'Cart';
+                if (mobileCartTab) mobileCartTab.textContent = 'Cart';
+            }
         }
-      } catch(e){ console.error(e); }
-    }
-    updateCartBadge();
-    window.addEventListener('storage', updateCartBadge);
-    document.addEventListener('DOMContentLoaded', updateCartBadge);
-  })();
-</script>
-<!-- End mobile cart button -->
 
-<!-- Assistant: chat widget (loads a small floating button) -->
-<link rel="stylesheet" href="assets/chat-widget.css">
-<script src="assets/chat-widget.js" defer></script>
-<!-- End assistant chat widget -->
-<script src="assets/chat-widget.js"></script>
-<link rel="stylesheet" href="assets/chat-widget.css">
-    <script>
-  // Initialize chat system
-  initChatWidget({
-    userEmail: localStorage.getItem('userEmail') || null,
-    isAdmin: false // Change to true only for admin dashboard
-  });
-</script>
+        function updateCartUI(subtotal) {
+            const subtotalEl = document.getElementById('subtotal');
+            const totalEl = document.getElementById('total');
+            const checkoutBtn = document.getElementById('checkout-btn');
+            
+            if (subtotalEl) subtotalEl.textContent = `₪${subtotal.toFixed(2)}`;
+            if (totalEl) totalEl.textContent = `₪${subtotal.toFixed(2)}`;
+            if (checkoutBtn) {
+                checkoutBtn.disabled = false;
+                checkoutBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
+        }
 
+        function showOrderConfirmation(order) {
+            const orderDetailsEl = document.getElementById('order-details');
+            orderDetailsEl.innerHTML = `
+                <p><strong>Order ID:</strong> ${order.id}</p>
+                <p><strong>Date:</strong> ${order.date}</p>
+                <p><strong>Total:</strong> ₪${order.total.toFixed(2)}</p>
+                <p><strong>Items:</strong></p>
+                <ul class="list-disc list-inside ml-4">
+                    ${order.items.map(item => 
+                        `<li>${item.name} x${item.quantity || 1} - ₪${(item.price * (item.quantity || 1)).toFixed(2)}</li>`
+                    ).join('')}
+                </ul>
+            `;
+            
+            window.location.hash = 'order-confirmation';
+        }
+
+        // CHAT FUNCTIONALITY
+        function setupChatButton() {
+            const chatBtn = document.getElementById('floating-chat-btn');
+            if (chatBtn) {
+                chatBtn.addEventListener('click', openChatPopup);
+                console.log('Chat button setup successful');
+            } else {
+                console.error('Chat button not found!');
+            }
+        }
+
+        function openChatPopup() {
+            const user = auth.currentUser;
+            if (!user) {
+                alert('Please login to use live chat');
+                window.location.hash = 'login';
+                return;
+            }
+            
+            // Open chat-popup.html as a popup window
+            const popup = window.open('chat-popup.html', 'chatPopup', 
+                'width=400,height=600,resizable=yes,scrollbars=yes,location=no,menubar=no,toolbar=no');
+            
+            if (popup) {
+                popup.focus();
+            } else {
+                // Fallback to new tab if popup blocked
+                alert('Popup blocked! Opening chat in new tab.');
+                window.open('chat-popup.html', '_blank');
+            }
+        }
+    </script>
 </body>
 </html>
