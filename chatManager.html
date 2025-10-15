@@ -268,39 +268,39 @@
             }
         }
 
-        async function sendAutoResponse(userMessage) {
-            const user = auth.currentUser;
-            if (!user) return;
+    async function sendAutoResponse(userMessage) {
+    const user = auth.currentUser;
+    if (!user) return;
 
-            const lowerMessage = userMessage.toLowerCase();
-            let response = "Thank you for your message. Our support team will get back to you shortly.";
+    const lowerMessage = userMessage.toLowerCase();
+    let response = "Thank you for your message. Our support team will get back to you shortly.";
 
-            if (lowerMessage.includes('shipping') || lowerMessage.includes('delivery')) {
-                response = "We offer free shipping on all orders. Delivery takes 3-5 business days.";
-            } else if (lowerMessage.includes('track')) {
-                response = "Check your email for tracking info. Contact us with your order number if needed.";
-            } else if (lowerMessage.includes('return')) {
-                response = "30-day return policy. Items must be unused in original packaging.";
-            } else if (lowerMessage.includes('price')) {
-                response = "Products range from ₪100 to ₪1000. All prices include VAT.";
-            }
+    if (lowerMessage.includes('shipping') || lowerMessage.includes('delivery')) {
+        response = "We offer free shipping on all orders. Delivery takes 3-5 business days.";
+    } else if (lowerMessage.includes('track')) {
+        response = "Check your email for tracking info. Contact us with your order number if needed.";
+    } else if (lowerMessage.includes('return')) {
+        response = "30-day return policy. Items must be unused in original packaging.";
+    } else if (lowerMessage.includes('price')) {
+        response = "Products range from ₪100 to ₪1000. All prices include VAT.";
+    }
 
-            const adminMessage = {
-                text: response,
-                sender: 'admin',
-                timestamp: new Date()
-            };
+    const adminMessage = {
+        text: response,
+        sender: 'admin',
+        timestamp: new Date()
+    };
 
-            // Get current messages and add admin response
-            const chatDoc = await db.collection('chats').doc(user.uid).get();
-            const currentMessages = chatDoc.data().messages || [];
-            const updatedMessages = [...currentMessages, adminMessage];
+    // Get current messages and add admin response
+    const chatDoc = await db.collection('chats').doc(user.uid).get();
+    const currentMessages = chatDoc.data().messages || [];
+    const updatedMessages = [...currentMessages, adminMessage];
 
-            await db.collection('chats').doc(user.uid).update({
-                messages: updatedMessages,
-                lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
-            });
-        }
+    await db.collection('chats').doc(user.uid).update({
+        messages: updatedMessages,
+        lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
+    });
+}
 
         function formatTime(timestamp) {
             if (!timestamp) return '';
