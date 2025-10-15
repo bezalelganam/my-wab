@@ -1525,6 +1525,15 @@ setupChatButton();
 <link rel="stylesheet" href="assets/chat-widget.css">
 <script src="assets/chat-widget.js" defer></script>
 <!-- End assistant chat widget -->
+<script src="assets/chat-widget.js"></script>
+<link rel="stylesheet" href="assets/chat-widget.css">
+    <script>
+  // Initialize chat system
+  initChatWidget({
+    userEmail: localStorage.getItem('userEmail') || null,
+    isAdmin: false // Change to true only for admin dashboard
+  });
+</script>
 
 </body>
 </html>
