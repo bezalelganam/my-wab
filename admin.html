@@ -625,30 +625,29 @@
                     chatMessages.innerHTML = '<div class="text-center py-4 text-red-500">Error loading messages</div>';
                 });
         }
-
-        function displayMessages(messages) {
-            const chatMessages = document.getElementById('chat-messages');
-            chatMessages.innerHTML = '';
-            
-            if (messages.length === 0) {
-                chatMessages.innerHTML = '<div class="text-center py-4 text-gray-500">No messages yet. Start the conversation!</div>';
-                return;
-            }
-            
-            messages.forEach(message => {
-                const messageDiv = document.createElement('div');
-                messageDiv.className = `chat-message ${message.sender === 'admin' ? 'admin-message' : 'user-message'}`;
-                messageDiv.innerHTML = `
-                    <div class="text-sm">${message.text}</div>
-                    <div class="text-xs mt-1 opacity-70">${formatTime(message.timestamp)}</div>
-                `;
-                chatMessages.appendChild(messageDiv);
-            });
-            
-            // Scroll to bottom
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }
-
+// In admin.html, update the displayMessages function:
+function displayMessages(messages) {
+    const chatMessages = document.getElementById('chat-messages');
+    chatMessages.innerHTML = '';
+    
+    if (messages.length === 0) {
+        chatMessages.innerHTML = '<div class="text-center py-4 text-gray-500">No messages yet. Start the conversation!</div>';
+        return;
+    }
+    
+    messages.forEach(message => {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `chat-message ${message.sender === 'admin' ? 'admin-message' : 'user-message'}`;
+        messageDiv.innerHTML = `
+            <div class="text-sm">${message.text}</div>
+            <div class="text-xs mt-1 opacity-70">${formatTime(message.timestamp)} • ${message.sender === 'admin' ? 'You' : 'User'}</div>
+        `;
+        chatMessages.appendChild(messageDiv);
+    });
+    
+    // Scroll to bottom
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
         async function sendMessage() {
             if (!currentChatUserId) return;
             
