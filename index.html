@@ -94,7 +94,8 @@
             <a href="#information" id="information-tab" class="nav-link text-white font-medium">Information</a>
             <a href="#login" id="login-tab" class="nav-link text-white font-medium">Login</a>
             <a href="#cart" id="cart-tab" class="nav-link text-white font-medium">Cart</a>
-            <button id="floating-chat-btn" class="fixed bottom-6 right-6 bg-red-500 text-white p-4 rounded-full shadow-lg hover:bg-red-600 transition z-40">
+      <!-- Floating Chat Button -->
+<button id="floating-chat-btn" class="fixed bottom-6 right-6 bg-red-500 text-white p-4 rounded-full shadow-lg hover:bg-red-600 transition z-50">
     <i data-feather="message-circle"></i>
 </button>
    
@@ -125,6 +126,7 @@
     <div id="mobile-user-info" class="hidden">
         <span id="mobile-user-email" class="block py-2 text-white"></span>
         <button id="mobile-logout" class="block py-2 text-red-500 w-full text-left">Logout</button>
+        
     </div>
 </div>
 
@@ -1445,8 +1447,14 @@ function setupChat() {
         }
     });
 }
-  function setupChatButton() {
-    document.getElementById('floating-chat-btn').addEventListener('click', openChatPopup);
+function setupChatButton() {
+    const chatBtn = document.getElementById('floating-chat-btn');
+    if (chatBtn) {
+        chatBtn.addEventListener('click', openChatPopup);
+        console.log('Chat button setup successful');
+    } else {
+        console.error('Chat button not found!');
+    }
 }
 
 function openChatPopup() {
@@ -1472,6 +1480,15 @@ function openChatPopup() {
 
 // Call this in your DOMContentLoaded or auth state change
 setupChatButton();
+       function setupMobileChat() {
+    const mobileChatBtn = document.getElementById('mobile-chat-btn');
+    if (mobileChatBtn) {
+        mobileChatBtn.addEventListener('click', function() {
+            document.getElementById('mobile-menu').classList.add('hidden');
+            openChatPopup();
+        });
+    }
+}
 </script>
 </body>
 </html>
