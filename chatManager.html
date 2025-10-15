@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat Popup | WantToWin</title>
+    <title>Live Chat | WantToWin</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/feather-icons"></script>
     <!-- Firebase -->
@@ -18,6 +18,12 @@
             margin: 0;
             padding: 0;
             height: 100vh;
+        }
+        .chat-container {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: #111827;
         }
         .chat-message {
             max-width: 85%;
@@ -41,16 +47,9 @@
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        .chat-container {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            background: #1f2937;
-        }
     </style>
 </head>
 <body>
-    <!-- Chat Container -->
     <div class="chat-container">
         <!-- Header -->
         <div class="bg-gray-900 p-4 border-b border-gray-700">
@@ -72,7 +71,7 @@
         <div id="chat-messages" class="flex-1 overflow-y-auto p-4 space-y-2 bg-gray-800">
             <div class="text-center text-gray-500 py-8">
                 <i data-feather="message-circle" class="w-8 h-8 mx-auto mb-2"></i>
-                <p class="text-sm">Starting conversation...</p>
+                <p class="text-sm">Loading messages...</p>
             </div>
         </div>
 
@@ -124,7 +123,6 @@
         });
 
         function setupEventListeners() {
-            // Send message
             document.getElementById('send-btn').addEventListener('click', sendMessage);
             document.getElementById('chat-input').addEventListener('keypress', function(e) {
                 if (e.key === 'Enter' && !e.shiftKey) {
@@ -140,11 +138,9 @@
                     document.getElementById('user-status').textContent = `Connected as ${user.email}`;
                     document.getElementById('chat-input').disabled = false;
                     document.getElementById('send-btn').disabled = false;
-                    
                     setupUserChat(user);
                 } else {
                     document.getElementById('user-status').textContent = 'Please log in to chat';
-                    // Redirect to main site login
                     setTimeout(() => {
                         if (window.opener && !window.opener.closed) {
                             window.opener.location.href = 'index.html#login';
@@ -156,7 +152,7 @@
         }
 
         function setupUserChat(user) {
-            // Initialize or update user chat
+            // Initialize user chat document
             db.collection('chats').doc(user.uid).set({
                 userId: user.uid,
                 userEmail: user.email,
@@ -165,25 +161,6 @@
                 status: 'active'
             }, { merge: true });
 
-            // Add welcome message if first time
-            db.collection('chats').doc(user.uid).get().then((doc) => {
-                if (doc.exists) {
-                    const chatData = doc.data();
-                    if (!chatData.messages || chatData.messages.length === 0) {
-                        const welcomeMessage = {
-                            text: "Hello! Welcome to WantToWin support. How can we help you today?",
-                            sender: 'admin',
-                            timestamp: new Date()
-                        };
-                        
-                        db.collection('chats').doc(user.uid).update({
-                            messages: [welcomeMessage],
-                            lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
-                        });
-                    }
-                }
-            });
-
             // Listen for real-time messages
             chatUnsubscribe = db.collection('chats').doc(user.uid)
                 .onSnapshot((doc) => {
@@ -191,12 +168,15 @@
                         const chatData = doc.data();
                         displayMessages(chatData.messages || []);
                     }
+                }, (error) => {
+                    console.error('Chat error:', error);
                 });
         }
 
         function displayMessages(messages) {
             const chatMessages = document.getElementById('chat-messages');
-            
+            chatMessages.innerHTML = '';
+
             if (messages.length === 0) {
                 chatMessages.innerHTML = `
                     <div class="text-center text-gray-500 py-8">
@@ -207,8 +187,6 @@
                 feather.replace();
                 return;
             }
-
-            chatMessages.innerHTML = '';
 
             messages.forEach((message) => {
                 const messageDiv = document.createElement('div');
@@ -224,7 +202,6 @@
                 chatMessages.appendChild(messageDiv);
             });
 
-            // Scroll to bottom
             chatMessages.scrollTop = chatMessages.scrollHeight;
             feather.replace();
         }
@@ -247,7 +224,7 @@
 
                 // Get current messages and add new one
                 const chatDoc = await db.collection('chats').doc(user.uid).get();
-                const currentMessages = chatDoc.data().messages || [];
+                const currentMessages = chatDoc.exists ? (chatDoc.data().messages || []) : [];
                 const updatedMessages = [...currentMessages, userMessage];
 
                 await db.collection('chats').doc(user.uid).update({
@@ -257,50 +234,11 @@
 
                 input.value = '';
 
-                // Auto-response after delay
-                setTimeout(() => {
-                    sendAutoResponse(messageText);
-                }, 2000 + Math.random() * 3000);
-
             } catch (error) {
                 console.error('Error sending message:', error);
                 alert('Error sending message. Please try again.');
             }
         }
-
-    async function sendAutoResponse(userMessage) {
-    const user = auth.currentUser;
-    if (!user) return;
-
-    const lowerMessage = userMessage.toLowerCase();
-    let response = "Thank you for your message. Our support team will get back to you shortly.";
-
-    if (lowerMessage.includes('shipping') || lowerMessage.includes('delivery')) {
-        response = "We offer free shipping on all orders. Delivery takes 3-5 business days.";
-    } else if (lowerMessage.includes('track')) {
-        response = "Check your email for tracking info. Contact us with your order number if needed.";
-    } else if (lowerMessage.includes('return')) {
-        response = "30-day return policy. Items must be unused in original packaging.";
-    } else if (lowerMessage.includes('price')) {
-        response = "Products range from ₪100 to ₪1000. All prices include VAT.";
-    }
-
-    const adminMessage = {
-        text: response,
-        sender: 'admin',
-        timestamp: new Date()
-    };
-
-    // Get current messages and add admin response
-    const chatDoc = await db.collection('chats').doc(user.uid).get();
-    const currentMessages = chatDoc.data().messages || [];
-    const updatedMessages = [...currentMessages, adminMessage];
-
-    await db.collection('chats').doc(user.uid).update({
-        messages: updatedMessages,
-        lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
-    });
-}
 
         function formatTime(timestamp) {
             if (!timestamp) return '';
@@ -315,41 +253,5 @@
             }
         });
     </script>
-
-<!-- Mobile fixed cart button (added by assistant) -->
-<div id="mobile-cart-btn" class="mobile-cart hidden fixed bottom-4 right-4 z-50">
-  <a href="cart.html" class="inline-flex items-center px-4 py-3 rounded-full bg-red-600 text-white shadow-lg">
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor"><path d="M16 11V3a1 1 0 00-1-1H5a1 1 0 00-1 1v8H2v2h1.2l1.6 6h8.4l1.6-6H18v-2h-2zM6 4h8v7H6V4z"/></svg>
-    <span id="mobile-cart-count" class="font-medium">0</span>
-  </a>
-</div>
-
-<script>
-  (function(){
-    function updateCartBadge(){
-      try {
-        const cart = JSON.parse(localStorage.getItem('cart')) || [];
-        const count = cart.reduce((s,i)=>s+(i.quantity||1),0);
-        const el = document.getElementById('mobile-cart-count');
-        if(el) el.textContent = count;
-        const btn = document.getElementById('mobile-cart-btn');
-        if(btn){
-          if(count>0) btn.classList.remove('hidden');
-          else btn.classList.add('hidden');
-        }
-      } catch(e){ console.error(e); }
-    }
-    updateCartBadge();
-    window.addEventListener('storage', updateCartBadge);
-    document.addEventListener('DOMContentLoaded', updateCartBadge);
-  })();
-</script>
-<!-- End mobile cart button -->
-
-<!-- Assistant: chat widget (loads a small floating button) -->
-<link rel="stylesheet" href="assets/chat-widget.css">
-<script src="assets/chat-widget.js" defer></script>
-<!-- End assistant chat widget -->
-
 </body>
 </html>
